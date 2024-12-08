@@ -35,6 +35,11 @@ ul {
     list-style: none;
 }
 
+body section {
+    padding-top: 93px;
+    margin-top: -93px;
+}
+
 /* header */
 header {
     position: fixed;
@@ -43,6 +48,7 @@ header {
     padding: 2rem;
     background-color: #f8f8f8;
     box-shadow: 0 2px 4px #838383;
+    height: 92.8;
 }
 
 nav {
