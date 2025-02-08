@@ -1,0 +1,109 @@
+{
+  "basics": {
+    "name": "Luis Marrero",
+    "label": "Programmer",
+    "image": "https://avatars.githubusercontent.com/u/144063514?v=4",
+    "email": "lmarrero1070@gmail.com",
+    "phone": "+1 (787) 487-0310",
+    "url": "https://johndoe.com",
+    "summary": "A summary of John Doe…",
+    "location": {
+      "address": "2712 Broadway St",
+      "postalCode": "CA 94115",
+      "city": "San Francisco",
+      "countryCode": "PR",
+      "region": "California"
+    },
+    "profiles": [
+      {
+        "network": "GitHub",
+        "username": "john",
+        "url": ""
+      },
+      {
+        "network": "LinkedIn",
+        "username": "john",
+        "url": "https://www.linkedin.com/in/john/"
+      },
+      {
+        "network": "X",
+        "username": "john",
+        "url": "https://twitter.com/john"
+      }
+    ]
+  },
+  "work": [
+    {
+      "name": "Holberton School",
+      "position": "President",
+      "url": "https://company.com",
+      "startDate": "2013-01-01",
+      "endDate": "2014-01-01",
+      "summary": "Description…",
+      "highlights": ["Started the company"]
+    }
+  ],
+  "volunteer": [
+    {
+      "organization": "",
+      "position": "",
+      "url": "",
+      "startDate": "",
+      "endDate": "",
+      "summary": "",
+      "highlights": [""]
+    }
+  ],
+  "education": [
+    {
+      "institution": "Holberton School",
+      "url": "https://institution.com/",
+      "area": "Software Development",
+      "studyType": "Bachelor",
+      "startDate": "2011-01-01",
+      "endDate": "2013-01-01",
+      "score": "4.0",
+      "courses": ["DB1101 - Basic SQL"]
+    }
+  ],
+  "awards": [
+    {
+      "title": "",
+      "date": "",
+      "awarder": "",
+      "summary": ""
+    }
+  ],
+  "certificates": [],
+  "publications": [],
+  "skills": [
+    {
+      "name": "Web Development"
+    }
+  ],
+  "languages": [
+    {
+      "language": "Spanish",
+      "fluency": "Native speaker"
+    },
+    {
+      "language": "English",
+      "fluency": ""
+    }
+  ],
+  "interests": [],
+  "references": [],
+  "projects": [
+    {
+      "name": "Project",
+      "startDate": "2019-01-01",
+      "endDate": "2021-01-01",
+      "description": "Description...",
+      "highlights": ["Won award at AIHacks 2016"],
+      "urls": {
+        "website": "https://project.com/",
+        "gitHub": "loremipsum"
+      }
+    }
+  ]
+}

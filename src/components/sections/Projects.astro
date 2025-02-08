@@ -1,0 +1,41 @@
+---
+import Section from "@/components/Section.astro";
+
+import { projects } from "@cv";
+---
+
+<Section title="Proyectos">
+  <ul>
+    {
+      projects.map(
+        ({ urls, description, highlights, name, endDate, startDate }) => {
+          return (
+            <li>
+              <article>
+                <header>
+                  <a href={urls.website} title={`Ver el proyecto ${name}`}>
+                    <h3>{name}</h3>
+                  </a>
+                  <a
+                    href={urls.gitHub}
+                    title={`Ver el código fuente de ${name}`}
+                  >
+                    <p>GitHub</p>
+                  </a>
+                  <p>{description}</p>
+                </header>
+                <footer>
+                  <ul>
+                    {highlights.map((highlight) => {
+                      return <li>{highlight}</li>;
+                    })}
+                  </ul>
+                </footer>
+              </article>
+            </li>
+          );
+        }
+      )
+    }
+  </ul>
+</Section>
