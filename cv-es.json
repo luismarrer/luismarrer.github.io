@@ -97,7 +97,7 @@
     {
       "name": "Project",
       "startDate": "2019-01-01",
-      "endDate": "2021-01-01",
+      "endDate": "",
       "description": "Description...",
       "highlights": ["Won award at AIHacks 2016"],
       "urls": {

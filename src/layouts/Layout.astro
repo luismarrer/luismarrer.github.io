@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>Astro Basics</title>
+    <title>Luis Marrero</title>
   </head>
   <body>
     <slot />
@@ -75,5 +75,23 @@
     line-height: 1.5;
     margin: 0;
     text-wrap: pretty;
+  }
+
+  .print {
+    display: none !important;
+  }
+
+  @media print {
+    .print {
+      display: block !important;
+    }
+
+    .no-print {
+      display: none !important;
+    }
+
+    ninja-keys {
+      display: none !important;
+    }
   }
 </style>

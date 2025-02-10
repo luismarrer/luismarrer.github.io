@@ -1,21 +1,26 @@
 ---
-import { basics } from "@cv";
-import Section from "@/components/Section.astro";
-import WorldMap from "@/icons/WorldMap.astro";
-import Mail from "@/icons/Mail.astro";
-import Phone from "@/icons/Phone.astro";
-import X from "@/icons/X.astro";
-import LinkedIn from "@/icons/LinkedIn.astro";
-import GitHub from "@/icons/GitHub.astro";
-import type { SocialNetworkIcon } from "@/types";
+import { basics } from "@cv"
+import Section from "@/components/Section.astro"
+import WorldMap from "@/icons/WorldMap.astro"
+import Mail from "@/icons/Mail.astro"
+import Phone from "@/icons/Phone.astro"
+import X from "@/icons/X.astro"
+import LinkedIn from "@/icons/LinkedIn.astro"
+import GitHub from "@/icons/GitHub.astro"
+import type { SocialNetworkIcon } from "@/types"
 
-const { name, label, image, email, phone, url, location, profiles } = basics;
-const { city, region } = location;
+const { name, label, image, email, phone, url, location, profiles } = basics
+const { city, region } = location
 const SOCIAL_NETWORKS_ICONS: SocialNetworkIcon = {
   GitHub,
   LinkedIn,
   X,
-};
+}
+
+const linkedInfo = profiles.find(({ network }) => network === "LinkedIn")
+const linkedUrl = linkedInfo?.url
+
+const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" | ")
 ---
 
 <Section>
@@ -25,14 +30,17 @@ const SOCIAL_NETWORKS_ICONS: SocialNetworkIcon = {
       <h2>{label}</h2>
       <!-- Icono, poner enlace a Google Maps -->
       <span>{city}, {region}</span>
-      <footer>
-        {
+      <footer class="print">
+        {printInfo}
+      </footer>
+      <footer class="no-print">
+        <!-- {
           url && (
             <a href={url}>
               <WorldMap />
             </a>
           )
-        }
+        } -->
         {
           email && (
             <a
@@ -59,7 +67,7 @@ const SOCIAL_NETWORKS_ICONS: SocialNetworkIcon = {
         }
         {
           profiles.map(({ network, url, username }) => {
-            const Icon = SOCIAL_NETWORKS_ICONS[network];
+            const Icon = SOCIAL_NETWORKS_ICONS[network]
             return (
               <a
                 href={url}
@@ -69,81 +77,83 @@ const SOCIAL_NETWORKS_ICONS: SocialNetworkIcon = {
               >
                 <Icon />
               </a>
-            );
+            )
           })
         }
       </footer>
     </div>
-
     <figure>
       <img src={image} alt={name} />
     </figure>
   </div>
+
+  <style>
+    .hero {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding-right: 32px;
+    }
+
+    h1 {
+      font-size: 2rem;
+    }
+
+    h2 {
+      color: #666;
+      font-weight: 500;
+      font-size: 1.1rem;
+      text-wrap: balance;
+    }
+
+    img {
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      width: 128px;
+      border-radius: 16px;
+    }
+
+    span {
+      color: #666;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      letter-spacing: -0.05rem;
+    }
+
+    footer {
+      color: #555;
+      font-size: 0.75rem;
+      display: flex;
+      gap: 4px;
+      margin-top: 8px;
+    }
+
+    a {
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #eee;
+      padding: 4px;
+      height: 32px;
+      width: 32px;
+      border-radius: 6px;
+      transition:
+        background 0.3s,
+        ease;
+    }
+
+    a:hover {
+      background: #eee;
+      border: 1px solid #ddd;
+    }
+  </style>
 </Section>
-<style>
-  .hero {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  .info {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    padding-right: 32px;
-  }
-
-  h1 {
-    font-size: 2rem;
-  }
-
-  h2 {
-    color: #666;
-    font-weight: 500;
-    font-size: 1.1rem;
-    text-wrap: balance;
-  }
-
-  img {
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-    width: 128px;
-    border-radius: 16px;
-  }
-
-  span {
-    color: #666;
-    font-size: 0.85rem;
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    letter-spacing: -0.05rem;
-  }
-
-  footer {
-    display: flex;
-    gap: 4px;
-    margin-top: 8px;
-  }
-
-  a {
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #eee;
-    padding: 4px;
-    height: 32px;
-    width: 32px;
-    border-radius: 6px;
-    transition:
-      background 0.3s,
-      ease;
-  }
-
-  a:hover {
-    background: #eee;
-    border: 1px solid #ddd;
-  }
-</style>
