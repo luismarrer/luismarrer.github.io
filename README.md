@@ -1,6 +1,6 @@
-# Portafolio
+# Portfolio
 
-Primera versión de mi portafolio. Este proyecto fue para practicar HTML y CSS con responsive design (más o menos).
+First version of my portfolio. This project was created to practice HTML and CSS with responsive design (more or less).
 
 ## Fotos
 
