@@ -1,46 +1,46 @@
 {
   "basics": {
     "name": "Luis Marrero",
-    "label": "Programmer",
+    "label": "Ingeniero de software. Comprometido con la elaboración de soluciones elegantes.",
     "image": "https://avatars.githubusercontent.com/u/144063514?v=4",
     "email": "lmarrero1070@gmail.com",
-    "phone": "+1 (787) 487-0310",
-    "url": "https://johndoe.com",
-    "summary": "A summary of John Doe…",
+    "phone": "+17874870310",
+    "url": "",
+    "summary": "Enfocado en el desarrollo de frontend, busco experiencias que me hagan crecer como profesional. Estoy interesado en participar en equipos diversos y vanguardistas con la intención de resolver problemas del mundo real a través de soluciones innovadoras y asombrosas. Me encanta la tecnología y el software. Me apasionan la IA, la robótica y el open-source.",
     "location": {
-      "address": "2712 Broadway St",
-      "postalCode": "CA 94115",
-      "city": "San Francisco",
+      "address": "Río Piedras",
+      "postalCode": "00925",
+      "city": "San Juan",
       "countryCode": "PR",
-      "region": "California"
+      "region": "Puerto Rico"
     },
     "profiles": [
       {
         "network": "GitHub",
-        "username": "john",
-        "url": ""
+        "username": "luismarrer",
+        "url": "https://github.com/luismarrer"
       },
       {
         "network": "LinkedIn",
-        "username": "john",
-        "url": "https://www.linkedin.com/in/john/"
+        "username": "luis-marr",
+        "url": "https://www.linkedin.com/in/luis-marr/"
       },
       {
         "network": "X",
-        "username": "john",
-        "url": "https://twitter.com/john"
+        "username": "lmarrero1070",
+        "url": "https://x.com/lmarrero1070"
       }
     ]
   },
   "work": [
     {
-      "name": "Holberton School",
-      "position": "President",
-      "url": "https://company.com",
-      "startDate": "2013-01-01",
-      "endDate": "2014-01-01",
-      "summary": "Description…",
-      "highlights": ["Started the company"]
+      "name": "Holberton Coding School Puerto Rico",
+      "position": "Estudiante tutor",
+      "url": "https://holbertonschoolpr.com/",
+      "startDate": "2024-05",
+      "endDate": "2024-10",
+      "summary": "Me encargué de ayudar a los estudiantes a comprender los conceptos de y a resolver problemas con programación. Apoyé al Software Engineer/Educational Lead en la creación de contenido educativo ",
+      "highlights": [""]
     }
   ],
   "volunteer": [
@@ -57,13 +57,13 @@
   "education": [
     {
       "institution": "Holberton School",
-      "url": "https://institution.com/",
-      "area": "Software Development",
-      "studyType": "Bachelor",
-      "startDate": "2011-01-01",
-      "endDate": "2013-01-01",
-      "score": "4.0",
-      "courses": ["DB1101 - Basic SQL"]
+      "url": "https://www.holbertonschoolpr.com/",
+      "area": "Ciencias de la computación",
+      "studyType": "",
+      "startDate": "2024-02-01",
+      "endDate": "2024-11-01",
+      "score": "",
+      "courses": [""]
     }
   ],
   "awards": [
@@ -95,14 +95,43 @@
   "references": [],
   "projects": [
     {
-      "name": "Project",
-      "startDate": "2019-01-01",
-      "endDate": "",
-      "description": "Description...",
-      "highlights": ["Won award at AIHacks 2016"],
+      "name": "Probless",
+      "startDate": "2024-09-26",
+      "endDate": "2024-11-15",
+      "description": "Probless es una aplicación web que permite a los usuarios crear y manejar tickets apoyados con IA. Los usuarios pueden crear tickets, asignarlos a un departamento, y ver el estado de los tickets. Proyecto final de Holberton School.",
+      "highlights": ["Python", "Django", "Full Stack aplicación web", "IA"],
       "urls": {
-        "website": "https://project.com/",
-        "gitHub": "loremipsum"
+        "website": "",
+        "gitHub": "https://github.com/luismarrer/Probless-project"
+      }
+    },
+    {
+      "name": "Airbnb Backend Clone",
+      "startDate": "2024-06-26",
+      "endDate": "2024-07-06",
+      "description": "Un clon del backend de Airbnb con sus modelos y persistencia con una base de datos.",
+      "highlights": [
+        "Python",
+        "Flask",
+        "SQLAlchemy",
+        "MySQL",
+        "RESTful API",
+        "Base de datos"
+      ],
+      "urls": {
+        "website": "",
+        "gitHub": "https://github.com/luismarrer/holbertonschool-hbnb-db"
+      }
+    },
+    {
+      "name": "Simple Shell",
+      "startDate": "2024-04-14",
+      "endDate": "2024-04-24",
+      "description": "Un intérprete de comandos como Bash o Bourne shell escrito en C.",
+      "highlights": ["C", "Shell", "Linux"],
+      "urls": {
+        "website": "",
+        "gitHub": "https://github.com/luismarrer/holbertonschool-simple_shell"
       }
     }
   ]
