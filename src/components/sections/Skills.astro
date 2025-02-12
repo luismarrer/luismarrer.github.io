@@ -2,26 +2,50 @@
 import Section from "@/components/Section.astro"
 
 import { skills } from "@cv"
-import HTML from "@/icons/html.astro"
-import CSS from "@/icons/css.astro"
-import JavaScript from "@/icons/javascript.astro"
-import TypeScript from "@/icons/type.astro"
-import React from "@/icons/react.astro"
-import Node from "@/icons/node.astro"
-import MySQL from "@/icons/sql.astro"
-import Git from "@/icons/git.astro"
+import HTML from "@/icons/HTML.astro"
+import CSS from "@/icons/CSS.astro"
+import JavaScript from "@/icons/JS.astro"
+import TypeScript from "@/icons/TS.astro"
+import React from "@/icons/React.astro"
+import Node from "@/icons/Node.astro"
+import SQL from "@/icons/SQL.astro"
+import Git from "@/icons/Git.astro"
 import GitHub from "@/icons/GitHub.astro"
-import Tailwind from "@/icons/tailwind.astro"
-import Next from "@/icons/next.astro"
-import Swift from "@/icons/swift.astro"
-import SwiftUI from "@/icons/swiftui.astro"
-import Kotlin from "@/icons/kotlin.astro"
-import Flutter from "@/icons/flutter.astro"
+import Tailwind from "@/icons/Tailwind.astro"
+import Python from "@/icons/Python.astro"
+import C from "@/icons/C.astro"
+import type { Icon } from "@/types"
+
+const SKILLS_ICONS: Icon = {
+  HTML,
+  CSS,
+  JavaScript,
+  TypeScript,
+  React,
+  Node,
+  SQL,
+  Git,
+  GitHub,
+  Tailwind,
+  Python,
+  C,
+}
 ---
 
 <Section title="Habilidades">
   <ul>
-    {skills.map(({ name }) => <li>{name}</li>)}
+    {
+      skills.map(({ name }) => {
+        const iconName = name
+        const Icon = SKILLS_ICONS[iconName]
+
+        return (
+          <li>
+            {Icon && <Icon />} <span>{name}</span>
+          </li>
+        )
+      })
+    }
   </ul>
 </Section>
 
@@ -33,11 +57,14 @@ import Flutter from "@/icons/flutter.astro"
   }
 
   li {
+    display: flex;
+    align-items: center;
     border-radius: 6px;
     background: #eee;
     color: black;
     font-size: 0.8rem;
     font-weight: 500;
     padding: 0.2rem 0.6rem;
+    gap: 4px;
   }
 </style>

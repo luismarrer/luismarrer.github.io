@@ -1,1 +1,1 @@
-export type SocialNetworkIcon = Record<string, string | any>;
+export type Icon = Record<string, string | any>;

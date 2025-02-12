@@ -7,11 +7,11 @@ import Phone from "@/icons/Phone.astro"
 import X from "@/icons/X.astro"
 import LinkedIn from "@/icons/LinkedIn.astro"
 import GitHub from "@/icons/GitHub.astro"
-import type { SocialNetworkIcon } from "@/types"
+import type { Icon } from "@/types"
 
 const { name, label, image, email, phone, url, location, profiles } = basics
 const { city, region } = location
-const SOCIAL_NETWORKS_ICONS: SocialNetworkIcon = {
+const SOCIAL_NETWORKS_ICONS: Icon = {
   GitHub,
   LinkedIn,
   X,
@@ -154,6 +154,12 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" | ")
     a:hover {
       background: #eee;
       border: 1px solid #ddd;
+    }
+
+    @media (max-width: 768px) {
+      img {
+        width: 110px;
+      }
     }
   </style>
 </Section>

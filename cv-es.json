@@ -77,8 +77,61 @@
   "certificates": [],
   "publications": [],
   "skills": [
+        {
+      "name": "HTML",
+      "level": "Master",
+      "keywords": ["Desarrollo web", "Frontend", "Semantica", "SEO"]
+    },
+        {
+      "name": "CSS",
+      "level": "Avanzado",
+      "keywords": ["SASS", "Flexbox", "Grid", "Responsive Design"]
+    },
+        {
+      "name": "JavaScript",
+      "level": "Intermedio",
+      "keywords": ["React", "Node.js", "Express", "MongoDB"]
+    },
     {
-      "name": "Web Development"
+      "name": "Node",
+      "level": "Basico",
+      "keywords": ["Frontend"]
+    },
+    {
+      "name": "Tailwind",
+      "level": "Basico",
+      "keywords": ["Frontend"]
+    },
+    {
+      "name": "TypeScript",
+      "level": "Intermedio",
+      "keywords": ["Frontend"]
+    },
+    {
+      "name": "Git",
+      "level": "Avanzado",
+      "keywords": ["Control de versiones"]
+    },
+    {
+      "name": "GitHub",
+      "level": "Avanzado",
+      "keywords": ["Control de versiones"]
+    },
+    {
+      "name": "Python",
+      "level": "Intermedio",
+      "keywords": ["Django", "Flask", "SQLAlchemy", "RESTful API", "Base de datos"]
+    },
+    {
+      "name": "C",
+      "level": "Avanzado",
+      "keywords": ["Shell", "Linux"]
+    },
+
+    {
+      "name": "SQL",
+      "level": "Intermedio",
+      "keywords": ["MySQL", "PostgreSQL"]
     }
   ],
   "languages": [

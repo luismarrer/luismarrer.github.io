@@ -25,10 +25,16 @@ const { name, label } = basics
   <KeyboardManager />
 </Layout>
 
-<style>
+<style is:global>
   main {
     padding: 4rem;
     margin: auto;
     width: 100%;
+  }
+
+  @media (max-width: 768px) {
+    main {
+      padding: 2rem;
+    }
   }
 </style>
