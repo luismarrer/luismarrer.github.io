@@ -132,6 +132,11 @@
       "name": "SQL",
       "level": "Intermedio",
       "keywords": ["MySQL", "PostgreSQL"]
+    },
+    {
+      "name": "Bash",
+      "level": "Avanzado",
+      "keywords": ["Linux", "Scripting"]
     }
   ],
   "languages": [
