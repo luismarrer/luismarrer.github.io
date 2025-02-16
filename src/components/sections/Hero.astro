@@ -1,12 +1,13 @@
 ---
 import { basics } from "@cv"
-import Section from "@/components/Section.astro"
-import WorldMap from "@/icons/WorldMap.astro"
+import GitHub from "@/icons/GitHub.astro"
+import LinkedIn from "@/icons/LinkedIn.astro"
 import Mail from "@/icons/Mail.astro"
 import Phone from "@/icons/Phone.astro"
+import Pin from "@/icons/Pin.astro"
+import Section from "@/components/Section.astro"
+import WorldMap from "@/icons/WorldMap.astro"
 import X from "@/icons/X.astro"
-import LinkedIn from "@/icons/LinkedIn.astro"
-import GitHub from "@/icons/GitHub.astro"
 import type { Icon } from "@/types"
 
 const { name, label, image, email, phone, url, location, profiles } = basics
@@ -27,9 +28,18 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" | ")
   <div class="hero">
     <div class="info">
       <h1>{name}</h1>
-      <h2>{label}</h2>
-      <!-- Icono, poner enlace a Google Maps -->
-      <span>{city}, {region}</span>
+      <p>{label}</p>
+      <p>
+        <a
+          id="location"
+          href="https://www.google.com/maps/place/San+Juan"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Pin />
+          {city}, {region}
+        </a>
+      </p>
       <footer class="print">
         {printInfo}
       </footer>
@@ -107,7 +117,7 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" | ")
       font-size: 2rem;
     }
 
-    h2 {
+    p {
       color: #666;
       font-weight: 500;
       font-size: 1.1rem;
@@ -121,13 +131,17 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" | ")
       border-radius: 16px;
     }
 
-    span {
+    #location {
       color: #666;
       font-size: 0.85rem;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 0.25rem;
       letter-spacing: -0.05rem;
+    }
+
+    #location:hover {
+      text-decoration: underline;
     }
 
     footer {
@@ -138,7 +152,7 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" | ")
       margin-top: 8px;
     }
 
-    a {
+    a:not(#location) {
       align-items: center;
       justify-content: center;
       border: 1px solid #eee;
@@ -151,7 +165,7 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" | ")
         ease;
     }
 
-    a:hover {
+    a:hover:not(#location) {
       background: #eee;
       border: 1px solid #ddd;
     }
