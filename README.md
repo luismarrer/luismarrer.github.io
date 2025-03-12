@@ -1,34 +1,35 @@
-# Portafolio
+# Portfolio
 
-Este es mi portafolio personal, donde comparto mi experiencia, habilidades y los proyectos más relevantes en los que he trabajado hasta la fecha.
+This is my personal portfolio, where I share my experience, skills, and the most relevant projects I have worked on to date.
 
-Diseño original de [Bartosz Jarocki](https://github.com/BartoszJarocki/cv).
+Original design by [Bartosz Jarocki](https://github.com/BartoszJarocki/cv).
 
-Tomé como base el trabajo realizado por [midudev](https://github.com/midudev/minimalist-portfolio-json/) en el siguente video: [Cómo Crear un Portfolio Web Minimalista con Astro 4, HTML, CSS](https://www.youtube.com/watch?v=Zwh92LTB-Bk), quien adaptó el código original a [Astro](https://astro.build/).
+I based my work on the project by [midudev](https://github.com/midudev/minimalist-portfolio-json/) in the following video: [How to Create a Minimalist Web Portfolio with Astro 4, HTML, CSS](https://www.youtube.com/watch?v=Zwh92LTB-Bk), who adapted the original code to [Astro](https://astro.build/).
 
-El contenido es generado a partir de un JSON, basado en el esquema de [JSON Resume](https://jsonresume.org/schema).
+The content is generated from a JSON file, based on the [JSON Resume](https://jsonresume.org/schema) schema.
 
 ---
 
 <div align="center">
 
-[Portafolio](https://luismarrer.github.io/) - [JSON](cv-es.json) - [Licencia](LICENSE)
+[Portfolio](https://luismarrer.github.io/) - [JSON](cv-es.json) - [License](LICENSE)
+
 </div>
 
 ![portfolio](portfolio_screenshot.png)
 
 ## 🛠️ Stack
 
-- [Astro](https://astro.build/) - Framework moderno para la creación de sitios web.
-- [Typescript](https://www.typescriptlang.org/) - Superconjunto de JavaScript que agrega tipado estático y objetos basados en clases.
-- [Ninja Keys](https://github.com/ssleptsov/ninja-keys) - Menú desplegable con atajos de teclado.
+- [Astro](https://astro.build/) - A modern framework for building websites.
+- [TypeScript](https://www.typescriptlang.org/) - A superset of JavaScript that adds static typing and class-based objects.
+- [Ninja Keys](https://github.com/ssleptsov/ninja-keys) - A dropdown menu with keyboard shortcuts.
 
-## ✅ Por hacer
+## ✅ To Do
 
-- [ ] Traducir a inglés
-- [ ] Agregar más proyectos
-- [ ] Añadir mi web personal
+- [ ] Translate to English
+- [ ] Add more projects
+- [ ] Include my personal website
 
-## 🔑 Licencia
+## 🔑 License
 
 [MIT](LICENSE)

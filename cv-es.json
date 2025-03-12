@@ -188,7 +188,7 @@
       "description": "Un intérprete de comandos como Bash o Bourne shell escrito en C.",
       "highlights": ["C", "Shell", "Linux"],
       "urls": {
-        "website": "",
+        "website": "https://github.com/luismarrer/holbertonschool-simple_shell/blob/main/README.md",
         "gitHub": "https://github.com/luismarrer/holbertonschool-simple_shell"
       }
     }

@@ -1,17 +1,15 @@
 ---
 import { basics } from "@cv"
-
 interface Props {
   title: string
 }
-
 const { title } = Astro.props
-
 const { image, summary, url } = basics
+const currentLanguage = Astro.preferredLocale || Astro.currentLocale
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang={currentLanguage}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />

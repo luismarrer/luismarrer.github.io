@@ -1,0 +1,188 @@
+{
+  "basics": {
+    "name": "Luis Marrero",
+    "label": "Software Engineer. Committed to crafting elegant solutions.",
+    "image": "https://avatars.githubusercontent.com/u/144063514?v=4",
+    "email": "lmarrero1070@gmail.com",
+    "phone": "+17874870310",
+    "url": "",
+    "summary": "Focused on frontend development, I seek experiences that help me grow as a professional. I am interested in joining diverse and cutting-edge teams with the goal of solving real-world problems through innovative and remarkable solutions. I love technology and software. I am passionate about AI, robotics, and open-source.",
+    "location": {
+      "address": "Río Piedras",
+      "postalCode": "00925",
+      "city": "San Juan",
+      "countryCode": "PR",
+      "region": "Puerto Rico"
+    },
+    "profiles": [
+      {
+        "network": "GitHub",
+        "username": "luismarrer",
+        "url": "https://github.com/luismarrer"
+      },
+      {
+        "network": "LinkedIn",
+        "username": "luis-marr",
+        "url": "https://www.linkedin.com/in/luis-marr/"
+      },
+      {
+        "network": "X",
+        "username": "lmarrero1070",
+        "url": "https://x.com/lmarrero1070"
+      }
+    ]
+  },
+  "work": [
+    {
+      "name": "Holberton Coding School Puerto Rico",
+      "position": "Student Tutor",
+      "url": "https://holbertonschoolpr.com/",
+      "startDate": "2024-05",
+      "endDate": "2024-10",
+      "summary": "I helped students understand complex concepts and solve problems with programming. I collaborated with the Software Engineer/Educational Lead to create educational content.",
+      "highlights": [""]
+    }
+  ],
+  "volunteer": [
+    {
+      "organization": "",
+      "position": "",
+      "url": "",
+      "startDate": "",
+      "endDate": "",
+      "summary": "",
+      "highlights": [""]
+    }
+  ],
+  "education": [
+    {
+      "institution": "Holberton School",
+      "url": "https://www.holbertonschoolpr.com/",
+      "area": "Computer Science",
+      "studyType": "",
+      "startDate": "2024-02-01",
+      "endDate": "2024-11-01",
+      "score": "",
+      "courses": [""]
+    }
+  ],
+  "awards": [
+    {
+      "title": "",
+      "date": "",
+      "awarder": "",
+      "summary": ""
+    }
+  ],
+  "certificates": [],
+  "publications": [],
+  "skills": [
+    {
+      "name": "HTML",
+      "level": "Master",
+      "keywords": ["Web Development", "Frontend", "Semantic", "SEO"]
+    },
+    {
+      "name": "CSS",
+      "level": "Advanced",
+      "keywords": ["SASS", "Flexbox", "Grid", "Responsive Design"]
+    },
+    {
+      "name": "JavaScript",
+      "level": "Intermediate",
+      "keywords": ["React", "Node.js", "Express", "MongoDB"]
+    },
+    {
+      "name": "Node",
+      "level": "Basic",
+      "keywords": ["Frontend"]
+    },
+    {
+      "name": "Tailwind",
+      "level": "Basic",
+      "keywords": ["Frontend"]
+    },
+    {
+      "name": "TypeScript",
+      "level": "Intermediate",
+      "keywords": ["Frontend"]
+    },
+    {
+      "name": "Git",
+      "level": "Advanced",
+      "keywords": ["Version Control"]
+    },
+    {
+      "name": "GitHub",
+      "level": "Advanced",
+      "keywords": ["Version Control"]
+    },
+    {
+      "name": "Python",
+      "level": "Intermediate",
+      "keywords": ["Django", "Flask", "SQLAlchemy", "RESTful API", "Database"]
+    },
+    {
+      "name": "C",
+      "level": "Advanced",
+      "keywords": ["Shell", "Linux"]
+    },
+    {
+      "name": "SQL",
+      "level": "Intermediate",
+      "keywords": ["MySQL", "PostgreSQL"]
+    },
+    {
+      "name": "Bash",
+      "level": "Advanced",
+      "keywords": ["Linux", "Scripting"]
+    }
+  ],
+  "languages": [
+    {
+      "language": "Spanish",
+      "fluency": "Native speaker"
+    },
+    {
+      "language": "English",
+      "fluency": ""
+    }
+  ],
+  "interests": [],
+  "references": [],
+  "projects": [
+    {
+      "name": "Probless",
+      "startDate": "2024-09-26",
+      "endDate": "2024-11-15",
+      "description": "Probless is a web application that allows users to create and manage tickets supported by AI. Users can create tickets, assign them to a department, and track their status. Final project at Holberton School.",
+      "highlights": ["Python", "Django", "Full Stack Web Application", "AI"],
+      "urls": {
+        "website": "",
+        "gitHub": "https://github.com/luismarrer/Probless-project"
+      }
+    },
+    {
+      "name": "Airbnb Backend Clone",
+      "startDate": "2024-06-26",
+      "endDate": "2024-07-06",
+      "description": "A backend clone of Airbnb with its models and persistence using a database.",
+      "highlights": ["Python", "Flask", "SQLAlchemy", "MySQL", "RESTful API", "Database"],
+      "urls": {
+        "website": "",
+        "gitHub": "https://github.com/luismarrer/holbertonschool-hbnb-db"
+      }
+    },
+    {
+      "name": "Simple Shell",
+      "startDate": "2024-04-14",
+      "endDate": "2024-04-24",
+      "description": "A command-line interpreter similar to Bash or Bourne shell, written in C.",
+      "highlights": ["C", "Shell", "Linux"],
+      "urls": {
+        "website": "https://github.com/luismarrer/holbertonschool-simple_shell/blob/main/README.md",
+        "gitHub": "https://github.com/luismarrer/holbertonschool-simple_shell"
+      }
+    }
+  ]
+}
