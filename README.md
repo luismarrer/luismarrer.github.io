@@ -1,8 +1,8 @@
 # Portfolio
 
-First version of my portfolio. This project was created to practice HTML and CSS with responsive design (more or less).
+This is the first version of my portfolio. This project was created to practice HTML and CSS with responsive design (more or less).
 
-## Fotos
+## Photos
 
 ![portfolio](portfolio.png)
 
