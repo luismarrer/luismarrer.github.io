@@ -2,7 +2,19 @@
 import GitHub from "@/icons/GitHub.astro"
 import Section from "@/components/Section.astro"
 
-import { projects } from "@cv"
+interface Project {
+  urls: {
+    website: string
+    gitHub?: string
+  }
+  description: string
+  highlights: string[]
+  name: string
+  endDate?: string
+  startDate?: string
+}
+
+const projects: Project[] = Astro.props.cv.projects
 ---
 
 <Section title="projects">
@@ -16,7 +28,7 @@ import { projects } from "@cv"
               <article>
                 <header>
                   <h4>
-                    <a href={urls.website} title={`Ver el proyecto ${name}`}>
+                    <a href={urls.website} title={`Project ${name}`}>
                       {name}
                     </a>
                     {isActive && <span>&bull;</span>}
@@ -25,7 +37,7 @@ import { projects } from "@cv"
                         class="github-code-link"
                         href={urls.gitHub}
                         target="_blank"
-                        title={`Ver código fuente del proyecto ${name}`}
+                        title={`Project code - ${name}`}
                       >
                         <GitHub />
                       </a>

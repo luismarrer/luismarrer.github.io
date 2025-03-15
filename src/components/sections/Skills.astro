@@ -1,7 +1,12 @@
 ---
 import Section from "@/components/Section.astro"
 
-import { skills } from "@cv"
+interface Skill {
+  name: string
+}
+
+const skills: Skill[] = Astro.props.cv.skills
+
 import HTML from "@/icons/HTML.astro"
 import CSS from "@/icons/CSS.astro"
 import JavaScript from "@/icons/JS.astro"

@@ -169,7 +169,7 @@
       "description": "A backend clone of Airbnb with its models and persistence using a database.",
       "highlights": ["Python", "Flask", "SQLAlchemy", "MySQL", "RESTful API", "Database"],
       "urls": {
-        "website": "",
+        "website": "https://github.com/luismarrer/holbertonschool-hbnb-db",
         "gitHub": "https://github.com/luismarrer/holbertonschool-hbnb-db"
       }
     },

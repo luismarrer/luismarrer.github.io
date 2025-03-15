@@ -1,11 +1,18 @@
 ---
-import { basics } from "@cv"
+const currentLanguage = Astro.preferredLocale || Astro.currentLocale
+const basics = Astro.props.cv.basics
 interface Props {
   title: string
+  cv: {
+    basics: {
+      image: string
+      summary: string
+      url: string
+    }
+  }
 }
 const { title } = Astro.props
 const { image, summary, url } = basics
-const currentLanguage = Astro.preferredLocale || Astro.currentLocale
 ---
 
 <!doctype html>

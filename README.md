@@ -12,7 +12,7 @@ The content is generated from a JSON file, based on the [JSON Resume](https://js
 
 <div align="center">
 
-[Portfolio](https://luismarrer.github.io/) - [JSON](cv-es.json) - [License](LICENSE)
+[Portfolio](https://luismarrer.github.io/) - [JSON](cv-en.json) - [License](LICENSE)
 
 </div>
 
@@ -26,9 +26,13 @@ The content is generated from a JSON file, based on the [JSON Resume](https://js
 
 ## ✅ To Do
 
-- [ ] Translate to English
+- [ ] Fix links
+- [ ] Transalate to English the Keyboard Manager
+- [ ] Change Screenshot
 - [ ] Add more projects
 - [ ] Include my personal website
+- [ ] Add a new tag v1.0.0
+- [ ] Fix print styles
 
 ## 🔑 License
 

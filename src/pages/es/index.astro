@@ -1,4 +1,8 @@
 ---
+const currentLanguage = Astro.preferredLocale || Astro.currentLocale
+import { loadCv } from "@/i18n/loadCv"
+const cv = await loadCv(currentLanguage)
+
 import Layout from "@/layouts/Layout.astro"
 
 import About from "@/components/sections/About.astro"
@@ -9,20 +13,20 @@ import KeyboardManager from "@/components/KeyboardManager.astro"
 import Projects from "@/components/sections/Projects.astro"
 import Skills from "@/components/sections/Skills.astro"
 
-import { basics } from "@cv"
+const basics = cv.basics
 const { name, label } = basics
 ---
 
-<Layout title={`${name} - ${label}`}>
+<Layout cv={cv} title={`${name} - ${label}`}>
   <main>
-    <Hero />
-    <About />
-    <Experience />
-    <Projects />
-    <Skills />
-    <Education />
+    <Hero cv={cv} />
+    <About cv={cv} />
+    <Experience cv={cv} />
+    <Projects cv={cv} />
+    <Skills cv={cv} />
+    <Education cv={cv} />
   </main>
-  <KeyboardManager />
+  <KeyboardManager cv={cv} />
 </Layout>
 
 <style is:global>

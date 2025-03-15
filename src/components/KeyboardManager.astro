@@ -1,9 +1,14 @@
 ---
-import { basics } from "@cv"
-import type { Icon } from "@/types"
-import { never } from "astro:schema"
+const basics = Astro.props.cv.basics
 
-const { profiles } = basics
+import type { Icon } from "@/types"
+
+interface Profile {
+  network: string
+  url: string
+}
+
+const { profiles }: { profiles: Profile[] } = basics
 
 const SOCIAL_NETWORKS_ICONS: Icon = {
   GitHub: `<svg

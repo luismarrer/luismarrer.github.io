@@ -5,7 +5,6 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@cv": ["./cv-en.json"],
       "@/*": ["src/*"]
     }
   }

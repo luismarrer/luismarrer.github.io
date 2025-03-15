@@ -1,7 +1,14 @@
 ---
 import Section from "@/components/Section.astro"
 
-import { education } from "@cv"
+interface Education {
+  institution: string
+  startDate: string
+  endDate: string | null
+  area: string
+}
+
+const education: Education[] = Astro.props.cv.education
 ---
 
 <Section title="education">

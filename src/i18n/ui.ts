@@ -6,6 +6,13 @@ export const languageList = {
 export const defaultLanguage = 'en'
 
 export const titles = {
+    en: {
+          "about": "About",
+          "experience": "Work Experience",
+          "projects": "Projects",
+          "skills": "Skills",
+          "education": "Education"
+    },
     es: {
           "about": "Sobre mí",
           "experience": "Experiencia",
@@ -13,11 +20,4 @@ export const titles = {
           "skills": "Habilidades",
           "education": "Educación"
     },
-    en: {
-          "about": "About",
-          "experience": "Work Experience",
-          "projects": "Projects",
-          "skills": "Skills",
-          "education": "Education"
-    }
 }

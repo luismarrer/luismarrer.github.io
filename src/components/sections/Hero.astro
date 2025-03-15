@@ -1,5 +1,6 @@
 ---
-import { basics } from "@cv"
+const basics = Astro.props.cv.basics
+
 import GitHub from "@/icons/GitHub.astro"
 import LinkedIn from "@/icons/LinkedIn.astro"
 import Mail from "@/icons/Mail.astro"
@@ -18,7 +19,14 @@ const SOCIAL_NETWORKS_ICONS: Icon = {
   X,
 }
 
-const linkedInfo = profiles.find(({ network }) => network === "LinkedIn")
+interface Profile {
+  network: string
+  url: string
+}
+
+const linkedInfo = profiles.find(
+  ({ network }: Profile) => network === "LinkedIn",
+)
 const linkedUrl = linkedInfo?.url
 
 const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" | ")
@@ -55,7 +63,7 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" | ")
           email && (
             <a
               href={`mailto:${email}`}
-              title={`Enviar un correro electrónico a ${name} al correo ${email}`}
+              title={`Email: ${email}`}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -67,7 +75,7 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" | ")
           phone && (
             <a
               href={`tel:${phone}`}
-              title={`Llamar por teléfono a ${name} al número ${phone}`}
+              title={`Phone: ${phone}`}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -76,12 +84,12 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" | ")
           )
         }
         {
-          profiles.map(({ network, url, username }) => {
+          profiles.map(({ network, url }: Profile) => {
             const Icon = SOCIAL_NETWORKS_ICONS[network]
             return (
               <a
                 href={url}
-                title={`Visitar el perfil de ${name} en ${network}`}
+                title={`${network}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
