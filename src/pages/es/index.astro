@@ -1,7 +1,12 @@
 ---
 const currentLanguage = Astro.preferredLocale || Astro.currentLocale
 import { loadCv } from "@/i18n/loadCv"
+import { useKeyboardManager } from "@/i18n/utils"
+import { keyboardManager } from "@/i18n/ui"
 const cv = await loadCv(currentLanguage)
+const translateKeyboardManager = useKeyboardManager(
+  currentLanguage as keyof typeof keyboardManager,
+)
 
 import Layout from "@/layouts/Layout.astro"
 
@@ -26,7 +31,10 @@ const { name, label } = basics
     <Skills cv={cv} />
     <Education cv={cv} />
   </main>
-  <KeyboardManager cv={cv} />
+  <KeyboardManager
+    cv={cv}
+    keyboardManagerText={translateKeyboardManager("text")}
+  />
 </Layout>
 
 <style is:global>

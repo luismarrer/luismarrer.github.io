@@ -21,3 +21,21 @@ export const titles = {
           "education": "Educación"
     },
 }
+
+export const keyboardManager = {
+    en: {
+        text: "<p>Press <kbd>Cmd</kbd> + <kbd>K</kbd> to open the command palette.</p>",
+        placeholder: "Search command",
+        networks: "Social networks",
+        actions: "Actions",
+        print: "Print",
+    },
+    es: {
+        text: "<p>Pulsa <kbd>Cmd</kbd> + <kbd>K</kbd> para abrir la paleta de comandos.</p>",
+        placeholder: "Buscar comando",
+        networks: "Redes sociales",
+        actions: "Acciones",
+        print: "Imprimir",
+    }
+}
+    

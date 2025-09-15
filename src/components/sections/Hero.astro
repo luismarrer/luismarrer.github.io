@@ -1,6 +1,4 @@
 ---
-const basics = Astro.props.cv.basics
-
 import GitHub from "@/icons/GitHub.astro"
 import LinkedIn from "@/icons/LinkedIn.astro"
 import Mail from "@/icons/Mail.astro"
@@ -10,6 +8,8 @@ import Section from "@/components/Section.astro"
 import WorldMap from "@/icons/WorldMap.astro"
 import X from "@/icons/X.astro"
 import type { Icon } from "@/types"
+
+const basics = Astro.props.cv.basics
 
 const { name, label, image, email, phone, url, location, profiles } = basics
 const { city, region } = location
@@ -49,16 +49,21 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" | ")
         </a>
       </p>
       <footer class="print">
-        {printInfo}
+        <a id="printable">{printInfo}</a>
       </footer>
       <footer class="no-print">
-        <!-- {
+        {
           url && (
-            <a href={url}>
+            <a
+              href={url}
+              title="Website"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <WorldMap />
             </a>
           )
-        } -->
+        }
         {
           email && (
             <a
@@ -160,7 +165,7 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" | ")
       margin-top: 8px;
     }
 
-    a:not(#location) {
+    a:not(#location, #printable) {
       align-items: center;
       justify-content: center;
       border: 1px solid #eee;
@@ -173,7 +178,7 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" | ")
         ease;
     }
 
-    a:hover:not(#location) {
+    a:hover:not(#location, #printable) {
       background: #eee;
       border: 1px solid #ddd;
     }
