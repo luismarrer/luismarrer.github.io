@@ -10,9 +10,9 @@ The content is generated from a JSON file, based on the [JSON Resume](https://js
 
 ---
 
-<div align="center">
+<div align="center"> <!-- Centering elements is not possible with pure Markdown -->
 
-[Portfolio](https://luismarrer.github.io/) - [JSON](cv-en.json) - [License](LICENSE)
+[Portfolio](https://luismarrer.github.io/en) - [JSON](cv-en.json) - [License](LICENSE)
 
 </div>
 
@@ -26,13 +26,14 @@ The content is generated from a JSON file, based on the [JSON Resume](https://js
 
 ## ✅ To Do
 
-- [ ] Fix links
-- [ ] Transalate to English the Keyboard Manager
-- [ ] Change Screenshot
-- [ ] Add more projects
-- [ ] Include my personal website
-- [ ] Add a new tag v1.0.0
+- [X] Fix links
+- [X] Include my personal website
+- [X] Transalate to English the Keyboard Manager
+- [X] Change Screenshot
 - [ ] Fix print styles
+- [ ] Add a new tag v1.0.0
+- [ ] Include dark mode
+- [ ] Add more projects
 
 ## 🔑 License
 
