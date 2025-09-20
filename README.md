@@ -26,14 +26,20 @@ The content is generated from a JSON file, based on the [JSON Resume](https://js
 
 ## ✅ To Do
 
-- [X] Fix links
-- [X] Include my personal website
-- [X] Transalate to English the Keyboard Manager
-- [X] Change Screenshot
 - [ ] Fix print styles
 - [ ] Add a new tag v1.0.0
 - [ ] Include dark mode
 - [ ] Add more projects
+    1. [ ] Plants website
+    2. [ ] Miniarcade website
+
+## Notes for Portfolio
+
+- Project titles must have a maximum of 2 words.
+- Both files (`cv-en.json` and `cv-es.json`) must contain the same content.
+- Projects must be sorted by importance (descending order).
+- Project descriptions must not exceed 90 characters (one sentence).
+- Projects must not have more than 3 highlights.
 
 ## 🔑 License
 
