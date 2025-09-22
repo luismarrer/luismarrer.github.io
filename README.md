@@ -32,6 +32,7 @@ The content is generated from a JSON file, based on the [JSON Resume](https://js
 - [ ] Add more projects
     1. [X] Plants website
     2. [ ] Miniarcade website
+    3. [ ] Airbnb Clone
 
 ## Notes for Portfolio
 

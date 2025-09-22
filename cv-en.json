@@ -162,7 +162,17 @@
         "gitHub": "https://github.com/luismarrer/gardenLog"
       }
     },
-
+    {
+      "name": "Miniarcade",
+      "startDate": "2025-08-22",
+      "endDate": "",
+      "description": "Web platform for games",
+      "highlights": ["HTML", "CSS", "JS"],
+      "urls": {
+        "website": "https://luismarrer.github.io/mini-arcade/",
+        "gitHub": "https://github.com/luismarrer/mini-arcade"
+      }
+    },
     {
       "name": "Probless",
       "startDate": "2024-09-26",
@@ -172,17 +182,6 @@
       "urls": {
         "website": "",
         "gitHub": "https://github.com/luismarrer/Probless-project"
-      }
-    },
-    {
-      "name": "Airbnb Clone",
-      "startDate": "2024-06-26",
-      "endDate": "2024-07-06",
-      "description": "A backend clone of Airbnb with its models and persistence using a database",
-      "highlights": ["Flask", "RESTful API", "Database"],
-      "urls": {
-        "website": "https://github.com/luismarrer/holbertonschool-hbnb-db",
-        "gitHub": "https://github.com/luismarrer/holbertonschool-hbnb-db"
       }
     }
   ]
