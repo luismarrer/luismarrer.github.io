@@ -168,7 +168,7 @@
       "startDate": "2024-09-26",
       "endDate": "2024-11-15",
       "description": "Ticket management made simple with AI support",
-      "highlights": ["Django", "Full Stack Web Application", "AI"],
+      "highlights": ["Django", "AI", "Full Stack Web Application"],
       "urls": {
         "website": "",
         "gitHub": "https://github.com/luismarrer/Probless-project"
