@@ -6,7 +6,7 @@
     "email": "luismarrer.dev@gmail.com",
     "phone": "+17874870310",
     "url": "https://www.luismarrero.me/",
-    "summary": "Enfocado en el desarrollo de frontend, busco experiencias que me hagan crecer como profesional. Estoy interesado en participar en equipos diversos y vanguardistas con la intención de resolver problemas del mundo real a través de soluciones innovadoras y asombrosas. Me encanta la tecnología y el software. Me apasionan la IA, la robótica y el open-source.",
+    "summary": "Fullstack developer apasionado por JavaScript y Python, aunque para mí el lenguaje es secundario. Lo importante es crear soluciones reales. Me inspiran la IA, la robótica y el open-source, y disfruto construyendo software.",
     "location": {
       "address": "Río Piedras",
       "postalCode": "00925",
@@ -153,43 +153,40 @@
   "references": [],
   "projects": [
     {
+      "name": "gardenLog",
+      "startDate": "2025-08-17",
+      "endDate": "",
+      "description": "Mi diario digital personal para documentar y monitorear mis plantas",
+      "highlights": ["HTML", "CSS", "JS"],
+      "urls": {
+        "website": "https://luismarrer.github.io/gardenLog/",
+        "gitHub": "https://github.com/luismarrer/gardenLog"
+      }
+    },
+    {
       "name": "Probless",
       "startDate": "2024-09-26",
       "endDate": "2024-11-15",
-      "description": "Probless es una aplicación web que permite a los usuarios crear y manejar tickets apoyados con IA. Los usuarios pueden crear tickets, asignarlos a un departamento, y ver el estado de los tickets. Proyecto final de Holberton School.",
-      "highlights": ["Python", "Django", "Full Stack aplicación web", "IA"],
+      "description": "Sistema de gestión de tickets con IA",
+      "highlights": ["Django", "IA", "Full Stack aplicación web"],
       "urls": {
         "website": "",
         "gitHub": "https://github.com/luismarrer/Probless-project"
       }
     },
     {
-      "name": "Airbnb Backend Clone",
+      "name": "Airbnb Clone",
       "startDate": "2024-06-26",
       "endDate": "2024-07-06",
-      "description": "Un clon del backend de Airbnb con sus modelos y persistencia con una base de datos.",
+      "description": "Un clon del backend de Airbnb con sus modelos y persistencia con una base de datos",
       "highlights": [
-        "Python",
         "Flask",
-        "SQLAlchemy",
-        "MySQL",
         "RESTful API",
         "Base de datos"
       ],
       "urls": {
         "website": "https://github.com/luismarrer/holbertonschool-hbnb-db",
         "gitHub": "https://github.com/luismarrer/holbertonschool-hbnb-db"
-      }
-    },
-    {
-      "name": "Simple Shell",
-      "startDate": "2024-04-14",
-      "endDate": "2024-04-24",
-      "description": "Un intérprete de comandos como Bash o Bourne shell escrito en C.",
-      "highlights": ["C", "Shell", "Linux"],
-      "urls": {
-        "website": "https://github.com/luismarrer/holbertonschool-simple_shell/blob/main/README.md",
-        "gitHub": "https://github.com/luismarrer/holbertonschool-simple_shell"
       }
     }
   ]

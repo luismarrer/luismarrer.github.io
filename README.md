@@ -26,11 +26,11 @@ The content is generated from a JSON file, based on the [JSON Resume](https://js
 
 ## ✅ To Do
 
-- [ ] Fix print styles
+- [X] Fix print styles
 - [ ] Add a new tag v1.0.0
 - [ ] Include dark mode
 - [ ] Add more projects
-    1. [ ] Plants website
+    1. [X] Plants website
     2. [ ] Miniarcade website
 
 ## Notes for Portfolio
