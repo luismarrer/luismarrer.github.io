@@ -30,9 +30,12 @@ The content is generated from a JSON file, based on the [JSON Resume](https://js
 - [ ] Add a new tag v1.0.0
 - [ ] Include dark mode
 - [ ] Add more projects
-    1. [X] Plants website
-    2. [ ] Miniarcade website
-    3. [ ] Airbnb Clone
+    1. [X] gardenLog
+    2. [X] Miniarcade website
+    3. [X] Probless
+    4. [ ] pc-builder
+    5. [ ] Airbnb Clone
+    6. [ ] Rhymance
 
 ## Notes for Portfolio
 
