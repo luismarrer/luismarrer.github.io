@@ -159,7 +159,7 @@
       "description": "Mi diario digital personal para documentar y monitorear mis plantas",
       "highlights": ["HTML", "CSS", "JS"],
       "urls": {
-        "website": "https://luismarrer.github.io/gardenLog/",
+          "website": "https://garden-log-dev.vercel.app/",
         "gitHub": "https://github.com/luismarrer/gardenLog"
       }
     },
@@ -170,7 +170,7 @@
       "description": "Plataforma web de juegos",
       "highlights": ["HTML", "CSS", "JS"],
       "urls": {
-        "website": "https://luismarrer.github.io/mini-arcade/",
+        "website": "https://mini-arcade-dev.vercel.app/",
         "gitHub": "https://github.com/luismarrer/mini-arcade"
       }
     },
