@@ -22,6 +22,15 @@ export const titles = {
     },
 }
 
+export const theme = {
+    en: {
+        toggle: "Toggle dark mode",
+    },
+    es: {
+        toggle: "Cambiar modo oscuro",
+    },
+}
+
 export const keyboardManager = {
     en: {
         text: "<p>Press <kbd>Cmd</kbd> + <kbd>K</kbd> to open the command palette.</p>",

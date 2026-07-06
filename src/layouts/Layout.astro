@@ -1,6 +1,9 @@
 ---
+import { theme } from "@/i18n/ui"
 const currentLanguage = Astro.preferredLocale || Astro.currentLocale
 const basics = Astro.props.cv.basics
+const themeToggleLabel =
+  theme[currentLanguage as keyof typeof theme]?.toggle ?? theme.en.toggle
 interface Props {
   title: string
   cv: {
@@ -42,13 +45,101 @@ const { image, summary, url } = basics
       name="google-site-verification"
       content="hANEyjHty5BYTdBG_zYI4VlUuvBw8xHq6O29I-XK0GI"
     />
+    <script is:inline>
+      const storedTheme = localStorage.getItem("theme")
+      document.documentElement.dataset.theme =
+        storedTheme ??
+        (window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light")
+    </script>
   </head>
   <body>
+    <button id="theme-toggle" class="no-print" aria-label={themeToggleLabel}>
+      <svg
+        class="sun"
+        xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <circle cx="12" cy="12" r="4"></circle>
+        <path
+          d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+        ></path>
+      </svg>
+      <svg
+        class="moon"
+        xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+      </svg>
+    </button>
     <slot />
+    <script>
+      const syncNinjaKeys = () => {
+        document
+          .querySelector("ninja-keys")
+          ?.classList.toggle(
+            "dark",
+            document.documentElement.dataset.theme === "dark",
+          )
+      }
+      syncNinjaKeys()
+
+      document.getElementById("theme-toggle")?.addEventListener("click", () => {
+        const next =
+          document.documentElement.dataset.theme === "dark" ? "light" : "dark"
+        document.documentElement.dataset.theme = next
+        localStorage.setItem("theme", next)
+        syncNinjaKeys()
+      })
+    </script>
   </body>
 </html>
 
 <style is:global>
+  html {
+    color-scheme: light;
+    --bg: #fff;
+    --text-heading: #111;
+    --text-body: #666;
+    --text-muted: #555;
+    --border: #eee;
+    --border-hover: #ddd;
+    --surface: #eee;
+    --tag-text: #444;
+    --card-border: #f2f2f2;
+    --footer-bg: #fdfdfd;
+  }
+
+  html[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #121212;
+    --text-heading: #ededed;
+    --text-body: #a1a1aa;
+    --text-muted: #8f8f96;
+    --border: #2e2e2e;
+    --border-hover: #3f3f46;
+    --surface: #27272a;
+    --tag-text: #d4d4d8;
+    --card-border: #232323;
+    --footer-bg: #161616;
+  }
+
   html {
     font-family:
       Menlo,
@@ -57,7 +148,7 @@ const { image, summary, url } = basics
       "Courier New",
       Courier,
       monospace;
-    background: #fff;
+    background: var(--bg);
     letter-spacing: -0.025rem;
   }
 
@@ -68,8 +159,12 @@ const { image, summary, url } = basics
     padding: 0;
   }
 
+  body {
+    color: var(--text-heading);
+  }
+
   a {
-    color: #666;
+    color: var(--text-body);
     text-decoration: none;
     display: inline-flex;
   }
@@ -106,11 +201,45 @@ const { image, summary, url } = basics
   }
 
   p {
-    color: #666;
+    color: var(--text-body);
     font-size: 0.9rem;
     line-height: 1.5;
     margin: 0;
     text-wrap: pretty;
+  }
+
+  #theme-toggle {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 4px;
+    background: var(--bg);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    z-index: 10;
+    transition: background 0.3s;
+  }
+
+  #theme-toggle:hover {
+    background: var(--surface);
+    border-color: var(--border-hover);
+  }
+
+  #theme-toggle .moon,
+  html[data-theme="dark"] #theme-toggle .sun {
+    display: block;
+  }
+
+  #theme-toggle .sun,
+  html[data-theme="dark"] #theme-toggle .moon {
+    display: none;
   }
 
   .print {
@@ -118,6 +247,21 @@ const { image, summary, url } = basics
   }
 
   @media print {
+    html,
+    html[data-theme="dark"] {
+      color-scheme: light;
+      --bg: #fff;
+      --text-heading: #111;
+      --text-body: #666;
+      --text-muted: #555;
+      --border: #eee;
+      --border-hover: #ddd;
+      --surface: #eee;
+      --tag-text: #444;
+      --card-border: #f2f2f2;
+      --footer-bg: #fdfdfd;
+    }
+
     .print {
       display: block !important;
     }

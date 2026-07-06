@@ -131,7 +131,7 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" | ")
     }
 
     p {
-      color: #666;
+      color: var(--text-body);
       font-weight: 500;
       font-size: 1.1rem;
       text-wrap: balance;
@@ -145,7 +145,7 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" | ")
     }
 
     #location {
-      color: #666;
+      color: var(--text-body);
       font-size: 0.85rem;
       display: inline-flex;
       align-items: center;
@@ -158,7 +158,7 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" | ")
     }
 
     footer {
-      color: #555;
+      color: var(--text-muted);
       font-size: 0.75rem;
       display: flex;
       gap: 4px;
@@ -168,7 +168,7 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" | ")
     a:not(#location, #printable) {
       align-items: center;
       justify-content: center;
-      border: 1px solid #eee;
+      border: 1px solid var(--border);
       padding: 4px;
       height: 32px;
       width: 32px;
@@ -179,8 +179,8 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" | ")
     }
 
     a:hover:not(#location, #printable) {
-      background: #eee;
-      border: 1px solid #ddd;
+      background: var(--surface);
+      border: 1px solid var(--border-hover);
     }
 
     @media (max-width: 768px) {

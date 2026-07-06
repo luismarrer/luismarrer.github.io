@@ -55,11 +55,11 @@ const { work }: { work: WorkExperience[] } = Astro.props.cv
 
   article h3 {
     font-weight: 500;
-    color: #111;
+    color: var(--text-heading);
   }
 
   article a {
-    color: #111;
+    color: var(--text-heading);
   }
 
   article a:hover {
@@ -67,7 +67,7 @@ const { work }: { work: WorkExperience[] } = Astro.props.cv
   }
 
   article h4 {
-    color: #222;
+    color: var(--text-heading);
     font-weight: 400;
   }
 
@@ -79,7 +79,7 @@ const { work }: { work: WorkExperience[] } = Astro.props.cv
   }
 
   time {
-    color: #555;
+    color: var(--text-muted);
     font-size: 0.85rem;
     min-width: 102px;
     cursor: default;
