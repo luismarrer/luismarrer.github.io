@@ -27,7 +27,7 @@ The content is generated from a JSON file, based on the [JSON Resume](https://js
 ## ✅ To Do
 
 - [X] Fix print styles
-- [ ] Add a new tag v1.0.0
+- [X] Add a new tag v1.0.0
 - [ ] Include dark mode
 - [ ] Add more projects
     1. [X] gardenLog
