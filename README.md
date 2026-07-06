@@ -32,10 +32,9 @@ The content is generated from a JSON file, based on the [JSON Resume](https://js
 - [ ] Add more projects
     1. [X] gardenLog
     2. [X] Miniarcade website
-    3. [X] Probless
-    4. [ ] pc-builder
-    5. [ ] Airbnb Clone
-    6. [ ] Rhymance
+    3. [ ] pc-builder
+    4. [ ] Airbnb Clone
+    5. [ ] Rhymance
 
 ## Notes for Portfolio
 
