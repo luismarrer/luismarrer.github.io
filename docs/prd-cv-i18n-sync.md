@@ -133,6 +133,14 @@ Se ejecuta en dos sitios, mismo código:
   producción se queda en el último deploy bueno. Deploy bloqueado sin ❌ rojos.
 - **GitHub Action** en push a `main`: si hay desajuste → dispara `i18n-sync`.
 
+El baseline de comparación en Vercel es `VERCEL_GIT_PREVIOUS_SHA` — el último
+deploy **exitoso**, no el commit anterior. Así, un push posterior no
+relacionado (p. ej. solo README) no puede colar un descuadre que un push
+anterior dejó bloqueado. Sin baseline resoluble, el check degrada a
+estructura + invariantes (fail-open documentado; la estructura sigue
+bloqueando). De regalo: si el diff contra el baseline solo toca ficheros que
+no afectan al sitio (docs, redirect, workflows), el build se salta.
+
 ### 6.2 `i18n-sync` (traductor)
 
 - Recibe la lista de campos cambiados y la dirección desde el diff.

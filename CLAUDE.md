@@ -10,6 +10,7 @@ Uses pnpm (pinned in `package.json`).
 - `pnpm dev` — start dev server
 - `pnpm build` — build static site to `dist/`
 - `pnpm preview` — preview the production build
+- `pnpm i18n:check` — verify `cv-en.json` and `cv-es.json` are in sync (structure, invariant fields, stale translations; `--base <ref>` to compare against a commit)
 
 There are no tests or linters. Production is hosted on Vercel at https://cv.luismarrero.me — every push to `main` auto-deploys via Vercel's git integration, and PRs get preview deploys. `.github/workflows/deploy.yml` only publishes the redirect page in `redirect/` to GitHub Pages, so the old `luismarrer.github.io` URL forwards to production. See `docs/prd-cv-i18n-sync.md` for the translation-sync pipeline design.
 
@@ -37,6 +38,7 @@ Each tech/social icon is an inline-SVG `.astro` component in `src/icons/`. Compo
 
 - Path alias `@/*` → `src/*` (defined in `tsconfig.json`, which extends Astro's strict config).
 - `KeyboardManager.astro` wraps the `ninja-keys` web component (Cmd+K command palette); its actions are built from the CV's social profiles.
+- `scripts/i18n-check.mjs` is the EN/ES coherence gate. It also runs as Vercel's `ignoreCommand` (see `vercel.json`): if the CV files are out of sync, the production deploy is skipped and the site stays on the last good deploy. Its list of translatable field paths (`TRANSLATABLE`) must be updated if the CV schema usage changes.
 
 ## Content rules (from README)
 
