@@ -27,14 +27,13 @@ The content is generated from a JSON file, based on the [JSON Resume](https://js
 ## ✅ To Do
 
 - [X] Fix print styles
-- [X] Add a new tag v1.0.0
-- [ ] Include dark mode
 - [ ] Add more projects
     1. [X] gardenLog
-    2. [X] Miniarcade website
+    2. [X] Miniarcade website (Maybe change it for educational website of Computer Science)
     3. [ ] pc-builder
     4. [ ] Airbnb Clone
     5. [ ] Rhymance
+    6. [ ] Problem Solving Lab
 
 ## Notes for Portfolio
 
