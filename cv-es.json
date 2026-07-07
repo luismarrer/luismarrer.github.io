@@ -40,7 +40,9 @@
       "startDate": "2024-05",
       "endDate": "2024-10",
       "summary": "Ayudé a los estudiantes a comprender conceptos complejos y a resolver problemas con programación. Creé junto al Software Engineer/Educational Lead contenido educativo.",
-      "highlights": [""]
+      "highlights": [
+        ""
+      ]
     }
   ],
   "volunteer": [
@@ -51,7 +53,9 @@
       "startDate": "",
       "endDate": "",
       "summary": "",
-      "highlights": [""]
+      "highlights": [
+        ""
+      ]
     }
   ],
   "education": [
@@ -63,7 +67,9 @@
       "startDate": "2024-02-01",
       "endDate": "2024-11-01",
       "score": "",
-      "courses": [""]
+      "courses": [
+        ""
+      ]
     }
   ],
   "awards": [
@@ -77,66 +83,105 @@
   "certificates": [],
   "publications": [],
   "skills": [
-        {
+    {
       "name": "HTML",
       "level": "Master",
-      "keywords": ["Desarrollo web", "Frontend", "Semantica", "SEO"]
+      "keywords": [
+        "Desarrollo web",
+        "Frontend",
+        "Semantica",
+        "SEO"
+      ]
     },
-        {
+    {
       "name": "CSS",
       "level": "Avanzado",
-      "keywords": ["SASS", "Flexbox", "Grid", "Responsive Design"]
+      "keywords": [
+        "SASS",
+        "Flexbox",
+        "Grid",
+        "Responsive Design"
+      ]
     },
-        {
+    {
       "name": "JavaScript",
       "level": "Intermedio",
-      "keywords": ["React", "Node.js", "Express", "MongoDB"]
+      "keywords": [
+        "React",
+        "Node.js",
+        "Express",
+        "MongoDB"
+      ]
     },
     {
       "name": "Node",
       "level": "Basico",
-      "keywords": ["Frontend"]
+      "keywords": [
+        "Frontend"
+      ]
     },
     {
       "name": "Tailwind",
       "level": "Basico",
-      "keywords": ["Frontend"]
+      "keywords": [
+        "Frontend"
+      ]
     },
     {
       "name": "TypeScript",
       "level": "Intermedio",
-      "keywords": ["Frontend"]
+      "keywords": [
+        "Frontend"
+      ]
     },
     {
       "name": "Git",
       "level": "Avanzado",
-      "keywords": ["Control de versiones"]
+      "keywords": [
+        "Control de versiones"
+      ]
     },
     {
       "name": "GitHub",
       "level": "Avanzado",
-      "keywords": ["Control de versiones"]
+      "keywords": [
+        "Control de versiones"
+      ]
     },
     {
       "name": "Python",
       "level": "Intermedio",
-      "keywords": ["Django", "Flask", "SQLAlchemy", "RESTful API", "Base de datos"]
+      "keywords": [
+        "Django",
+        "Flask",
+        "SQLAlchemy",
+        "RESTful API",
+        "Base de datos"
+      ]
     },
     {
       "name": "C",
       "level": "Avanzado",
-      "keywords": ["Shell", "Linux"]
+      "keywords": [
+        "Shell",
+        "Linux"
+      ]
     },
-
     {
       "name": "SQL",
       "level": "Intermedio",
-      "keywords": ["MySQL", "PostgreSQL"]
+      "keywords": [
+        "MySQL",
+        "PostgreSQL"
+      ]
     },
     {
       "name": "Bash",
       "level": "Avanzado",
-      "keywords": ["Linux", "Scripting"]
+      "keywords": [
+        "Linux",
+        "Scripting"
+      ]
     }
   ],
   "languages": [
@@ -157,9 +202,13 @@
       "startDate": "2025-08-17",
       "endDate": "",
       "description": "Mi diario digital personal para documentar y monitorear mis plantas",
-      "highlights": ["HTML", "CSS", "JS"],
+      "highlights": [
+        "HTML",
+        "CSS",
+        "JS"
+      ],
       "urls": {
-          "website": "https://garden-log-dev.vercel.app/",
+        "website": "https://garden-log-dev.vercel.app/",
         "gitHub": "https://github.com/luismarrer/gardenLog"
       }
     },
@@ -167,8 +216,12 @@
       "name": "Miniarcade",
       "startDate": "2025-08-22",
       "endDate": "",
-      "description": "Plataforma web de juegos",
-      "highlights": ["HTML", "CSS", "JS"],
+      "description": "Plataforma web de juegos arcade",
+      "highlights": [
+        "HTML",
+        "CSS",
+        "JS"
+      ],
       "urls": {
         "website": "https://mini-arcade-dev.vercel.app/",
         "gitHub": "https://github.com/luismarrer/mini-arcade"
@@ -179,7 +232,11 @@
       "startDate": "2024-09-26",
       "endDate": "2024-11-15",
       "description": "Sistema de gestión de tickets con IA",
-      "highlights": ["Django", "IA", "Full Stack aplicación web"],
+      "highlights": [
+        "Django",
+        "IA",
+        "Full Stack aplicación web"
+      ],
       "urls": {
         "website": "",
         "gitHub": "https://github.com/luismarrer/Probless-project"
