@@ -11,7 +11,7 @@ Uses pnpm (pinned in `package.json`).
 - `pnpm build` — build static site to `dist/`
 - `pnpm preview` — preview the production build
 
-There are no tests or linters. Deployment is automatic: pushing to `main` triggers `.github/workflows/deploy.yml`, which builds with `withastro/action` and publishes to GitHub Pages.
+There are no tests or linters. Production is hosted on Vercel at https://cv.luismarrero.me — every push to `main` auto-deploys via Vercel's git integration, and PRs get preview deploys. `.github/workflows/deploy.yml` only publishes the redirect page in `redirect/` to GitHub Pages, so the old `luismarrer.github.io` URL forwards to production. See `docs/prd-cv-i18n-sync.md` for the translation-sync pipeline design.
 
 ## Architecture
 

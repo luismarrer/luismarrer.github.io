@@ -11,5 +11,5 @@ export default defineConfig({
             prefixDefaultLocale: true,
         }
     },
-    site: 'https://luismarrer.github.io/'
+    site: 'https://cv.luismarrero.me/'
 });
