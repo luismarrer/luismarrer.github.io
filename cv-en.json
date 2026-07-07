@@ -40,7 +40,9 @@
       "startDate": "2024-05",
       "endDate": "2024-10",
       "summary": "I helped students understand complex concepts and solve problems with programming. I collaborated with the Software Engineer/Educational Lead to create educational content.",
-      "highlights": [""]
+      "highlights": [
+        ""
+      ]
     }
   ],
   "volunteer": [
@@ -51,7 +53,9 @@
       "startDate": "",
       "endDate": "",
       "summary": "",
-      "highlights": [""]
+      "highlights": [
+        ""
+      ]
     }
   ],
   "education": [
@@ -63,7 +67,9 @@
       "startDate": "2024-02-01",
       "endDate": "2024-11-01",
       "score": "",
-      "courses": [""]
+      "courses": [
+        ""
+      ]
     }
   ],
   "awards": [
@@ -80,62 +86,102 @@
     {
       "name": "HTML",
       "level": "Master",
-      "keywords": ["Web Development", "Frontend", "Semantic", "SEO"]
+      "keywords": [
+        "Web Development",
+        "Frontend",
+        "Semantic",
+        "SEO"
+      ]
     },
     {
       "name": "CSS",
       "level": "Advanced",
-      "keywords": ["SASS", "Flexbox", "Grid", "Responsive Design"]
+      "keywords": [
+        "SASS",
+        "Flexbox",
+        "Grid",
+        "Responsive Design"
+      ]
     },
     {
       "name": "JavaScript",
       "level": "Intermediate",
-      "keywords": ["React", "Node.js", "Express", "MongoDB"]
+      "keywords": [
+        "React",
+        "Node.js",
+        "Express",
+        "MongoDB"
+      ]
     },
     {
       "name": "Node",
       "level": "Basic",
-      "keywords": ["Frontend"]
+      "keywords": [
+        "Frontend"
+      ]
     },
     {
       "name": "Tailwind",
       "level": "Basic",
-      "keywords": ["Frontend"]
+      "keywords": [
+        "Frontend"
+      ]
     },
     {
       "name": "TypeScript",
       "level": "Intermediate",
-      "keywords": ["Frontend"]
+      "keywords": [
+        "Frontend"
+      ]
     },
     {
       "name": "Git",
       "level": "Advanced",
-      "keywords": ["Version Control"]
+      "keywords": [
+        "Version Control"
+      ]
     },
     {
       "name": "GitHub",
       "level": "Advanced",
-      "keywords": ["Version Control"]
+      "keywords": [
+        "Version Control"
+      ]
     },
     {
       "name": "Python",
       "level": "Intermediate",
-      "keywords": ["Django", "Flask", "SQLAlchemy", "RESTful API", "Database"]
+      "keywords": [
+        "Django",
+        "Flask",
+        "SQLAlchemy",
+        "RESTful API",
+        "Database"
+      ]
     },
     {
       "name": "C",
       "level": "Advanced",
-      "keywords": ["Shell", "Linux"]
+      "keywords": [
+        "Shell",
+        "Linux"
+      ]
     },
     {
       "name": "SQL",
       "level": "Intermediate",
-      "keywords": ["MySQL", "PostgreSQL"]
+      "keywords": [
+        "MySQL",
+        "PostgreSQL"
+      ]
     },
     {
       "name": "Bash",
       "level": "Advanced",
-      "keywords": ["Linux", "Scripting"]
+      "keywords": [
+        "Linux",
+        "Scripting"
+      ]
     }
   ],
   "languages": [
@@ -156,7 +202,11 @@
       "startDate": "2025-08-17",
       "endDate": "",
       "description": "My personal digital journal for documenting and monitoring plants",
-      "highlights": ["HTML", "CSS", "JS"],
+      "highlights": [
+        "HTML",
+        "CSS",
+        "JS"
+      ],
       "urls": {
         "website": "https://garden-log-dev.vercel.app/",
         "gitHub": "https://github.com/luismarrer/gardenLog"
@@ -166,8 +216,12 @@
       "name": "Miniarcade",
       "startDate": "2025-08-22",
       "endDate": "",
-      "description": "Web platform for games",
-      "highlights": ["HTML", "CSS", "JS"],
+      "description": "Web platform for arcade games",
+      "highlights": [
+        "HTML",
+        "CSS",
+        "JS"
+      ],
       "urls": {
         "website": "https://mini-arcade-dev.vercel.app/",
         "gitHub": "https://github.com/luismarrer/mini-arcade"
@@ -178,7 +232,11 @@
       "startDate": "2024-09-26",
       "endDate": "2024-11-15",
       "description": "Ticket management made simple with AI support",
-      "highlights": ["Django", "AI", "Full Stack Web Application"],
+      "highlights": [
+        "Django",
+        "AI",
+        "Full Stack Web Application"
+      ],
       "urls": {
         "website": "",
         "gitHub": "https://github.com/luismarrer/Probless-project"
