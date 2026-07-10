@@ -20,6 +20,8 @@ interface Profile {
 const translate = {
   print: translateKeyboardManager("print"),
   actions: translateKeyboardManager("actions"),
+  switchLanguage: translateKeyboardManager("switchLanguage"),
+  switchLanguageUrl: currentLanguage === "es" ? "/en/" : "/es/",
 }
 
 const { profiles }: { profiles: Profile[] } = basics
@@ -154,6 +156,15 @@ const profilesInfo = profiles.map(({ network, url }) => {
         section: dataTranslate.actions,
         handler: () => {
           window.print()
+        },
+      },
+      {
+        id: "switch-language",
+        title: dataTranslate.switchLanguage,
+        section: dataTranslate.actions,
+        icon: `<svg style="margin-right: 8px" width="16" height="16" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m10.5 4.75 1.5-1.5 1.5 1.5m-1.5-1.5v17.5m5-2.5 1.5 1.5 1.5-1.5m-1.5 1.5V3.25" /></svg>`,
+        handler: () => {
+          window.location.assign(dataTranslate.switchLanguageUrl)
         },
       },
       ...data,

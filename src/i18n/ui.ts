@@ -38,6 +38,7 @@ export const keyboardManager = {
         networks: "Social networks",
         actions: "Actions",
         print: "Print",
+        switchLanguage: "Switch to Spanish",
     },
     es: {
         text: "<p>Pulsa <kbd>Cmd</kbd> + <kbd>K</kbd> para abrir la paleta de comandos.</p>",
@@ -45,6 +46,7 @@ export const keyboardManager = {
         networks: "Redes sociales",
         actions: "Acciones",
         print: "Imprimir",
+        switchLanguage: "Cambiar a inglés",
     }
 }
     

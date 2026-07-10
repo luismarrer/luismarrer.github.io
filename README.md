@@ -30,10 +30,12 @@ The content is generated from a JSON file, based on the [JSON Resume](https://js
 - [ ] Add more projects
     1. [X] gardenLog
     2. [X] Miniarcade website (Maybe change it for educational website of Computer Science)
-    3. [ ] pc-builder
-    4. [ ] Airbnb Clone
-    5. [ ] Rhymance
-    6. [ ] Problem Solving Lab
+    3. [ ] Aplicación de bienes raices?
+    4. [ ] Educational website of Computer Science
+    5. [ ] pc-builder 
+    6. [ ] Airbnb Clone
+    7. [ ] Rhymance
+    8. [ ] Problem Solving Lab
 
 ## Notes for Portfolio
 

@@ -1,6 +1,6 @@
 {
   "basics": {
-    "name": "Luis Marrero",
+    "name": "Luis E. Marrero González",
     "label": "Software Engineer. Committed to crafting elegant solutions.",
     "image": "https://avatars.githubusercontent.com/u/144063514?v=4",
     "email": "luismarrer.dev@gmail.com",
@@ -225,21 +225,6 @@
       "urls": {
         "website": "https://mini-arcade-dev.vercel.app/",
         "gitHub": "https://github.com/luismarrer/mini-arcade"
-      }
-    },
-    {
-      "name": "Probless",
-      "startDate": "2024-09-26",
-      "endDate": "2024-11-15",
-      "description": "Ticket management made simple with AI support",
-      "highlights": [
-        "Django",
-        "AI",
-        "Full Stack Web Application"
-      ],
-      "urls": {
-        "website": "",
-        "gitHub": "https://github.com/luismarrer/Probless-project"
       }
     }
   ]
