@@ -5,6 +5,8 @@ export const languageList = {
 
 export const defaultLanguage = 'en'
 
+export const resumeTitle = "Luis Marrero González - Resume"
+
 export const titles = {
     en: {
           "about": "About",
@@ -19,6 +21,17 @@ export const titles = {
           "projects": "Proyectos",
           "skills": "Habilidades",
           "education": "Educación"
+    },
+}
+
+export const cvLabels = {
+    en: {
+        present: "Present",
+        educationIn: "in",
+    },
+    es: {
+        present: "Actual",
+        educationIn: "en",
     },
 }
 

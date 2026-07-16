@@ -1,24 +1,33 @@
 ---
 import Section from "@/components/Section.astro"
+import { formatCvDate } from "@/i18n/formatCvDate"
+import { cvLabels } from "@/i18n/ui"
 
 interface Education {
   institution: string
   startDate: string
   endDate: string | null
   area: string
+  studyType: string
 }
 
 const education: Education[] = Astro.props.cv.education
+const currentLanguage = (Astro.currentLocale ?? "en") as "en" | "es"
+const labels = cvLabels[currentLanguage]
 ---
 
 <Section title="education">
   <ul>
     {
-      education.map(({ institution, startDate, endDate, area }) => {
-        const startYear = new Date(startDate).getFullYear()
-        const endYear =
-          endDate != null ? new Date(endDate).getFullYear() : "Actual"
-        const years = `${startYear} - ${endYear}`
+      education.map(({ institution, startDate, endDate, area, studyType }) => {
+        const start = formatCvDate(startDate, currentLanguage)
+        const end = endDate
+          ? formatCvDate(endDate, currentLanguage)
+          : labels.present
+        const dates = `${start} - ${end}`
+        const degree = studyType
+          ? `${studyType} ${labels.educationIn} ${area}`
+          : area
 
         return (
           <li>
@@ -28,11 +37,11 @@ const education: Education[] = Astro.props.cv.education
                   <h3>{institution}</h3>
                 </div>
 
-                <time>{years}</time>
+                <time>{dates}</time>
               </header>
 
               <footer>
-                <p>{area}</p>
+                <p>{degree}</p>
               </footer>
             </article>
           </li>
@@ -64,7 +73,8 @@ const education: Education[] = Astro.props.cv.education
   time {
     color: var(--text-muted);
     font-size: 0.85rem;
-    min-width: 102px;
+    min-width: 145px;
+    white-space: nowrap;
   }
 
   @media (width <= 700px) {

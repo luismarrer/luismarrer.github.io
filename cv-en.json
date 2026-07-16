@@ -1,12 +1,12 @@
 {
   "basics": {
     "name": "Luis E. Marrero González",
-    "label": "Software Engineer. Committed to crafting elegant solutions.",
+    "label": "Software Developer | Data & Automation",
     "image": "https://avatars.githubusercontent.com/u/144063514?v=4",
     "email": "luismarrer.dev@gmail.com",
     "phone": "+17874870310",
     "url": "https://www.luismarrero.me/",
-    "summary": "Fullstack developer passionate about JavaScript and Python, although for me the language is secondary. What truly matters is creating real solutions. I’m inspired by AI, robotics, and open-source, and I enjoy building software.",
+    "summary": "Software developer with experience building modern web applications, working with data, and improving processes through technology. Skilled in TypeScript, Astro, React, Python, SQL, Excel, and Git/GitHub. Strong foundation in computer science fundamentals, problem-solving, debugging, data organization, and collaborative development. Currently pursuing a Bachelor’s degree in Computer Science while gaining hands-on experience in reporting, data collection, operational analysis, and technology-driven projects.",
     "location": {
       "address": "Río Piedras",
       "postalCode": "00925",
@@ -34,14 +34,61 @@
   },
   "work": [
     {
-      "name": "Holberton Coding School Puerto Rico",
-      "position": "Student Tutor",
+      "name": "Sociedad de Astronomía del Caribe",
+      "position": "Software Development Intern",
+      "url": "https://www.sociedadastronomia.com/",
+      "startDate": "2026-06",
+      "endDate": null,
+      "summary": "Collaborate on software and technology projects using Git, GitHub, TypeScript, Next.js, and modern deployment workflows.",
+      "highlights": [
+        "Selected for the SAC 2026 Internship Program.",
+        "Collaborate on software and technology-focused projects supporting organizational initiatives.",
+        "Work with Git and GitHub in a collaborative development environment.",
+        "Support software development workflows using modern tools and project-based learning.",
+        "Continue strengthening skills in TypeScript, Next.js, Cursor, and deployment workflows."
+      ]
+    },
+    {
+      "name": "Universal Group Inc.",
+      "position": "Contact Center Intern",
+      "url": "https://www.universalpr.com/",
+      "startDate": "2026-06",
+      "endDate": "2026-06",
+      "summary": "Support data collection, reporting, and operational analysis for contact center processes, using Excel and business data to identify patterns and improvement opportunities.",
+      "highlights": [
+        "Selected for Universal Group Inc.’s 2026 Internship Program in the Contact Center department.",
+        "Support data collection, reporting, and operational analysis related to contact center processes.",
+        "Work with Excel, business data, and reporting workflows to organize and review operational information.",
+        "Assist in identifying patterns, gaps, and opportunities for improvement in operational data.",
+        "Gain hands-on experience with customer experience, contact center operations, and data-driven decision-making."
+      ]
+    },
+    {
+      "name": "Holberton School",
+      "position": "Programming Tutor",
       "url": "https://holbertonschoolpr.com/",
       "startDate": "2024-05",
       "endDate": "2024-10",
-      "summary": "I helped students understand complex concepts and solve problems with programming. I collaborated with the Software Engineer/Educational Lead to create educational content.",
+      "summary": "Provided technical assistance in C, Python, Linux, and programming fundamentals through debugging sessions, code reviews, and one-on-one explanations.",
       "highlights": [
-        ""
+        "Provided technical assistance in C, Python, Linux systems, and foundational programming concepts to software engineering students.",
+        "Supported peers through debugging sessions, code reviews, and one-on-one explanations.",
+        "Explained technical concepts clearly to help students understand errors, improve code quality, and develop problem-solving skills.",
+        "Collaborated with instructional staff to support learning objectives."
+      ]
+    },
+    {
+      "name": "University of Puerto Rico, Río Piedras",
+      "position": "Library Assistant (Student Employee)",
+      "url": "https://www.upr.edu/biblioteca-rrp/2017/07/06/referencia-revista/",
+      "startDate": "2026-01",
+      "endDate": null,
+      "summary": "Support daily library operations, assist users, and organize materials while maintaining accuracy and reliable service in a high-traffic academic environment.",
+      "highlights": [
+        "Support daily operations in a high-traffic academic environment.",
+        "Maintain organization, accuracy, and efficiency while balancing academic and professional responsibilities.",
+        "Assist users, organize materials, and contribute to reliable service delivery.",
+        "Demonstrate reliability, time management, attention to detail, and professionalism."
       ]
     }
   ],
@@ -60,12 +107,24 @@
   ],
   "education": [
     {
+      "institution": "University of Puerto Rico, Río Piedras",
+      "url": "https://www.uprrp.edu/",
+      "area": "Computer Science",
+      "studyType": "Bachelor of Science",
+      "startDate": "2026-01",
+      "endDate": null,
+      "score": "",
+      "courses": [
+        ""
+      ]
+    },
+    {
       "institution": "Holberton School",
       "url": "https://www.holbertonschoolpr.com/",
-      "area": "Computer Science",
-      "studyType": "",
-      "startDate": "2024-02-01",
-      "endDate": "2024-11-01",
+      "area": "Foundations of Computer Science",
+      "studyType": "Certificate",
+      "startDate": "2024-02",
+      "endDate": "2024-11",
       "score": "",
       "courses": [
         ""
@@ -80,108 +139,71 @@
       "summary": ""
     }
   ],
-  "certificates": [],
+  "certificates": [
+    {
+      "name": "Foundations of Computer Science",
+      "date": "2024-11",
+      "issuer": "Holberton School",
+      "url": "https://www.holbertonschoolpr.com/"
+    },
+    {
+      "name": "AWS Cloud Quest: Cloud Practitioner",
+      "date": "2024-05",
+      "issuer": "Amazon Web Services",
+      "url": "https://aws.amazon.com/training/digital/aws-cloud-quest/"
+    }
+  ],
   "publications": [],
   "skills": [
     {
-      "name": "HTML",
-      "level": "Master",
-      "keywords": [
-        "Web Development",
-        "Frontend",
-        "Semantic",
-        "SEO"
-      ]
-    },
-    {
-      "name": "CSS",
-      "level": "Advanced",
-      "keywords": [
-        "SASS",
-        "Flexbox",
-        "Grid",
-        "Responsive Design"
-      ]
-    },
-    {
-      "name": "JavaScript",
-      "level": "Intermediate",
-      "keywords": [
-        "React",
-        "Node.js",
-        "Express",
-        "MongoDB"
-      ]
-    },
-    {
-      "name": "Node",
-      "level": "Basic",
-      "keywords": [
-        "Frontend"
-      ]
-    },
-    {
-      "name": "Tailwind",
-      "level": "Basic",
-      "keywords": [
-        "Frontend"
-      ]
-    },
-    {
       "name": "TypeScript",
-      "level": "Intermediate",
-      "keywords": [
-        "Frontend"
-      ]
+      "level": "",
+      "keywords": ["Software Development", "Front-End"]
     },
     {
-      "name": "Git",
-      "level": "Advanced",
-      "keywords": [
-        "Version Control"
-      ]
+      "name": "Astro",
+      "level": "",
+      "keywords": ["Front-End", "Web Development"]
     },
     {
-      "name": "GitHub",
-      "level": "Advanced",
-      "keywords": [
-        "Version Control"
-      ]
+      "name": "React",
+      "level": "",
+      "keywords": ["Front-End", "Web Development"]
     },
     {
       "name": "Python",
-      "level": "Intermediate",
-      "keywords": [
-        "Django",
-        "Flask",
-        "SQLAlchemy",
-        "RESTful API",
-        "Database"
-      ]
-    },
-    {
-      "name": "C",
-      "level": "Advanced",
-      "keywords": [
-        "Shell",
-        "Linux"
-      ]
+      "level": "",
+      "keywords": ["Software Development", "Data & Analytics"]
     },
     {
       "name": "SQL",
-      "level": "Intermediate",
-      "keywords": [
-        "MySQL",
-        "PostgreSQL"
-      ]
+      "level": "",
+      "keywords": ["Databases", "Data & Analytics"]
+    },
+    {
+      "name": "Excel",
+      "level": "",
+      "keywords": ["Data & Analytics", "Reporting"]
+    },
+    {
+      "name": "Power BI",
+      "level": "",
+      "keywords": ["Data & Analytics", "Dashboard Development"]
+    },
+    {
+      "name": "Git",
+      "level": "",
+      "keywords": ["Tools & Workflow", "Version Control"]
+    },
+    {
+      "name": "C",
+      "level": "",
+      "keywords": ["Software Development", "Computer Science"]
     },
     {
       "name": "Bash",
-      "level": "Advanced",
-      "keywords": [
-        "Linux",
-        "Scripting"
-      ]
+      "level": "",
+      "keywords": ["Tools & Workflow", "Linux"]
     }
   ],
   "languages": [

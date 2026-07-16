@@ -1,5 +1,7 @@
 ---
 import Section from "@/components/Section.astro"
+import { formatCvDate } from "@/i18n/formatCvDate"
+import { cvLabels } from "@/i18n/ui"
 
 interface WorkExperience {
   name: string
@@ -11,16 +13,19 @@ interface WorkExperience {
 }
 
 const { work }: { work: WorkExperience[] } = Astro.props.cv
+const currentLanguage = (Astro.currentLocale ?? "en") as "en" | "es"
+const labels = cvLabels[currentLanguage]
 ---
 
 <Section title="experience">
   <ul>
     {
       work.map(({ name, startDate, endDate, position, summary, url }) => {
-        const starYear = new Date(startDate).getFullYear()
-        const endYear =
-          endDate != null ? new Date(endDate).getFullYear() : "Actual"
-        const years = `${starYear} - ${endYear}`
+        const start = formatCvDate(startDate, currentLanguage)
+        const end = endDate
+          ? formatCvDate(endDate, currentLanguage)
+          : labels.present
+        const dates = `${start} - ${end}`
         return (
           <li>
             <article>
@@ -33,7 +38,7 @@ const { work }: { work: WorkExperience[] } = Astro.props.cv
                   </h3>
                   <p>{position}</p>
                 </div>
-                <time datetime={years}>{years}</time>
+                <time>{dates}</time>
               </header>
               <footer>
                 <p>{summary}</p>
@@ -81,7 +86,8 @@ const { work }: { work: WorkExperience[] } = Astro.props.cv
   time {
     color: var(--text-muted);
     font-size: 0.85rem;
-    min-width: 102px;
+    min-width: 145px;
+    white-space: nowrap;
     cursor: default;
   }
 

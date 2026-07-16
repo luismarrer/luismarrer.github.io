@@ -39,6 +39,8 @@ Each tech/social icon is an inline-SVG `.astro` component in `src/icons/`. Compo
 - Path alias `@/*` → `src/*` (defined in `tsconfig.json`, which extends Astro's strict config).
 - `KeyboardManager.astro` wraps the `ninja-keys` web component (Cmd+K command palette); its actions are built from the CV's social profiles.
 - `scripts/i18n-check.mjs` is the EN/ES coherence gate. It also runs as Vercel's `ignoreCommand` (see `vercel.json`): if the CV files are out of sync, the production deploy is skipped and the site stays on the last good deploy. Its list of translatable field paths (`TRANSLATABLE`) must be updated if the CV schema usage changes.
+- The browser title is intentionally fixed to `Luis Marrero González - Resume` in both locale pages. Keep this minimal title unchanged and do not derive it from `basics.label` or other CV content.
+- Certification data may remain in the CV JSON files, but certifications must never be rendered as a UI section or added to the locale page layout.
 
 ## Content rules (from README)
 
