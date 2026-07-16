@@ -242,13 +242,12 @@
     },
     {
       "name": "gardenLog",
-      "startDate": "2025-08-17",
+      "startDate": "2025-08-15",
       "endDate": "",
-      "description": "My personal digital journal for documenting and monitoring plants",
+      "description": "Personal garden journal documenting plant care, photos, and real-world observations.",
       "highlights": [
-        "HTML",
-        "CSS",
-        "JS"
+        "Astro",
+        "Tailwind CSS"
       ],
       "urls": {
         "website": "https://garden-log-dev.vercel.app/",
@@ -259,11 +258,11 @@
       "name": "Miniarcade",
       "startDate": "2025-08-22",
       "endDate": "",
-      "description": "Web platform for arcade games",
+      "description": "Collection of browser games built for learning, experimentation, and quick play.",
       "highlights": [
-        "HTML",
-        "CSS",
-        "JS"
+        "Astro",
+        "React",
+        "Supabase"
       ],
       "urls": {
         "website": "https://mini-arcade-dev.vercel.app/",
