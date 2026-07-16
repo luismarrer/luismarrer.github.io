@@ -39,6 +39,7 @@ export const keyboardManager = {
         actions: "Actions",
         print: "Print",
         switchLanguage: "Switch to Spanish",
+        toggleTheme: "Switch light/dark theme",
     },
     es: {
         text: "<p>Pulsa <kbd>Cmd</kbd> + <kbd>K</kbd> para abrir la paleta de comandos.</p>",
@@ -47,6 +48,7 @@ export const keyboardManager = {
         actions: "Acciones",
         print: "Imprimir",
         switchLanguage: "Cambiar a inglés",
+        toggleTheme: "Cambiar tema claro/oscuro",
     }
 }
     

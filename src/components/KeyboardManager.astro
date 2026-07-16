@@ -5,7 +5,7 @@ const text = Astro.props.keyboardManagerText
 
 import type { Icon } from "@/types"
 
-const currentLanguage = Astro.preferredLocale || Astro.currentLocale
+const currentLanguage = Astro.currentLocale ?? "en"
 import { keyboardManager } from "@/i18n/ui"
 import { useKeyboardManager } from "@/i18n/utils"
 const translateKeyboardManager = useKeyboardManager(
@@ -21,6 +21,7 @@ const translate = {
   print: translateKeyboardManager("print"),
   actions: translateKeyboardManager("actions"),
   switchLanguage: translateKeyboardManager("switchLanguage"),
+  toggleTheme: translateKeyboardManager("toggleTheme"),
   switchLanguageUrl: currentLanguage === "es" ? "/en/" : "/es/",
 }
 
@@ -159,9 +160,20 @@ const profilesInfo = profiles.map(({ network, url }) => {
         },
       },
       {
+        id: "toggle-theme",
+        title: dataTranslate.toggleTheme,
+        section: dataTranslate.actions,
+        hotkey: "ctrl+T",
+        icon: `<svg style="margin-right: 8px" width="16" height="16" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1.5m0 15V21m9-9h-1.5M4.5 12H3m15.364-6.364-1.061 1.061M6.697 17.303l-1.061 1.061m12.728 0-1.061-1.061M6.697 6.697 5.636 5.636M16.5 12a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Z" /></svg>`,
+        handler: () => {
+          document.getElementById("theme-toggle")?.click()
+        },
+      },
+      {
         id: "switch-language",
         title: dataTranslate.switchLanguage,
         section: dataTranslate.actions,
+        hotkey: "ctrl+E",
         icon: `<svg style="margin-right: 8px" width="16" height="16" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m10.5 4.75 1.5-1.5 1.5 1.5m-1.5-1.5v17.5m5-2.5 1.5 1.5 1.5-1.5m-1.5 1.5V3.25" /></svg>`,
         handler: () => {
           window.location.assign(dataTranslate.switchLanguageUrl)

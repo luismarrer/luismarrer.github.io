@@ -124,4 +124,16 @@ const { work }: { work: WorkExperience[] } = Astro.props.cv
       text-align: right;
     }
   }
+
+  @media (width <= 420px) {
+    header {
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    time {
+      min-width: 0;
+      text-align: left;
+    }
+  }
 </style>

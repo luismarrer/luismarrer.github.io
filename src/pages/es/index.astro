@@ -1,5 +1,5 @@
 ---
-const currentLanguage = Astro.preferredLocale || Astro.currentLocale
+const currentLanguage = Astro.currentLocale ?? "en"
 import { loadCv } from "@/i18n/loadCv"
 import { useKeyboardManager } from "@/i18n/utils"
 import { keyboardManager } from "@/i18n/ui"
@@ -47,6 +47,12 @@ const { name, label } = basics
   @media (max-width: 768px) {
     main {
       padding: 2rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    main {
+      padding: 2rem 1.5rem 6rem;
     }
   }
 </style>

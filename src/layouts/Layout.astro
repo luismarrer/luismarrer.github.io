@@ -1,6 +1,6 @@
 ---
 import { theme } from "@/i18n/ui"
-const currentLanguage = Astro.preferredLocale || Astro.currentLocale
+const currentLanguage = Astro.currentLocale ?? "en"
 const basics = Astro.props.cv.basics
 const themeToggleLabel =
   theme[currentLanguage as keyof typeof theme]?.toggle ?? theme.en.toggle

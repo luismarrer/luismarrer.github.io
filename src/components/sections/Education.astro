@@ -72,4 +72,16 @@ const education: Education[] = Astro.props.cv.education
       text-align: right;
     }
   }
+
+  @media (width <= 420px) {
+    header {
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    time {
+      min-width: 0;
+      text-align: left;
+    }
+  }
 </style>
