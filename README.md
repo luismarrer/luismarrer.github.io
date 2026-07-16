@@ -27,19 +27,21 @@ The content is generated from a JSON file, based on the [JSON Resume](https://js
 ## ✅ To Do
 
 - [X] Fix print styles
-- [ ] Add more projects
+- [X] Add six projects
     1. [X] gardenLog
     2. [X] Miniarcade website
-    3. [ ] Educational website of Computer Science
-    4. [ ] Artistic-portfolio
-    5. [ ] Rhymance
-    6. [ ] Problem Solving Lab
+    3. [X] Educational website of Computer Science
+    4. [X] Artistic-portfolio
+    5. [X] Rhymance
+    6. [X] Problem Solving Lab
 
 ## Notes for Portfolio
 
 - Project titles must have a maximum of 2 words.
 - Both files (`cv-en.json` and `cv-es.json`) must contain the same content.
 - Projects must be sorted by importance (descending order).
+- The portfolio must contain exactly 6 projects, active or inactive.
+- A stronger new project must replace an existing project; never display more or fewer than 6.
 - Project descriptions must not exceed 90 characters (one sentence).
 - Projects must not have more than 3 highlights.
 

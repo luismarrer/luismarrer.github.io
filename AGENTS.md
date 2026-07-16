@@ -47,5 +47,7 @@ When editing the CV JSON files:
 - `cv-en.json` and `cv-es.json` must contain the same content (translated).
 - Project titles: maximum 2 words.
 - Projects sorted by importance, descending.
+- Keep exactly 6 projects, whether active or inactive.
+- When adding a stronger project, replace an existing one; never show more or fewer than 6.
 - Project descriptions: one sentence, max 90 characters.
 - Projects: no more than 3 highlights each.

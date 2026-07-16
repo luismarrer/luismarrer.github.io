@@ -198,6 +198,21 @@
   "references": [],
   "projects": [
     {
+      "name": "Problem-Solving Lab",
+      "startDate": "2026-07-15",
+      "endDate": "",
+      "description": "Casos de operaciones con datos, reglas de negocio, pruebas e informes automatizados.",
+      "highlights": [
+        "Python",
+        "Data Analysis",
+        "Automation"
+      ],
+      "urls": {
+        "website": "https://luismarrer.github.io/problem-solving-lab/",
+        "gitHub": "https://github.com/luismarrer/problem-solving-lab"
+      }
+    },
+    {
       "name": "Rhymance",
       "startDate": "2025-01-31",
       "endDate": "",
@@ -230,7 +245,7 @@
       "name": "CS Fundamentals",
       "startDate": "2026-07-14",
       "endDate": "",
-      "description": "Sitio educativo que explica cómo los transistores se convierten en puertas lógicas, memoria y CPUs.",
+      "description": "Sitio educativo sobre cómo los transistores se convierten en puertas, memoria y CPUs.",
       "highlights": [
         "Astro",
         "Tailwind CSS"

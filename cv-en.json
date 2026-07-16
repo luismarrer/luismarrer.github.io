@@ -198,6 +198,21 @@
   "references": [],
   "projects": [
     {
+      "name": "Problem-Solving Lab",
+      "startDate": "2026-07-15",
+      "endDate": "",
+      "description": "Operations case studies using data, business rules, tests, and automated reporting.",
+      "highlights": [
+        "Python",
+        "Data Analysis",
+        "Automation"
+      ],
+      "urls": {
+        "website": "https://luismarrer.github.io/problem-solving-lab/",
+        "gitHub": "https://github.com/luismarrer/problem-solving-lab"
+      }
+    },
+    {
       "name": "Rhymance",
       "startDate": "2025-01-31",
       "endDate": "",
