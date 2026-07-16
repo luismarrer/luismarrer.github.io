@@ -198,6 +198,49 @@
   "references": [],
   "projects": [
     {
+      "name": "Rhymance",
+      "startDate": "2025-01-31",
+      "endDate": "",
+      "description": "Poetry-first dating platform for creating meaningful connections beyond profile photos.",
+      "highlights": [
+        "Astro",
+        "Tailwind CSS"
+      ],
+      "urls": {
+        "website": "https://rhymance.vercel.app/",
+        "gitHub": "https://github.com/luismarrer/rhymance"
+      }
+    },
+    {
+      "name": "Musea Art",
+      "startDate": "2025-10-10",
+      "endDate": "",
+      "description": "Conceptual portfolio showcasing modern creative work for artists and visual designers.",
+      "highlights": [
+        "Astro",
+        "Tailwind CSS",
+        "GSAP"
+      ],
+      "urls": {
+        "website": "https://artistic-portfolio-nine.vercel.app/",
+        "gitHub": "https://github.com/luismarrer/artistic-portfolio"
+      }
+    },
+    {
+      "name": "CS Fundamentals",
+      "startDate": "2026-07-14",
+      "endDate": "",
+      "description": "Educational site explaining how transistors become logic gates, memory, and CPUs.",
+      "highlights": [
+        "Astro",
+        "Tailwind CSS"
+      ],
+      "urls": {
+        "website": "https://cs-fundamentals-omega.vercel.app/",
+        "gitHub": "https://github.com/luismarrer/cs-fundamentals"
+      }
+    },
+    {
       "name": "gardenLog",
       "startDate": "2025-08-17",
       "endDate": "",

@@ -31,7 +31,7 @@ The content is generated from a JSON file, based on the [JSON Resume](https://js
     1. [X] gardenLog
     2. [X] Miniarcade website
     3. [ ] Educational website of Computer Science
-    4. [ ] Airbnb Clone
+    4. [ ] Artistic-portfolio
     5. [ ] Rhymance
     6. [ ] Problem Solving Lab
 
