@@ -1,6 +1,13 @@
 # PRD — Sincronización automática de traducciones del CV
 
-Estado: **v1.0 — estable, listo para implementación** · Última actualización: 2026-07-06
+Estado: **v1.1 — Fases 0–3 implementadas; activación pendiente de secretos** · Última actualización: 2026-07-17
+
+> Implementación en la rama `roadmap/r0-r3-execution`: `scripts/i18n-sync.mjs`,
+> `scripts/i18n-validate.mjs`, `scripts/translation-client.mjs` (cliente
+> pluggable con proveedor `mock` para pruebas) y los workflows `i18n-sync.yml`,
+> `i18n-preview-links.yml`, `i18n-validate.yml`. Pendiente del dueño del repo:
+> secretos `OPENAI_API_KEY` + `I18N_BOT_TOKEN`, auto-merge, branch protection,
+> smoke test real y prueba de fuego (ver runbook en docs/roadmap.md).
 
 ## 1. Problema
 
