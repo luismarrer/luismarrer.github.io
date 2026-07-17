@@ -6,9 +6,10 @@ const currentLanguage = Astro.currentLocale
 const translateTitles = useTranslations(
   currentLanguage as keyof typeof languageList,
 )
+const sectionName = title ?? "profile"
 ---
 
-<section>
+<section data-cv-section={sectionName}>
   {title && <h2>{translateTitles(title)}</h2>}
   <slot />
 </section>
@@ -24,5 +25,37 @@ const translateTitles = useTranslations(
     font-weight: 700;
     line-height: 1.5;
     font-size: 1.5rem;
+  }
+
+  @media print {
+    section {
+      max-width: none;
+      margin: 0 0 18pt;
+    }
+
+    section[data-cv-section="profile"],
+    section[data-cv-section="about"],
+    section[data-cv-section="education"],
+    section[data-cv-section="skills"] {
+      break-inside: avoid-page;
+      page-break-inside: avoid;
+    }
+
+    section[data-cv-section="projects"] {
+      break-before: page;
+      page-break-before: always;
+    }
+
+    section[data-cv-section="skills"] {
+      margin-bottom: 0;
+    }
+
+    h2 {
+      margin-bottom: 7pt;
+      font-size: 14pt;
+      line-height: 1.2;
+      break-after: avoid-page;
+      page-break-after: avoid;
+    }
   }
 </style>

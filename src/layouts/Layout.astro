@@ -246,20 +246,43 @@ const { image, summary, url } = basics
     display: none !important;
   }
 
+  @page {
+    size: letter portrait;
+    margin: 0.48in 0.52in;
+  }
+
   @media print {
     html,
     html[data-theme="dark"] {
       color-scheme: light;
       --bg: #fff;
       --text-heading: #111;
-      --text-body: #666;
-      --text-muted: #555;
-      --border: #eee;
-      --border-hover: #ddd;
-      --surface: #eee;
-      --tag-text: #444;
-      --card-border: #f2f2f2;
-      --footer-bg: #fdfdfd;
+      --text-body: #2f2f2f;
+      --text-muted: #444;
+      --border: #aaa;
+      --border-hover: #888;
+      --surface: #fff;
+      --tag-text: #222;
+      --card-border: #aaa;
+      --footer-bg: #fff;
+      background: #fff;
+      font-size: 10pt;
+      letter-spacing: -0.1pt;
+    }
+
+    body {
+      margin: 0;
+      background: #fff;
+      color: #111;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    main {
+      width: auto !important;
+      max-width: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
     }
 
     .print {
@@ -267,8 +290,12 @@ const { image, summary, url } = basics
     }
 
     a {
-      color: #000 !important;
-      gap: 4px !important;
+      color: #111 !important;
+    }
+
+    p {
+      orphans: 3;
+      widows: 3;
     }
 
     .no-print {

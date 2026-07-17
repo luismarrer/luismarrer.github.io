@@ -28,8 +28,14 @@ const linkedInfo = profiles.find(
   ({ network }: Profile) => network === "LinkedIn",
 )
 const linkedUrl = linkedInfo?.url
-
-const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" | ")
+const compactUrl = (value?: string) =>
+  value?.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")
+const websiteLabel = compactUrl(url)
+const linkedLabel = compactUrl(linkedUrl)
+const phoneLabel = phone?.replace(
+  /^\+1(\d{3})(\d{3})(\d{4})$/,
+  "+1 $1 $2 $3",
+)
 ---
 
 <Section>
@@ -48,8 +54,45 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" | ")
           {city}, {region}
         </a>
       </p>
-      <footer class="print">
-        <a id="printable">{printInfo}</a>
+      <footer class="print print-contacts">
+        {
+          email && (
+            <a data-print-contact="email" href={`mailto:${email}`}>
+              {email}
+            </a>
+          )
+        }
+        {
+          phone && (
+            <a data-print-contact="phone" href={`tel:${phone}`}>
+              {phoneLabel}
+            </a>
+          )
+        }
+        {
+          url && (
+            <a
+              data-print-contact="website"
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {websiteLabel}
+            </a>
+          )
+        }
+        {
+          linkedUrl && (
+            <a
+              data-print-contact="linkedin"
+              href={linkedUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {linkedLabel}
+            </a>
+          )
+        }
       </footer>
       <footer class="no-print">
         {
@@ -171,7 +214,7 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" | ")
       margin-top: 8px;
     }
 
-    a:not(#location, #printable) {
+    .no-print a {
       align-items: center;
       justify-content: center;
       border: 1px solid var(--border);
@@ -184,12 +227,12 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" | ")
         ease;
     }
 
-    a:hover:not(#location, #printable) {
+    .no-print a:hover {
       background: var(--surface);
       border: 1px solid var(--border-hover);
     }
 
-    @media (max-width: 768px) {
+    @media screen and (max-width: 768px) {
       .info {
         padding-right: 0;
       }
@@ -203,13 +246,107 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" | ")
       }
     }
 
-    @media (max-width: 360px) {
+    @media screen and (max-width: 480px) {
       .hero {
-        gap: 0.75rem;
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 16px;
+      }
+
+      .info {
+        align-items: center;
+        text-align: center;
+        gap: 8px;
+      }
+
+      figure {
+        order: -1;
+      }
+
+      h1 {
+        font-size: 1.9rem;
+        line-height: 1.1;
+        max-width: 340px;
+      }
+
+      .info > p {
+        max-width: 320px;
       }
 
       img {
-        width: 80px;
+        width: 112px;
+      }
+
+      footer {
+        justify-content: center;
+      }
+    }
+
+    @media screen and (max-width: 360px) {
+      .hero {
+        gap: 14px;
+      }
+
+      img {
+        width: 104px;
+      }
+    }
+
+    @media print {
+      .hero {
+        display: block;
+        padding-bottom: 12pt;
+        border-bottom: 0.75pt solid #b8b8b8;
+      }
+
+      .info {
+        gap: 2.5pt;
+        padding-right: 0;
+      }
+
+      h1 {
+        font-size: 22pt;
+        line-height: 1.05;
+        letter-spacing: -0.45pt;
+      }
+
+      .info > p {
+        font-size: 10pt;
+        line-height: 1.25;
+      }
+
+      #location {
+        font-size: 8.75pt;
+        letter-spacing: 0;
+      }
+
+      figure {
+        display: none;
+      }
+
+      footer.print-contacts {
+        display: flex !important;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 2pt 0;
+        margin-top: 4pt;
+        font-size: 8.25pt;
+        line-height: 1.25;
+      }
+
+      .print-contacts a {
+        color: #111 !important;
+        text-decoration: underline;
+        text-decoration-color: #aaa;
+        text-underline-offset: 1.5pt;
+      }
+
+      .print-contacts a + a::before {
+        content: "\2022";
+        display: inline-block;
+        margin: 0 5pt;
+        color: #777;
+        text-decoration: none;
       }
     }
   </style>

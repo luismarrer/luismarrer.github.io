@@ -34,7 +34,7 @@
   },
   "work": [
     {
-      "name": "Sociedad de Astronomía del Caribe",
+      "name": "SAC",
       "position": "Interno de desarrollo de software",
       "url": "https://www.sociedadastronomia.com/",
       "startDate": "2026-06",
@@ -49,7 +49,7 @@
       ]
     },
     {
-      "name": "Universal Group Inc.",
+      "name": "Universal Group",
       "position": "Interno de Contact Center",
       "url": "https://www.universalpr.com/",
       "startDate": "2026-06",
@@ -78,7 +78,7 @@
       ]
     },
     {
-      "name": "University of Puerto Rico, Río Piedras",
+      "name": "University of Puerto Rico",
       "position": "Asistente de biblioteca (empleado estudiante)",
       "url": "https://www.upr.edu/biblioteca-rrp/2017/07/06/referencia-revista/",
       "startDate": "2026-01",
@@ -120,7 +120,7 @@
     },
     {
       "institution": "Holberton School",
-      "url": "https://www.holbertonschoolpr.com/",
+      "url": "https://holbertonschoolpr.com/",
       "area": "Fundamentos de Ciencias de la Computación",
       "studyType": "Certificado",
       "startDate": "2024-02",
@@ -169,6 +169,11 @@
       "name": "React",
       "level": "",
       "keywords": ["Front-End", "Desarrollo web"]
+    },
+    {
+      "name": "Next.js",
+      "level": "",
+      "keywords": ["Back-End y APIs", "Full-Stack"]
     },
     {
       "name": "Python",

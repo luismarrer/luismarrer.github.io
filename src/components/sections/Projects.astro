@@ -25,13 +25,14 @@ const projects: Project[] = Astro.props.cv.projects
           const isActive = startDate && !endDate
           return (
             <li>
-              <article>
+              <article data-print-item="project">
                 <header>
                   <h3>
                     <a
                       href={urls.website}
                       title={`Project ${name}`}
                       target="_blank"
+                      rel="noopener noreferrer"
                     >
                       {name}
                     </a>
@@ -41,6 +42,7 @@ const projects: Project[] = Astro.props.cv.projects
                         class="github-code-link"
                         href={urls.gitHub}
                         target="_blank"
+                        rel="noopener noreferrer"
                         title={`Project code - ${name}`}
                       >
                         <GitHub />
@@ -50,7 +52,7 @@ const projects: Project[] = Astro.props.cv.projects
                   <p>{description}</p>
                 </header>
                 <footer>
-                  <ul id="highlights">
+                  <ul class="highlights">
                     {highlights.map((highlight) => {
                       return <li>{highlight}</li>
                     })}
@@ -146,23 +148,89 @@ const projects: Project[] = Astro.props.cv.projects
     }
   }
 
-  @media (width <= 700px) {
-    ul {
+  @media screen and (width <= 700px) {
+    #projects {
+      gap: 20px;
       margin-inline: 0px;
     }
 
     article {
-      border: none;
-      box-shadow: 0 1px 1px var(--card-border);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      box-shadow: none;
+      gap: 18px;
       height: auto;
       min-height: 0;
-      padding: 0 0 16px 0;
+      padding: 20px;
+    }
+
+    article h3 {
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+    }
+
+    article p {
+      font-size: 0.85rem;
+      line-height: 1.35rem;
+      margin-bottom: 0;
+    }
+
+    footer ul {
+      gap: 6px;
+    }
+
+    footer li {
+      font-size: 0.7rem;
+      padding: 0.3rem 0.65rem;
     }
   }
 
   @media print {
+    #projects {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 9pt;
+    }
+
+    article {
+      height: auto;
+      min-height: 0;
+      gap: 7pt;
+      padding: 9pt 10pt;
+      border: 0.5pt solid #aaa;
+      border-radius: 3pt;
+      break-inside: avoid-page;
+      page-break-inside: avoid;
+    }
+
+    article h3 {
+      margin-bottom: 3pt;
+      font-size: 10.25pt;
+      line-height: 1.2;
+    }
+
+    article p {
+      margin-bottom: 0;
+      font-size: 8.5pt;
+      line-height: 1.35;
+    }
+
     article h3 span {
       animation-name: none;
+      color: #555;
+    }
+
+    footer ul {
+      gap: 3pt;
+    }
+
+    footer li {
+      padding: 1.5pt 4pt;
+      border: 0.5pt solid #bbb;
+      border-radius: 2pt;
+      background: transparent;
+      color: #222;
+      font-size: 7.25pt;
+      line-height: 1.2;
     }
   }
 </style>

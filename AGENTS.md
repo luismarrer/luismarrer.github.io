@@ -4,15 +4,17 @@ This file provides guidance to Codex (Codex.ai/code) when working with code in t
 
 ## Commands
 
-Uses pnpm (pinned in `package.json`).
+Uses Node 22.13 or newer and pnpm (pinned in `package.json`).
 
 - `pnpm install` — install dependencies
 - `pnpm dev` — start dev server
 - `pnpm build` — build static site to `dist/`
 - `pnpm preview` — preview the production build
 - `pnpm i18n:check` — verify `cv-en.json` and `cv-es.json` are in sync (structure, invariant fields, stale translations; `--base <ref>` to compare against a commit)
+- `pnpm test:print` — build and validate EN/ES PDFs in Letter and A4 with Playwright
+- `pnpm check` — run i18n coherence, production build, and all print/PDF checks
 
-There are no tests or linters. Production is hosted on Vercel at https://cv.luismarrero.me — every push to `main` auto-deploys via Vercel's git integration, and PRs get preview deploys. `.github/workflows/deploy.yml` only publishes the redirect page in `redirect/` to GitHub Pages, so the old `luismarrer.github.io` URL forwards to production. See `docs/prd-cv-i18n-sync.md` for the translation-sync pipeline design.
+There is no linter. Print/PDF regression tests run with Playwright. Production is hosted on Vercel at https://cv.luismarrero.me — every push to `main` auto-deploys via Vercel's git integration, and PRs get preview deploys. `.github/workflows/deploy.yml` only publishes the redirect page in `redirect/` to GitHub Pages, so the old `luismarrer.github.io` URL forwards to production. See `docs/prd-cv-i18n-sync.md` for the translation-sync pipeline design.
 
 ## Architecture
 
@@ -47,6 +49,7 @@ Each tech/social icon is an inline-SVG `.astro` component in `src/icons/`. Compo
 When editing the CV JSON files:
 
 - `cv-en.json` and `cv-es.json` must contain the same content (translated).
+- Work Experience organization titles must stay concise: maximum 3 meaningful words, excluding short articles or prepositions such as `of`. Prefer established abbreviations such as `SAC` when the full organization name is longer.
 - Project titles: maximum 2 words.
 - Projects sorted by importance, descending.
 - Keep exactly 6 projects, whether active or inactive.

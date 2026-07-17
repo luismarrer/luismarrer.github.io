@@ -28,11 +28,16 @@ const labels = cvLabels[currentLanguage]
         const dates = `${start} - ${end}`
         return (
           <li>
-            <article>
+            <article data-print-item="experience">
               <header>
                 <div>
                   <h3>
-                    <a href={url} title={name} target="_blank">
+                    <a
+                      href={url}
+                      title={name}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       {name}
                     </a>
                   </h3>
@@ -125,13 +130,13 @@ const labels = cvLabels[currentLanguage]
     position: relative;
   }
 
-  @media (width <= 700px) {
+  @media screen and (width <= 700px) {
     time {
       text-align: right;
     }
   }
 
-  @media (width <= 420px) {
+  @media screen and (width <= 420px) {
     header {
       flex-direction: column;
       gap: 4px;
@@ -140,6 +145,43 @@ const labels = cvLabels[currentLanguage]
     time {
       min-width: 0;
       text-align: left;
+    }
+  }
+
+  @media print {
+    ul {
+      display: block;
+    }
+
+    li + li {
+      margin-top: 14pt;
+    }
+
+    article {
+      break-inside: avoid-page;
+      page-break-inside: avoid;
+    }
+
+    article h3 {
+      font-size: 10.5pt;
+      line-height: 1.2;
+    }
+
+    article header p,
+    article footer p {
+      font-size: 9pt;
+      line-height: 1.38;
+    }
+
+    header {
+      margin-bottom: 2pt;
+    }
+
+    time {
+      min-width: 118pt;
+      font-size: 8.25pt;
+      line-height: 1.35;
+      text-align: right;
     }
   }
 </style>

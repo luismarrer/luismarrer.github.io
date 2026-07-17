@@ -48,7 +48,8 @@ export const keyboardManager = {
     en: {
         text: "<p>Press <kbd>Cmd</kbd> + <kbd>K</kbd> to open the command palette.</p>",
         placeholder: "Search command",
-        networks: "Social networks",
+        networks: "Links",
+        personalWebsite: "Personal Website",
         actions: "Actions",
         print: "Print",
         switchLanguage: "Switch to Spanish",
@@ -57,7 +58,8 @@ export const keyboardManager = {
     es: {
         text: "<p>Pulsa <kbd>Cmd</kbd> + <kbd>K</kbd> para abrir la paleta de comandos.</p>",
         placeholder: "Buscar comando",
-        networks: "Redes sociales",
+        networks: "Links",
+        personalWebsite: "Sitio web personal",
         actions: "Acciones",
         print: "Imprimir",
         switchLanguage: "Cambiar a inglés",

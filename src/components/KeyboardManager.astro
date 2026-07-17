@@ -20,12 +20,14 @@ interface Profile {
 const translate = {
   print: translateKeyboardManager("print"),
   actions: translateKeyboardManager("actions"),
+  personalWebsite: translateKeyboardManager("personalWebsite"),
   switchLanguage: translateKeyboardManager("switchLanguage"),
   toggleTheme: translateKeyboardManager("toggleTheme"),
   switchLanguageUrl: currentLanguage === "es" ? "/en/" : "/es/",
 }
 
-const { profiles }: { profiles: Profile[] } = basics
+const { profiles, url: personalWebsiteUrl }: { profiles: Profile[]; url: string } =
+  basics
 
 const SOCIAL_NETWORKS_ICONS: Icon = {
   GitHub: `<svg
@@ -64,18 +66,40 @@ const SOCIAL_NETWORKS_ICONS: Icon = {
 `,
 }
 
-const profilesInfo = profiles.map(({ network, url }) => {
-  const icon = SOCIAL_NETWORKS_ICONS[network]
-  const firstLetter = network[0].toUpperCase()
-  return {
-    id: network,
+const websiteIcon = `<svg
+  width="16"
+  height="16"
+  viewBox="0 0 24 24"
+  xmlns="http://www.w3.org/2000/svg"
+  style="margin-right: 8px"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.5"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"></path></svg>`
+
+const profilesInfo = [
+  {
+    id: "personal-website",
     section: translateKeyboardManager("networks"),
-    title: network,
-    url,
-    icon,
-    hotkey: `ctrl+${firstLetter}`,
-  }
-})
+    title: translate.personalWebsite,
+    url: personalWebsiteUrl,
+    icon: websiteIcon,
+  },
+  ...profiles.map(({ network, url }) => {
+    const icon = SOCIAL_NETWORKS_ICONS[network]
+    const firstLetter = network[0].toUpperCase()
+    return {
+      id: network,
+      section: translateKeyboardManager("networks"),
+      title: network,
+      url,
+      icon,
+      hotkey: `ctrl+${firstLetter}`,
+    }
+  }),
+]
 ---
 
 <footer

@@ -23,6 +23,7 @@ import Bash from "@/icons/Bash.astro"
 import AstroIcon from "@/icons/Astro.astro"
 import Excel from "@/icons/Excel.astro"
 import PowerBI from "@/icons/PowerBI.astro"
+import NextJS from "@/icons/NextJS.astro"
 import type { Icon } from "@/types"
 
 const SKILLS_ICONS: Icon = {
@@ -42,6 +43,7 @@ const SKILLS_ICONS: Icon = {
   Astro: AstroIcon,
   Excel,
   "Power BI": PowerBI,
+  "Next.js": NextJS,
 }
 ---
 
@@ -53,7 +55,7 @@ const SKILLS_ICONS: Icon = {
         const Icon = SKILLS_ICONS[iconName]
 
         return (
-          <li>
+          <li data-print-item="skill">
             {Icon && <Icon />} <span>{name}</span>
           </li>
         )
@@ -79,5 +81,25 @@ const SKILLS_ICONS: Icon = {
     font-weight: 500;
     padding: 0.2rem 0.6rem;
     gap: 4px;
+  }
+
+  @media print {
+    ul {
+      gap: 3pt;
+    }
+
+    li {
+      padding: 1.5pt 4pt;
+      border: 0.5pt solid #aaa;
+      border-radius: 2pt;
+      background: transparent;
+      color: #111;
+      font-size: 8.25pt;
+      line-height: 1.2;
+    }
+
+    li :global(svg) {
+      display: none;
+    }
   }
 </style>

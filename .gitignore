@@ -6,6 +6,13 @@ dist/
 
 # dependencies
 node_modules/
+.pnpm-store/
+
+# generated print-test artifacts
+test-results/
+playwright-report/
+tmp/pdfs/
+output/pdf/
 
 # logs
 npm-debug.log*

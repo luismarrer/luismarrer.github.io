@@ -1,0 +1,47 @@
+name: Print and PDF regression
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  print-contract:
+    name: EN/ES · Letter/A4
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Check content, build, and print PDFs
+        run: pnpm check
+
+      - name: Upload failed PDFs and traces
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: print-regression-${{ github.run_id }}
+          path: test-results/
+          if-no-files-found: ignore
+          retention-days: 7

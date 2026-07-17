@@ -24,19 +24,22 @@ The content is generated from a JSON file, based on the [JSON Resume](https://js
 - [TypeScript](https://www.typescriptlang.org/) - A superset of JavaScript that adds static typing and class-based objects.
 - [Ninja Keys](https://github.com/ssleptsov/ninja-keys) - A dropdown menu with keyboard shortcuts.
 
-## ✅ To Do
+## Print and PDF quality
 
-- [X] Fix print styles
-- [X] Add six projects
-    1. [X] gardenLog
-    2. [X] Miniarcade website
-    3. [X] Educational website of Computer Science
-    4. [X] Artistic-portfolio
-    5. [X] Rhymance
-    6. [X] Problem Solving Lab
+The print layout is a deliberate two-page resume rather than a copy of the web UI:
+
+- Page 1 contains the print-specific header, profile, and work experience.
+- Page 2 contains projects, education, and skills.
+- Contact and project links remain clickable in exported PDFs.
+- Letter is the canonical paper size; A4 is also covered as a compatibility check.
+
+Run `pnpm test:print` to build the site and validate both locales in Letter and A4. The tests check page count and size, editorial page boundaries, intact entries, non-orphaned headings, PDF links, dark-theme reset, contrast, readable type, margins, clipping, and overlaps. Run `pnpm check` for the complete i18n, build, and print gate.
+
+Node 22.13 or newer is required. After a fresh install, download the test browser once with `pnpm exec playwright install chromium`.
 
 ## Notes for Portfolio
 
+- Work Experience organization titles must have a maximum of 3 meaningful words, excluding short articles or prepositions such as `of`. Prefer established abbreviations such as `SAC` when needed.
 - Project titles must have a maximum of 2 words.
 - Both files (`cv-en.json` and `cv-es.json`) must contain the same content.
 - Projects must be sorted by importance (descending order).

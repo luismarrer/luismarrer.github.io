@@ -9,6 +9,7 @@ interface Education {
   endDate: string | null
   area: string
   studyType: string
+  url: string
 }
 
 const education: Education[] = Astro.props.cv.education
@@ -19,34 +20,45 @@ const labels = cvLabels[currentLanguage]
 <Section title="education">
   <ul>
     {
-      education.map(({ institution, startDate, endDate, area, studyType }) => {
-        const start = formatCvDate(startDate, currentLanguage)
-        const end = endDate
-          ? formatCvDate(endDate, currentLanguage)
-          : labels.present
-        const dates = `${start} - ${end}`
-        const degree = studyType
-          ? `${studyType} ${labels.educationIn} ${area}`
-          : area
+      education.map(
+        ({ institution, startDate, endDate, area, studyType, url }) => {
+          const start = formatCvDate(startDate, currentLanguage)
+          const end = endDate
+            ? formatCvDate(endDate, currentLanguage)
+            : labels.present
+          const dates = `${start} - ${end}`
+          const degree = studyType
+            ? `${studyType} ${labels.educationIn} ${area}`
+            : area
 
-        return (
-          <li>
-            <article>
-              <header>
-                <div>
-                  <h3>{institution}</h3>
-                </div>
+          return (
+            <li>
+              <article data-print-item="education">
+                <header>
+                  <div>
+                    <h3>
+                      <a
+                        href={url}
+                        title={institution}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {institution}
+                      </a>
+                    </h3>
+                  </div>
 
-                <time>{dates}</time>
-              </header>
+                  <time>{dates}</time>
+                </header>
 
-              <footer>
-                <p>{degree}</p>
-              </footer>
-            </article>
-          </li>
-        )
-      })
+                <footer>
+                  <p>{degree}</p>
+                </footer>
+              </article>
+            </li>
+          )
+        },
+      )
     }
   </ul>
 </Section>
@@ -63,6 +75,14 @@ const labels = cvLabels[currentLanguage]
     color: var(--text-heading);
   }
 
+  article a {
+    color: var(--text-heading);
+  }
+
+  article a:hover {
+    text-decoration: underline;
+  }
+
   header {
     display: flex;
     justify-content: space-between;
@@ -77,13 +97,13 @@ const labels = cvLabels[currentLanguage]
     white-space: nowrap;
   }
 
-  @media (width <= 700px) {
+  @media screen and (width <= 700px) {
     time {
       text-align: right;
     }
   }
 
-  @media (width <= 420px) {
+  @media screen and (width <= 420px) {
     header {
       flex-direction: column;
       gap: 4px;
@@ -92,6 +112,42 @@ const labels = cvLabels[currentLanguage]
     time {
       min-width: 0;
       text-align: left;
+    }
+  }
+
+  @media print {
+    ul {
+      display: block;
+    }
+
+    li + li {
+      margin-top: 10pt;
+    }
+
+    article {
+      break-inside: avoid-page;
+      page-break-inside: avoid;
+    }
+
+    article h3 {
+      font-size: 10.25pt;
+      line-height: 1.2;
+    }
+
+    article footer p {
+      font-size: 8.75pt;
+      line-height: 1.3;
+    }
+
+    header {
+      margin-bottom: 1.5pt;
+    }
+
+    time {
+      min-width: 118pt;
+      font-size: 8.25pt;
+      line-height: 1.3;
+      text-align: right;
     }
   }
 </style>
