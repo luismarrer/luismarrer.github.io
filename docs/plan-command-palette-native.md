@@ -1,6 +1,6 @@
 # Plan — Reimplementación nativa de la paleta de comandos
 
-Estado: **v1.0 — listo para implementación** · Última actualización: 2026-07-16
+Estado: **v1.1 — implementado** · Última actualización: 2026-07-17\n\n> Implementación completada en la rama `roadmap/r0-r3-execution`: ver\n> `src/components/CommandPalette.astro`, `src/lib/commandPalette.ts`,\n> `src/lib/theme.ts` y `tests/palette/command-palette.spec.ts`. Chunk final:\n> 3.66 kB min / 1.57 kB gzip (+0.25 kB del módulo de tema). Pendiente: QA\n> manual con VoiceOver y validación del preview de Vercel antes del merge.
 
 ## 1. Decisión
 

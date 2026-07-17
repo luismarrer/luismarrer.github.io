@@ -1,6 +1,6 @@
 # Roadmap — Portfolio/CV
 
-Estado: **v1.5 — R0 completado; R1 en ejecución** · Última actualización: 2026-07-17
+Estado: **v1.6 — R0 y R1 completados; R2 en ejecución** · Última actualización: 2026-07-17
 
 ## Objetivo
 
@@ -29,7 +29,7 @@ sin perder el carácter minimalista del sitio.
 | Hero responsive | El título profesional apila sus dos partes cuando no caben; el separador solo existe en la composición horizontal | — |
 | Education responsive | Header en grid `minmax(0,1fr) auto`; colapsa a una columna a ≤560 px | — |
 | PRD i18n | Hosting, redirect e `i18n-check` completados | Traductor con PR/preview y validador delegado |
-| Paleta nativa | PRD listo; `ninja-keys` sigue activo | Implementación, revisión del layout touch, pruebas, migración y limpieza |
+| Paleta nativa | R1 completado: `CommandPalette.astro` + `src/lib/commandPalette.ts`, hoja flotante touch, 20 pruebas Playwright, `ninja-keys` eliminado | QA manual con VoiceOver y validación del preview de Vercel |
 | Experiencia laboral | Nombre, puesto, fechas y resumen en UI | Modelo de modalidad/tecnologías, exploración visual e implementación |
 
 ## Orden de ejecución
@@ -349,16 +349,19 @@ Esta dirección reemplaza el sketch móvil de borde a borde del PRD:
 
 ### Definición de terminado
 
-- [ ] Las acciones de imprimir, tema, idioma y enlaces funcionan en EN/ES.
-- [ ] Teclado, foco, estado vacío y lectores de pantalla cumplen el PRD.
-- [ ] Desktop, móvil, claro, oscuro y reduced motion fueron validados.
-- [ ] La paleta móvil conserva margen lateral e inferior en portrait y landscape.
-- [ ] La interfaz touch conserva el botón `⌘`, pero no muestra badges de atajos
+- [x] Las acciones de imprimir, tema, idioma y enlaces funcionan en EN/ES.
+- [x] Teclado, foco, estado vacío y lectores de pantalla cumplen el PRD
+      (contrato ARIA automatizado; queda pendiente la pasada manual con
+      VoiceOver).
+- [x] Desktop, móvil, claro, oscuro y reduced motion fueron validados.
+- [x] La paleta móvil conserva margen lateral e inferior en portrait y landscape.
+- [x] La interfaz touch conserva el botón `⌘`, pero no muestra badges de atajos
       secundarios dentro del menú.
-- [ ] La paleta permanece fuera de la impresión.
-- [ ] El chunk cumple ≤ 8 kB minificado y ≤ 3 kB gzip.
-- [ ] `ninja-keys` no aparece en dependencias, código ni documentación.
-- [ ] Las pruebas de paleta y `pnpm check` pasan juntas.
+- [x] La paleta permanece fuera de la impresión.
+- [x] El chunk cumple ≤ 8 kB minificado y ≤ 3 kB gzip (3.66 kB / 1.57 kB gzip
+      más 0.25 kB del módulo de tema compartido; antes 54.41 kB / 17.55 kB).
+- [x] `ninja-keys` no aparece en dependencias, código ni documentación.
+- [x] Las pruebas de paleta y `pnpm check` pasan juntas.
 
 ---
 
@@ -507,6 +510,11 @@ query en `ch`) y header de Education en grid con colapso a ≤560 px. Los nuevos
 contratos viven en `tests/ui/responsive.spec.ts` y en las aserciones de altura,
 orden editorial y lista de Skills de `tests/print/`.
 
-Ejecutar **R1**: la paleta de comandos nativa según
-[plan-command-palette-native.md](./plan-command-palette-native.md) con la
-revisión touch de este roadmap.
+R1 quedó cerrado: paleta nativa `<dialog>` + combobox ARIA con búsqueda
+normalizada, hoja inferior flotante en móvil, botón `⌘`, tema/idioma/print
+integrados y `ninja-keys` eliminado (reducción del chunk de 54.41 kB a 3.91 kB
+minificados). Los contratos viven en `tests/palette/command-palette.spec.ts`.
+Pendientes manuales: VoiceOver y el preview de Vercel del PR.
+
+Ejecutar **R2**: la automatización i18n según
+[prd-cv-i18n-sync.md](./prd-cv-i18n-sync.md).

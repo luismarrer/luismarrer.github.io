@@ -31,7 +31,7 @@ Astro 5 static portfolio site. All page content is generated from two JSON Resum
 
 ### i18n
 
-Two locales, `en` (default) and `es`. UI strings that aren't part of the CV data (section titles, command-palette text) live in `src/i18n/ui.ts`, accessed via the `useTranslations` / `useKeyboardManager` helpers in `src/i18n/utils.ts`. Adding user-visible text means adding it to both locales in `ui.ts` (or both CV JSON files).
+Two locales, `en` (default) and `es`. UI strings that aren't part of the CV data (section titles, command-palette text) live in `src/i18n/ui.ts`, accessed via the `useTranslations` / `useCommandPalette` helpers in `src/i18n/utils.ts`. Adding user-visible text means adding it to both locales in `ui.ts` (or both CV JSON files).
 
 ### Icons
 
@@ -40,7 +40,7 @@ Each tech/social icon is an inline-SVG `.astro` component in `src/icons/`. Compo
 ### Other notes
 
 - Path alias `@/*` → `src/*` (defined in `tsconfig.json`, which extends Astro's strict config).
-- `KeyboardManager.astro` wraps the `ninja-keys` web component (Cmd+K command palette); its actions are built from the CV's social profiles.
+- `CommandPalette.astro` plus `src/lib/commandPalette.ts` implement the native Cmd/Ctrl+K command palette (dialog + combobox, no runtime dependencies); its link commands are built from the CV's social profiles, and the theme action shares `src/lib/theme.ts` with the visible toggle.
 - `scripts/i18n-check.mjs` is the EN/ES coherence gate. It also runs as Vercel's `ignoreCommand` (see `vercel.json`): if the CV files are out of sync, the production deploy is skipped and the site stays on the last good deploy. Its list of translatable field paths (`TRANSLATABLE`) must be updated if the CV schema usage changes.
 - The browser title is intentionally fixed to `Luis Marrero González - Resume` in both locale pages. Keep this minimal title unchanged and do not derive it from `basics.label` or other CV content.
 - Certification data may remain in the CV JSON files, but certifications must never be rendered as a UI section or added to the locale page layout.
