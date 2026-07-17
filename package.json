@@ -12,7 +12,8 @@
     "astro": "astro",
     "i18n:check": "node scripts/i18n-check.mjs",
     "test:print": "pnpm build && playwright test tests/print",
-    "check": "pnpm i18n:check && pnpm test:print"
+    "test:ui": "pnpm build && playwright test tests/ui",
+    "check": "pnpm i18n:check && pnpm build && playwright test"
   },
   "dependencies": {
     "astro": "^5.13.7",

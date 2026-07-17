@@ -8,7 +8,8 @@ import {
   expectPaperSize,
   expectPdfLinks,
   expectPdfVisualIntegrity,
-  expectSectionPagePlan,
+  expectSectionFlow,
+  expectSkillsTypographicLine,
   expectPrintItemsNotSplit,
   extractPdfPages,
   normalizeText,
@@ -41,7 +42,7 @@ interface CvFixture {
     name: string
     urls: { gitHub?: string; website: string }
   }>
-  skills: unknown[]
+  skills: Array<{ name: string }>
   work: unknown[]
 }
 
@@ -65,6 +66,7 @@ interface DomPrintContract {
     overlappingText: string[]
     printableItemBreaks: string[]
     projectBreakBefore: string
+    projectCardHeights: number[]
     projectColumnCount: number
     textNodeCount: number
   }
@@ -87,7 +89,8 @@ for (const locale of LOCALES) {
       expectPdfVisualIntegrity(pdfPages)
       expectPrintItemsNotSplit(pdfPages, dom.items)
       expectNoOrphanSectionHeadings(pdfPages, dom.sections)
-      expectSectionPagePlan(pdfPages, dom.sections)
+      expectSectionFlow(pdfPages, dom.sections)
+      expectSkillsList(pdfPages, dom, cv)
       expectPdfLinks(pdfPages, [
         ...expectedContactHrefs(cv),
         ...cv.projects.flatMap(({ urls }) => [
@@ -112,9 +115,25 @@ for (const locale of LOCALES) {
       expectPdfVisualIntegrity(pdfPages)
       expectPrintItemsNotSplit(pdfPages, dom.items)
       expectNoOrphanSectionHeadings(pdfPages, dom.sections)
-      expectSectionPagePlan(pdfPages, dom.sections)
+      expectSectionFlow(pdfPages, dom.sections)
+      expectSkillsList(pdfPages, dom, cv)
     })
   })
+}
+
+function expectSkillsList(
+  pdfPages: Awaited<ReturnType<typeof extractPdfPages>>,
+  dom: DomPrintContract,
+  cv: CvFixture,
+): void {
+  const skillsSection = dom.sections.find(({ id }) => id === "skills")
+
+  expect(skillsSection, "the skills section needs a printable heading").toBeDefined()
+  expectSkillsTypographicLine(
+    pdfPages,
+    skillsSection?.heading ?? "",
+    cv.skills.map(({ name }) => name),
+  )
 }
 
 async function preparePrintPage(
@@ -232,6 +251,9 @@ async function preparePrintPage(
         getComputedStyle(element).display !== "none" &&
         element.getClientRects().length > 0,
     ).length
+    const projectCardHeights = Array.from(
+      document.querySelectorAll<HTMLElement>('[data-print-item="project"]'),
+    ).map((card) => card.getBoundingClientRect().height)
     const projectColumns = projectsGrid
       ? getComputedStyle(projectsGrid).gridTemplateColumns
           .split(/\s+/)
@@ -443,6 +465,7 @@ async function preparePrintPage(
       projectBreakBefore: projectsSection
         ? getComputedStyle(projectsSection).breakBefore
         : "missing",
+      projectCardHeights,
       projectColumnCount: projectColumns.length,
       textNodeCount: textMetrics.length,
     }
@@ -571,8 +594,17 @@ function expectDomContract(dom: DomPrintContract, cv: CvFixture): void {
   ).toBe(0)
   expect(
     dom.styles.projectBreakBefore,
-    "projects must start the second editorial page",
-  ).toBe("page")
+    "projects must flow into available space, not force a page break",
+  ).toBe("auto")
+  expect(
+    dom.styles.projectCardHeights,
+    "the print grid must measure all six project cards",
+  ).toHaveLength(6)
+  expect(
+    Math.max(...dom.styles.projectCardHeights) -
+      Math.min(...dom.styles.projectCardHeights),
+    "printed project cards must share the same height (≤ 1px spread)",
+  ).toBeLessThanOrEqual(1)
   expect(
     dom.styles.projectColumnCount,
     "projects must keep their two-column print grid",

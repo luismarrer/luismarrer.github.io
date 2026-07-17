@@ -36,13 +36,62 @@ const phoneLabel = phone?.replace(
   /^\+1(\d{3})(\d{3})(\d{4})$/,
   "+1 $1 $2 $3",
 )
+
+const labelParts: string[] = label.split(" | ")
+
+interface PrintContact {
+  external?: boolean
+  href: string
+  kind: string
+  label?: string
+}
+
+const printContacts: PrintContact[] = [
+  ...(email ? [{ href: `mailto:${email}`, kind: "email", label: email }] : []),
+  ...(phone ? [{ href: `tel:${phone}`, kind: "phone", label: phoneLabel }] : []),
+  ...(url
+    ? [{ external: true, href: url, kind: "website", label: websiteLabel }]
+    : []),
+  ...(linkedUrl
+    ? [
+        {
+          external: true,
+          href: linkedUrl,
+          kind: "linkedin",
+          label: linkedLabel,
+        },
+      ]
+    : []),
+]
 ---
 
 <Section>
   <div class="hero">
     <div class="info">
       <h1>{name}</h1>
-      <p>{label}</p>
+      <p class="headline" data-hero-label>
+        {
+          labelParts.map((part, index) => (
+            <Fragment>
+              {index > 0 && (
+                <Fragment>
+                  <span class="sr-only">, </span>
+                  <span
+                    class="headline-separator"
+                    aria-hidden="true"
+                    data-hero-label-separator
+                  >
+                    |
+                  </span>
+                </Fragment>
+              )}
+              <span class="headline-part" data-hero-label-part>
+                {part}
+              </span>
+            </Fragment>
+          ))
+        }
+      </p>
       <p>
         <a
           id="location"
@@ -56,42 +105,23 @@ const phoneLabel = phone?.replace(
       </p>
       <footer class="print print-contacts">
         {
-          email && (
-            <a data-print-contact="email" href={`mailto:${email}`}>
-              {email}
-            </a>
-          )
-        }
-        {
-          phone && (
-            <a data-print-contact="phone" href={`tel:${phone}`}>
-              {phoneLabel}
-            </a>
-          )
-        }
-        {
-          url && (
-            <a
-              data-print-contact="website"
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {websiteLabel}
-            </a>
-          )
-        }
-        {
-          linkedUrl && (
-            <a
-              data-print-contact="linkedin"
-              href={linkedUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {linkedLabel}
-            </a>
-          )
+          printContacts.map((contact, index) => (
+            <Fragment>
+              {index > 0 && (
+                <span class="contact-separator" aria-hidden="true">
+                  &bull;
+                </span>
+              )}
+              <a
+                data-print-contact={contact.kind}
+                href={contact.href}
+                target={contact.external ? "_blank" : undefined}
+                rel={contact.external ? "noopener noreferrer" : undefined}
+              >
+                {contact.label}
+              </a>
+            </Fragment>
+          ))
         }
       </footer>
       <footer class="no-print">
@@ -168,6 +198,8 @@ const phoneLabel = phone?.replace(
       gap: 0.5rem;
       min-width: 0;
       padding-right: 32px;
+      flex: 1;
+      container-type: inline-size;
     }
 
     figure {
@@ -183,6 +215,48 @@ const phoneLabel = phone?.replace(
       font-weight: 500;
       font-size: 1.1rem;
       text-wrap: balance;
+    }
+
+    /* The professional-title separator only exists in the horizontal
+       composition; when the two specialties do not fit on one line the
+       parts stack and the pipe disappears instead of wrapping alone. */
+    .headline {
+      text-wrap: initial;
+    }
+
+    .headline-part {
+      display: block;
+      line-height: 1.35;
+    }
+
+    .headline-separator {
+      display: none;
+    }
+
+    /* 54ch tracks the longest one-line label (ES, ~53ch in the container's
+       own monospace font), so the threshold scales with whichever font the
+       platform actually renders instead of a fixed pixel guess. */
+    @container (min-width: 54ch) {
+      .headline-part {
+        display: inline;
+      }
+
+      .headline-separator {
+        display: inline;
+        margin-inline: 0.5ch;
+      }
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      border: 0;
+      clip-path: inset(50%);
+      overflow: hidden;
+      white-space: nowrap;
     }
 
     img {
@@ -250,6 +324,7 @@ const phoneLabel = phone?.replace(
       .hero {
         flex-direction: column;
         justify-content: flex-start;
+        align-items: stretch;
         gap: 16px;
       }
 
@@ -261,6 +336,7 @@ const phoneLabel = phone?.replace(
 
       figure {
         order: -1;
+        align-self: center;
       }
 
       h1 {
@@ -341,12 +417,22 @@ const phoneLabel = phone?.replace(
         text-underline-offset: 1.5pt;
       }
 
-      .print-contacts a + a::before {
-        content: "\2022";
-        display: inline-block;
+      .contact-separator {
         margin: 0 5pt;
         color: #777;
-        text-decoration: none;
+      }
+
+      .headline-part {
+        display: inline;
+      }
+
+      .headline-separator {
+        display: inline;
+        margin-inline: 0.5ch;
+      }
+
+      .sr-only {
+        display: none;
       }
     }
   </style>

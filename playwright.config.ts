@@ -4,7 +4,7 @@ const baseURL = "http://127.0.0.1:4322"
 
 export default defineConfig({
   testDir: "./tests",
-  testMatch: "**/print/*.spec.ts",
+  testMatch: "**/*.spec.ts",
   timeout: 90_000,
   expect: {
     timeout: 10_000,
