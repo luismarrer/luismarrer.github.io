@@ -1,0 +1,49 @@
+# i18n-preview-links — comment direct /en/ and /es/ preview links on sync
+# PRs once Vercel finishes the preview deployment (PRD §6.3).
+#
+# Vercel reports previews as GitHub deployments, so this listens to
+# deployment_status instead of guessing preview URLs.
+
+name: i18n-preview-links
+
+on:
+  deployment_status:
+
+permissions:
+  pull-requests: write
+
+jobs:
+  comment:
+    if: >
+      github.event.deployment_status.state == 'success' &&
+      startsWith(github.event.deployment.ref, 'i18n/sync-')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Comment preview links on the PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PREVIEW_URL: ${{ github.event.deployment_status.environment_url || github.event.deployment_status.target_url }}
+          REF: ${{ github.event.deployment.ref }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          pr_number="$(gh pr list --repo "$REPO" --head "$REF" --state open --json number --jq '.[0].number')"
+          if [ -z "$pr_number" ] || [ "$pr_number" = "null" ]; then
+            echo "no open PR for $REF — nothing to comment"
+            exit 0
+          fi
+
+          marker="<!-- i18n-preview-links -->"
+          if gh pr view "$pr_number" --repo "$REPO" --json comments --jq '.comments[].body' | grep -qF "$marker"; then
+            echo "preview links already commented"
+            exit 0
+          fi
+
+          base="${PREVIEW_URL%/}"
+          gh pr comment "$pr_number" --repo "$REPO" --body "$marker
+          Preview ready — review the translation in the browser:
+
+          - 🇺🇸 [English](${base}/en/)
+          - 🇵🇷 [Español](${base}/es/)"

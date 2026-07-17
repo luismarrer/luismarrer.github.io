@@ -1,6 +1,6 @@
 # Roadmap — Portfolio/CV
 
-Estado: **v1.6 — R0 y R1 completados; R2 en ejecución** · Última actualización: 2026-07-17
+Estado: **v1.7 — R0–R1 completados; R2 implementado (pendiente de secretos); R3 en ejecución** · Última actualización: 2026-07-17
 
 ## Objetivo
 
@@ -28,7 +28,7 @@ sin perder el carácter minimalista del sitio.
 | Print/PDF | R0 completado: tarjetas igualadas, separadores sibling, reparto sin salto forzado y Skills tipográfico | — |
 | Hero responsive | El título profesional apila sus dos partes cuando no caben; el separador solo existe en la composición horizontal | — |
 | Education responsive | Header en grid `minmax(0,1fr) auto`; colapsa a una columna a ≤560 px | — |
-| PRD i18n | Hosting, redirect e `i18n-check` completados | Traductor con PR/preview y validador delegado |
+| PRD i18n | Código completo: traductor (`i18n-sync`), previews (`i18n-preview-links`), validador (`i18n-validate`) con cliente LLM pluggable y modo mock probado | Configurar secretos (`OPENAI_API_KEY`, `I18N_BOT_TOKEN`), auto-merge y branch protection; smoke test con la clave real |
 | Paleta nativa | R1 completado: `CommandPalette.astro` + `src/lib/commandPalette.ts`, hoja flotante touch, 20 pruebas Playwright, `ninja-keys` eliminado | QA manual con VoiceOver y validación del preview de Vercel |
 | Experiencia laboral | Nombre, puesto, fechas y resumen en UI | Modelo de modalidad/tecnologías, exploración visual e implementación |
 
@@ -376,22 +376,38 @@ Documento fuente: [prd-cv-i18n-sync.md](./prd-cv-i18n-sync.md).
 - `scripts/i18n-check.mjs` como contrato estructural y de invariantes.
 - `vercel.json` usando el check como Ignored Build Step.
 
-### R2.1 — Traductor y PR
+### R2.1 — Traductor y PR — implementado
 
-- Crear el cliente de traducción desacoplado del proveedor.
-- Detectar dirección y campos modificados desde el diff.
-- Traducir solo esos campos respetando las reglas de contenido.
-- Crear rama `i18n/sync-<sha>` y PR mediante GitHub App o PAT.
-- Publicar en el PR los previews directos de `/en/` y `/es/`.
-- Probar tagline y summary reales en ambas direcciones.
+- [x] Cliente de traducción desacoplado del proveedor
+      (`scripts/translation-client.mjs`: OpenAI vía fetch + proveedor `mock`
+      para probar la fontanería sin clave).
+- [x] Detección de dirección y campos modificados desde el diff
+      (`scripts/i18n-sync.mjs` sobre el reporte `--json` de `i18n-check`;
+      soporta hojas desincronizadas y cambios estructurales de un solo lado,
+      preservando traducciones existentes por matching de valor).
+- [x] Traducción limitada a los campos señalados, con las reglas de contenido
+      del README en el prompt.
+- [x] Workflow `i18n-sync.yml`: rama `i18n/sync-<sha>` y PR con
+      `I18N_BOT_TOKEN` (PAT/App) y fallback documentado a `GITHUB_TOKEN`.
+- [x] Workflow `i18n-preview-links.yml`: comenta `<preview>/en/` y
+      `<preview>/es/` cuando Vercel reporta el deployment del PR.
+- [ ] Smoke test del motor con la clave real
+      (`node scripts/i18n-sync.mjs --smoke`) — requiere `OPENAI_API_KEY`.
 
-### R2.2 — Validación delegada
+### R2.2 — Validación delegada — implementado
 
-- Implementar `/delegate` y la etiqueta `auto-merge`.
-- Autorizar la delegación únicamente cuando el actor sea el dueño del repo.
-- Separar el rol/prompt del traductor y el del revisor.
-- Permitir tres salidas auditables: merge, corrección + merge o abstención.
-- Ejecutar una prueba completa desde una edición en un idioma hasta producción.
+- [x] Workflow `i18n-validate.yml` disparado por comentario `/delegate` o
+      etiqueta `auto-merge`.
+- [x] Delegación autorizada solo cuando el actor es el dueño del repo; el
+      job ejecuta únicamente código de `main` y toma del PR solo los dos
+      ficheros de datos.
+- [x] Rol/prompt del revisor separado del traductor
+      (`scripts/i18n-validate.mjs`, con gate estructural previo vía
+      `i18n-check --dir`).
+- [x] Tres salidas auditables como comentario en el PR: merge, corrección +
+      merge o abstención explicada.
+- [ ] Prueba de fuego completa desde una edición hasta producción — requiere
+      los prerrequisitos externos.
 
 ### Prerrequisitos externos
 
@@ -516,5 +532,8 @@ integrados y `ninja-keys` eliminado (reducción del chunk de 54.41 kB a 3.91 kB
 minificados). Los contratos viven en `tests/palette/command-palette.spec.ts`.
 Pendientes manuales: VoiceOver y el preview de Vercel del PR.
 
-Ejecutar **R2**: la automatización i18n según
-[prd-cv-i18n-sync.md](./prd-cv-i18n-sync.md).
+R2 quedó implementado y probado con el proveedor mock (fontanería completa:
+detección → traducción → escritura → validación). Su activación depende del
+runbook anterior.
+
+Ejecutar **R3**: metadatos de experiencia laboral.
