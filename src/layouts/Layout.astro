@@ -90,23 +90,11 @@ const { image, summary, url } = basics
     </button>
     <slot />
     <script>
-      const syncNinjaKeys = () => {
-        document
-          .querySelector("ninja-keys")
-          ?.classList.toggle(
-            "dark",
-            document.documentElement.dataset.theme === "dark",
-          )
-      }
-      syncNinjaKeys()
+      import { toggleTheme } from "@/lib/theme"
 
-      document.getElementById("theme-toggle")?.addEventListener("click", () => {
-        const next =
-          document.documentElement.dataset.theme === "dark" ? "light" : "dark"
-        document.documentElement.dataset.theme = next
-        localStorage.setItem("theme", next)
-        syncNinjaKeys()
-      })
+      document
+        .getElementById("theme-toggle")
+        ?.addEventListener("click", () => toggleTheme())
     </script>
   </body>
 </html>
@@ -299,10 +287,6 @@ const { image, summary, url } = basics
     }
 
     .no-print {
-      display: none !important;
-    }
-
-    ninja-keys {
       display: none !important;
     }
   }

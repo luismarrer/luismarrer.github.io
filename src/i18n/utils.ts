@@ -1,4 +1,4 @@
-import { defaultLanguage, titles, keyboardManager } from "./ui"
+import { defaultLanguage, titles, commandPalette } from "./ui"
 
 export function useTranslations(lang: keyof typeof titles) {
   return function translate(key: keyof typeof titles[typeof defaultLanguage]) {
@@ -6,9 +6,9 @@ export function useTranslations(lang: keyof typeof titles) {
   }
 }
 
-export function useKeyboardManager(lang: keyof typeof keyboardManager) {
-  return function translate(key: keyof typeof keyboardManager[typeof defaultLanguage]) {
-    return keyboardManager[lang][key] || keyboardManager[defaultLanguage][key];
+export function useCommandPalette(lang: keyof typeof commandPalette) {
+  return function translate(key: keyof typeof commandPalette[typeof defaultLanguage]) {
+    return commandPalette[lang][key] || commandPalette[defaultLanguage][key];
   }
 }
 

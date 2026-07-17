@@ -1,0 +1,513 @@
+---
+import Close from "@/icons/Close.astro"
+import GitHub from "@/icons/GitHub.astro"
+import Languages from "@/icons/Languages.astro"
+import LinkedIn from "@/icons/LinkedIn.astro"
+import Printer from "@/icons/Printer.astro"
+import Search from "@/icons/Search.astro"
+import ThemeToggle from "@/icons/ThemeToggle.astro"
+import WorldMap from "@/icons/WorldMap.astro"
+import X from "@/icons/X.astro"
+import { commandPalette } from "@/i18n/ui"
+import { useCommandPalette } from "@/i18n/utils"
+import { normalizeSearchText } from "@/lib/commandPalette"
+import type { Icon } from "@/types"
+
+interface Profile {
+  network: string
+  url: string
+}
+
+const currentLanguage = (Astro.currentLocale ??
+  "en") as keyof typeof commandPalette
+const t = useCommandPalette(currentLanguage)
+
+const { profiles, url: personalWebsiteUrl } = Astro.props.cv.basics as {
+  profiles: Profile[]
+  url: string
+}
+
+const SOCIAL_NETWORKS_ICONS: Icon = { GitHub, LinkedIn, X }
+
+const oppositeLocaleUrl = currentLanguage === "es" ? "/en/" : "/es/"
+const index = (...parts: string[]) =>
+  normalizeSearchText(parts.join(" "), currentLanguage)
+
+const networkCommands = [
+  {
+    icon: WorldMap,
+    id: "palette-cmd-website",
+    label: t("personalWebsite"),
+    search: index(t("personalWebsite"), t("networks"), t("networkKeywords")),
+    url: personalWebsiteUrl,
+  },
+  ...profiles.map(({ network, url }) => ({
+    icon: SOCIAL_NETWORKS_ICONS[network],
+    id: `palette-cmd-${network.toLowerCase()}`,
+    label: network,
+    search: index(network, t("networks"), t("networkKeywords")),
+    url,
+  })),
+]
+---
+
+<div
+  class="command-palette no-print"
+  data-command-palette-root
+  data-locale={currentLanguage}
+  data-show-active="true"
+  data-empty={t("empty")}
+  data-results-one={t("resultsOne")}
+  data-results-many={t("resultsMany")}
+>
+  <footer class="palette-hint">
+    <p>
+      {t("hintPrefix")}
+      <kbd data-palette-key>⌘/Ctrl K</kbd>
+      {t("hintSuffix")}
+    </p>
+  </footer>
+
+  <button
+    class="palette-trigger"
+    type="button"
+    data-palette-trigger
+    aria-haspopup="dialog"
+    aria-label={t("openButton")}
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="28"
+      height="28"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      fill="none"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path
+        d="M7 9a2 2 0 1 1 2 -2v10a2 2 0 1 1 -2 -2h10a2 2 0 1 1 -2 2v-10a2 2 0 1 1 2 2h-10"
+      ></path>
+    </svg>
+  </button>
+
+  <dialog class="palette" aria-labelledby="palette-title">
+    <h2 id="palette-title" class="visually-hidden">{t("dialogTitle")}</h2>
+    <header class="palette-header">
+      <span class="palette-prompt" aria-hidden="true">~/cv ›</span>
+      <span class="palette-search-icon" aria-hidden="true"><Search /></span>
+      <input
+        type="search"
+        role="combobox"
+        aria-expanded="true"
+        aria-controls="palette-results"
+        aria-autocomplete="list"
+        autocomplete="off"
+        autocapitalize="off"
+        spellcheck="false"
+        placeholder={t("placeholder")}
+      />
+      <button
+        type="button"
+        class="palette-close"
+        data-palette-close
+        aria-label={t("close")}
+      >
+        <Close />
+      </button>
+    </header>
+
+    <div
+      class="palette-results"
+      id="palette-results"
+      role="listbox"
+      aria-labelledby="palette-title"
+    >
+      <div class="palette-group" role="group" aria-labelledby="palette-group-actions" data-group>
+        <div class="palette-group-title" id="palette-group-actions">
+          {t("actions")}
+        </div>
+        <div
+          role="option"
+          id="palette-cmd-print"
+          aria-selected="false"
+          data-command="print"
+          data-search={index(t("print"), t("actions"), t("printKeywords"))}
+        >
+          <span class="option-icon" aria-hidden="true"><Printer /></span>
+          <span class="option-label">{t("print")}</span>
+        </div>
+        <div
+          role="option"
+          id="palette-cmd-theme"
+          aria-selected="false"
+          data-command="theme"
+          data-search={index(
+            t("themeToDark"),
+            t("themeToLight"),
+            t("actions"),
+            t("themeKeywords"),
+          )}
+        >
+          <span class="option-icon" aria-hidden="true"><ThemeToggle /></span>
+          <span class="option-label theme-to-dark">{t("themeToDark")}</span>
+          <span class="option-label theme-to-light">{t("themeToLight")}</span>
+        </div>
+        <a
+          role="option"
+          id="palette-cmd-language"
+          aria-selected="false"
+          tabindex="-1"
+          href={oppositeLocaleUrl}
+          data-command="language"
+          data-search={index(t("language"), t("actions"), t("languageKeywords"))}
+        >
+          <span class="option-icon" aria-hidden="true"><Languages /></span>
+          <span class="option-label">{t("language")}</span>
+        </a>
+      </div>
+
+      <div class="palette-group" role="group" aria-labelledby="palette-group-networks" data-group>
+        <div class="palette-group-title" id="palette-group-networks">
+          {t("networks")}
+        </div>
+        {
+          networkCommands.map((command) => {
+            const NetworkIcon = command.icon
+            return (
+              <a
+                role="option"
+                id={command.id}
+                aria-selected="false"
+                tabindex="-1"
+                href={command.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-command="external-link"
+                data-search={command.search}
+              >
+                <span class="option-icon" aria-hidden="true">
+                  {NetworkIcon && <NetworkIcon />}
+                </span>
+                <span class="option-label">{command.label}</span>
+              </a>
+            )
+          })
+        }
+      </div>
+
+      <p class="palette-empty" data-palette-empty hidden>{t("empty")}</p>
+    </div>
+
+    <footer class="palette-footer" aria-hidden="true">
+      <span><kbd>↑↓</kbd> {t("navigateHint")}</span>
+      <span><kbd>↵</kbd> {t("selectHint")}</span>
+      <span><kbd>esc</kbd> {t("closeHint")}</span>
+    </footer>
+
+    <div class="visually-hidden" aria-live="polite" data-palette-count></div>
+  </dialog>
+</div>
+
+<script>
+  import { initCommandPalette } from "@/lib/commandPalette"
+
+  for (const root of document.querySelectorAll<HTMLElement>(
+    "[data-command-palette-root]",
+  )) {
+    initCommandPalette(root)
+  }
+</script>
+
+<style>
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    clip-path: inset(50%);
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  /* Desktop reminder bar */
+  .palette-hint {
+    background: var(--footer-bg);
+    border-top: 1px solid var(--border);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding-block: 8px;
+    text-align: center;
+    z-index: 5;
+  }
+
+  .palette-hint p {
+    color: var(--text-heading);
+    font-size: 0.85rem;
+  }
+
+  kbd {
+    background: var(--surface);
+    border-radius: 4px;
+    padding: 2px 4px;
+    font-size: 12px;
+    font-family: inherit;
+  }
+
+  /* Mobile ⌘ trigger */
+  .palette-trigger {
+    display: none;
+    position: fixed;
+    right: calc(10px + env(safe-area-inset-right));
+    bottom: calc(10px + env(safe-area-inset-bottom));
+    width: 50px;
+    height: 50px;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 5;
+  }
+
+  @media (max-width: 600px) {
+    .palette-hint {
+      display: none;
+    }
+
+    .palette-trigger {
+      display: flex;
+    }
+  }
+
+  /* Panel */
+  .palette {
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg);
+    color: var(--text-heading);
+    width: min(640px, calc(100vw - 32px));
+    max-height: min(26rem, calc(100dvh - 32px));
+    margin: auto;
+    margin-top: clamp(48px, 14dvh, 160px);
+    box-shadow: 0 18px 50px rgb(0 0 0 / 0.25);
+  }
+
+  .palette[open] {
+    display: flex;
+    flex-direction: column;
+    animation: palette-in 160ms ease-out;
+  }
+
+  .palette::backdrop {
+    background: rgb(0 0 0 / 0.4);
+    animation: backdrop-in 160ms ease-out;
+  }
+
+  @keyframes palette-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes backdrop-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .palette[open],
+    .palette::backdrop {
+      animation: none;
+    }
+  }
+
+  .palette-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .palette-prompt {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+
+  .palette-search-icon {
+    display: none;
+    color: var(--text-muted);
+    line-height: 0;
+  }
+
+  .palette input {
+    flex: 1;
+    min-width: 0;
+    min-height: 32px;
+    background: none;
+    border: none;
+    outline: none;
+    font: inherit;
+    font-size: 0.95rem;
+    color: var(--text-heading);
+    letter-spacing: inherit;
+  }
+
+  .palette input::placeholder {
+    color: var(--text-muted);
+  }
+
+  .palette input::-webkit-search-cancel-button {
+    display: none;
+  }
+
+  .palette-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    background: none;
+    border: none;
+    border-radius: 6px;
+    color: var(--text-muted);
+    cursor: pointer;
+  }
+
+  .palette-close:hover {
+    background: var(--surface);
+    color: var(--text-heading);
+  }
+
+  .palette-results {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 6px;
+    flex: 1;
+  }
+
+  .palette-group-title {
+    color: var(--text-muted);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 10px 10px 4px;
+  }
+
+  .palette [role="option"] {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    min-height: 40px;
+    border-radius: 6px;
+    color: var(--text-heading);
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .palette [role="option"][hidden] {
+    display: none;
+  }
+
+  .option-icon {
+    display: inline-flex;
+    color: var(--text-muted);
+    line-height: 0;
+  }
+
+  .palette [role="option"]:hover {
+    background: var(--surface);
+  }
+
+  [data-show-active="true"] .palette [role="option"][aria-selected="true"] {
+    background: var(--surface);
+  }
+
+  /* The theme option names its real destination for the current theme. */
+  .theme-to-light {
+    display: none;
+  }
+
+  :global(html[data-theme="dark"]) .theme-to-dark {
+    display: none;
+  }
+
+  :global(html[data-theme="dark"]) .theme-to-light {
+    display: inline;
+  }
+
+  .palette-empty {
+    padding: 20px 12px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+
+  .palette-footer {
+    display: flex;
+    gap: 16px;
+    padding: 8px 14px;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    flex-shrink: 0;
+  }
+
+  /* Touch: floating bottom sheet, no keyboard affordances */
+  @media (max-width: 600px) {
+    .palette {
+      width: calc(100vw - 28px);
+      margin: auto 14px calc(14px + env(safe-area-inset-bottom));
+      max-height: min(60dvh, 480px);
+      border-radius: 12px;
+    }
+
+    .palette-prompt {
+      display: none;
+    }
+
+    .palette-search-icon {
+      display: inline-flex;
+    }
+
+    .palette input,
+    .palette-close {
+      min-height: 44px;
+    }
+
+    .palette [role="option"] {
+      min-height: 44px;
+    }
+  }
+
+  @media (hover: none), (pointer: coarse) {
+    .palette-footer {
+      display: none;
+    }
+  }
+</style>

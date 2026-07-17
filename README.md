@@ -22,7 +22,7 @@ The content is generated from a JSON file, based on the [JSON Resume](https://js
 
 - [Astro](https://astro.build/) - A modern framework for building websites.
 - [TypeScript](https://www.typescriptlang.org/) - A superset of JavaScript that adds static typing and class-based objects.
-- [Ninja Keys](https://github.com/ssleptsov/ninja-keys) - A dropdown menu with keyboard shortcuts.
+- Native command palette (`Cmd/Ctrl + K`) - a dependency-free dialog/combobox built with HTML, CSS, and TypeScript.
 
 ## Print and PDF quality
 
