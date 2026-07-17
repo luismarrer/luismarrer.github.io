@@ -236,7 +236,10 @@ export function expectPdfVisualIntegrity(pages: ExtractedPdfPage[]): void {
   const minimumTextHeight = 7
   const minimumMedianTextHeight = 8
   const minimumContrast = 4.5
-  const minimumVerticalSpan = [400, 340]
+  // Page 1 carries the hero through the first project rows; page 2 only
+  // needs the remaining row plus Education and Skills, so trailing free
+  // space there is deliberate (see docs/roadmap.md R0.4.2).
+  const minimumVerticalSpan = [400, 170]
 
   for (const page of pages) {
     const textItems = page.textItems.filter(({ str }) => normalizeText(str))
@@ -403,26 +406,52 @@ export function expectNoOrphanSectionHeadings(
   }
 }
 
-export function expectSectionPagePlan(
+export function expectSectionFlow(
   pages: ExtractedPdfPage[],
   sections: PrintSectionContract[],
 ): void {
-  const expectedPage: Record<string, number> = {
-    about: 1,
-    experience: 1,
-    projects: 2,
-    education: 2,
-    skills: 2,
-  }
+  let previous = { id: "start", page: 1 }
 
   for (const section of sections) {
-    const pageNumber = expectedPage[section.id]
-    expect(pageNumber, `missing page-plan expectation for ${section.id}`).toBe(
-      pages.find((page) =>
-        page.lines.includes(normalizeText(section.heading)),
-      )?.number,
-    )
+    const page = pages.find((candidate) =>
+      candidate.lines.includes(normalizeText(section.heading)),
+    )?.number
+
+    expect(
+      page,
+      `section "${section.id}" must appear on some PDF page`,
+    ).toBeDefined()
+    expect(
+      page ?? 0,
+      `section "${section.id}" must not start before "${previous.id}" (editorial order)`,
+    ).toBeGreaterThanOrEqual(previous.page)
+
+    previous = { id: section.id, page: page ?? 0 }
   }
+}
+
+export function expectSkillsTypographicLine(
+  pages: ExtractedPdfPage[],
+  heading: string,
+  skillNames: string[],
+): void {
+  const normalizedHeading = normalizeText(heading)
+  const match = pages.flatMap((page) =>
+    page.lines.flatMap((line, lineIndex) =>
+      line === normalizedHeading ? [{ lineIndex, page }] : [],
+    ),
+  )[0]
+
+  expect(match, `skills heading "${heading}" must exist in the PDF`).toBeDefined()
+
+  const printedList = normalizeText(
+    match.page.lines.slice(match.lineIndex + 1).join(" "),
+  )
+
+  expect(
+    printedList,
+    "print skills must be a single comma-separated list, each skill exactly once and in order",
+  ).toBe(normalizeText(skillNames.join(", ")))
 }
 
 function pageContains(page: ExtractedPdfPage, chunk: string): boolean {

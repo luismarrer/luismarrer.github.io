@@ -1,6 +1,6 @@
 # Roadmap — Portfolio/CV
 
-Estado: **v1.4 — propuesto para ejecución** · Última actualización: 2026-07-17
+Estado: **v1.5 — R0 completado; R1 en ejecución** · Última actualización: 2026-07-17
 
 ## Objetivo
 
@@ -25,9 +25,9 @@ sin perder el carácter minimalista del sitio.
 
 | Área | Estado | Pendiente real |
 |---|---|---|
-| Print/PDF | Base implementada: dos páginas, enlaces y regresión EN/ES + Letter/A4 | Igualar tarjetas, corregir separadores de links, rebalancear páginas y simplificar Skills |
-| Hero responsive | La composición móvil ya apila retrato y contenido | Evitar que el separador `|` quede aislado cuando el título profesional se divide |
-| Education responsive | Institución y fechas comparten fila hasta 420 px | Cambiar de layout antes de que un nombre largo comprima o desplace las fechas |
+| Print/PDF | R0 completado: tarjetas igualadas, separadores sibling, reparto sin salto forzado y Skills tipográfico | — |
+| Hero responsive | El título profesional apila sus dos partes cuando no caben; el separador solo existe en la composición horizontal | — |
+| Education responsive | Header en grid `minmax(0,1fr) auto`; colapsa a una columna a ≤560 px | — |
 | PRD i18n | Hosting, redirect e `i18n-check` completados | Traductor con PR/preview y validador delegado |
 | Paleta nativa | PRD listo; `ninja-keys` sigue activo | Implementación, revisión del layout touch, pruebas, migración y limpieza |
 | Experiencia laboral | Nombre, puesto, fechas y resumen en UI | Modelo de modalidad/tecnologías, exploración visual e implementación |
@@ -69,11 +69,11 @@ sin alterar la versión web ni forzar una tercera página.
 
 #### Definición de terminado
 
-- [ ] Las seis tarjetas tienen la misma altura en EN y ES.
-- [ ] Letter y A4 continúan generando exactamente dos páginas.
-- [ ] Ningún texto, tag, borde o enlace queda recortado.
-- [ ] `pnpm check` pasa localmente y en CI.
-- [ ] Los cuatro PDFs renderizados fueron revisados visualmente.
+- [x] Las seis tarjetas tienen la misma altura en EN y ES.
+- [x] Letter y A4 continúan generando exactamente dos páginas.
+- [x] Ningún texto, tag, borde o enlace queda recortado.
+- [x] `pnpm check` pasa localmente y en CI.
+- [x] Los cuatro PDFs renderizados fueron revisados visualmente.
 
 ### R0.2 — Título profesional responsive sin separador huérfano
 
@@ -124,11 +124,11 @@ Móvil:            Software Developer
 
 #### Definición de terminado
 
-- [ ] El separador nunca queda huérfano en ningún ancho soportado.
-- [ ] EN y ES comparten el mismo comportamiento sin copy especial para móvil.
-- [ ] La lectura accesible no anuncia puntuación decorativa innecesaria.
-- [ ] Desktop, móvil y print conservan una jerarquía visual coherente.
-- [ ] Las pruebas responsive y `pnpm check` pasan.
+- [x] El separador nunca queda huérfano en ningún ancho soportado.
+- [x] EN y ES comparten el mismo comportamiento sin copy especial para móvil.
+- [x] La lectura accesible no anuncia puntuación decorativa innecesaria.
+- [x] Desktop, móvil y print conservan una jerarquía visual coherente.
+- [x] Las pruebas responsive y `pnpm check` pasan.
 
 ### R0.3 — Education responsive sin competencia entre título y fechas
 
@@ -190,11 +190,11 @@ Bachelor of Science in Computer Science
 
 #### Definición de terminado
 
-- [ ] El layout cambia de dos a una columna antes de producir compresión.
-- [ ] No se pierde ni se oculta ninguna parte del nombre oficial.
-- [ ] Las fechas conservan legibilidad y jerarquía en todos los anchos.
-- [ ] EN/ES, desktop, móvil y print fueron revisados visualmente.
-- [ ] Las pruebas responsive y `pnpm check` pasan.
+- [x] El layout cambia de dos a una columna antes de producir compresión.
+- [x] No se pierde ni se oculta ninguna parte del nombre oficial.
+- [x] Las fechas conservan legibilidad y jerarquía en todos los anchos.
+- [x] EN/ES, desktop, móvil y print fueron revisados visualmente.
+- [x] Las pruebas responsive y `pnpm check` pasan.
 
 ### R0.4 — Pulido editorial del PDF
 
@@ -258,13 +258,13 @@ TypeScript, Astro, React, Next.js, Python, SQL, Excel, Power BI, Git, C, Bash
 
 #### Definición de terminado
 
-- [ ] Solo el texto de cada link aparece subrayado; ningún `•` lo está.
-- [ ] Email, teléfono, web y LinkedIn siguen siendo clicables en los cuatro PDFs.
-- [ ] La primera página no termina prematuramente por un salto fijo antes de Projects.
-- [ ] Ningún heading, proyecto, Education o Skills queda dividido de forma incoherente.
-- [ ] Skills se presenta como lista con comas en print y conserva sus pills en web.
-- [ ] EN/ES y Letter/A4 generan exactamente dos páginas y pasan revisión visual.
-- [ ] `pnpm check` pasa localmente y en CI.
+- [x] Solo el texto de cada link aparece subrayado; ningún `•` lo está.
+- [x] Email, teléfono, web y LinkedIn siguen siendo clicables en los cuatro PDFs.
+- [x] La primera página no termina prematuramente por un salto fijo antes de Projects.
+- [x] Ningún heading, proyecto, Education o Skills queda dividido de forma incoherente.
+- [x] Skills se presenta como lista con comas en print y conserva sus pills en web.
+- [x] EN/ES y Letter/A4 generan exactamente dos páginas y pasan revisión visual.
+- [x] `pnpm check` pasa localmente y en CI.
 
 ---
 
@@ -499,8 +499,14 @@ Un milestone solo puede cerrarse cuando:
 
 ## Próxima acción
 
-Ejecutar **R0** como un cambio aislado: igualar las tarjetas impresas, corregir
-los links y Skills en print, prototipar el nuevo reparto de páginas, corregir el
-label del hero y el header de Education, añadir sus contratos de regresión y
-volver a revisar desktop, móvil y los cuatro PDFs antes de comenzar la paleta
-nativa.
+R0 quedó cerrado: tarjetas impresas igualadas (≤1 px de diferencia medida en el
+contrato Playwright), links con separadores sibling, Projects fluyendo en la
+página 1 (2 filas) con la última fila + Education + Skills en la página 2,
+Skills como lista tipográfica, label del hero sin separador huérfano (container
+query en `ch`) y header de Education en grid con colapso a ≤560 px. Los nuevos
+contratos viven en `tests/ui/responsive.spec.ts` y en las aserciones de altura,
+orden editorial y lista de Skills de `tests/print/`.
+
+Ejecutar **R1**: la paleta de comandos nativa según
+[plan-command-palette-native.md](./plan-command-palette-native.md) con la
+revisión touch de este roadmap.

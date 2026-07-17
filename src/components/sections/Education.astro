@@ -75,42 +75,47 @@ const labels = cvLabels[currentLanguage]
     color: var(--text-heading);
   }
 
+  article h3 {
+    text-wrap: balance;
+  }
+
   article a {
     color: var(--text-heading);
+    display: inline;
   }
 
   article a:hover {
     text-decoration: underline;
   }
 
+  /* Institution and dates share a row only while both really fit: the
+     title column can wrap without pushing the period out of the viewport. */
   header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 16px;
+    align-items: baseline;
     margin-bottom: 4px;
+  }
+
+  header > div {
+    min-width: 0;
   }
 
   time {
     color: var(--text-muted);
     font-size: 0.85rem;
-    min-width: 145px;
     white-space: nowrap;
+    text-align: right;
   }
 
-  @media screen and (width <= 700px) {
-    time {
-      text-align: right;
-    }
-  }
-
-  @media screen and (width <= 420px) {
+  @media screen and (width <= 560px) {
     header {
-      flex-direction: column;
-      gap: 4px;
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: 4px;
     }
 
     time {
-      min-width: 0;
       text-align: left;
     }
   }

@@ -28,12 +28,14 @@ The content is generated from a JSON file, based on the [JSON Resume](https://js
 
 The print layout is a deliberate two-page resume rather than a copy of the web UI:
 
-- Page 1 contains the print-specific header, profile, and work experience.
-- Page 2 contains projects, education, and skills.
-- Contact and project links remain clickable in exported PDFs.
+- Page 1 contains the print-specific header, profile, work experience, and the first project rows.
+- Projects flow into the available space instead of forcing a page break; the remaining row, education, and skills close page 2.
+- The six project cards share exactly the same height in the printed grid.
+- Skills print as a single comma-separated typographic list instead of pills.
+- Contact and project links remain clickable in exported PDFs, with the `•` separators outside the underlined links.
 - Letter is the canonical paper size; A4 is also covered as a compatibility check.
 
-Run `pnpm test:print` to build the site and validate both locales in Letter and A4. The tests check page count and size, editorial page boundaries, intact entries, non-orphaned headings, PDF links, dark-theme reset, contrast, readable type, margins, clipping, and overlaps. Run `pnpm check` for the complete i18n, build, and print gate.
+Run `pnpm test:print` to build the site and validate both locales in Letter and A4. The tests check page count and size, editorial section order, intact entries, non-orphaned headings, equal project-card heights, the skills list, PDF links, dark-theme reset, contrast, readable type, margins, clipping, and overlaps. Run `pnpm test:ui` for the responsive contracts (hero label separator, education header). Run `pnpm check` for the complete i18n, build, print, and responsive gate.
 
 Node 22.13 or newer is required. After a fresh install, download the test browser once with `pnpm exec playwright install chromium`.
 

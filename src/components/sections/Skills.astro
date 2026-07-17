@@ -84,18 +84,33 @@ const SKILLS_ICONS: Icon = {
   }
 
   @media print {
+    /* Print renders skills as a single typographic list: names separated
+       by commas, wrapping at the spaces after each comma so no name splits
+       and no comma starts a line. */
     ul {
-      gap: 3pt;
+      display: block;
+      line-height: 1.45;
     }
 
     li {
-      padding: 1.5pt 4pt;
-      border: 0.5pt solid #aaa;
-      border-radius: 2pt;
+      display: inline;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
       background: transparent;
       color: #111;
-      font-size: 8.25pt;
-      line-height: 1.2;
+      font-size: 8.75pt;
+      line-height: 1.45;
+    }
+
+    li span {
+      white-space: nowrap;
+    }
+
+    /* The comma hangs directly off the name so it can never start a line;
+       the whitespace between list items provides the wrap opportunity. */
+    li:not(:last-child) span::after {
+      content: ",";
     }
 
     li :global(svg) {

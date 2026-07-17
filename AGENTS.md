@@ -12,9 +12,10 @@ Uses Node 22.13 or newer and pnpm (pinned in `package.json`).
 - `pnpm preview` — preview the production build
 - `pnpm i18n:check` — verify `cv-en.json` and `cv-es.json` are in sync (structure, invariant fields, stale translations; `--base <ref>` to compare against a commit)
 - `pnpm test:print` — build and validate EN/ES PDFs in Letter and A4 with Playwright
-- `pnpm check` — run i18n coherence, production build, and all print/PDF checks
+- `pnpm test:ui` — build and run the responsive contracts (hero label separator, education header) with Playwright
+- `pnpm check` — run i18n coherence, production build, and all Playwright checks (print + responsive)
 
-There is no linter. Print/PDF regression tests run with Playwright. Production is hosted on Vercel at https://cv.luismarrero.me — every push to `main` auto-deploys via Vercel's git integration, and PRs get preview deploys. `.github/workflows/deploy.yml` only publishes the redirect page in `redirect/` to GitHub Pages, so the old `luismarrer.github.io` URL forwards to production. See `docs/prd-cv-i18n-sync.md` for the translation-sync pipeline design.
+There is no linter. Print/PDF and responsive regression tests run with Playwright. Production is hosted on Vercel at https://cv.luismarrero.me — every push to `main` auto-deploys via Vercel's git integration, and PRs get preview deploys. `.github/workflows/deploy.yml` only publishes the redirect page in `redirect/` to GitHub Pages, so the old `luismarrer.github.io` URL forwards to production. See `docs/prd-cv-i18n-sync.md` for the translation-sync pipeline design.
 
 ## Architecture
 
