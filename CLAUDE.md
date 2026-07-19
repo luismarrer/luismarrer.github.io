@@ -49,6 +49,7 @@ Each tech/social icon is an inline-SVG `.astro` component in `src/icons/`. Compo
 When editing the CV JSON files:
 
 - `cv-en.json` and `cv-es.json` must contain the same content (translated).
+- `work[].workMode` is a canonical enum (`remote` | `hybrid` | `on-site`) and `work[].technologies` are canonical tech names — both identical in the two files (invariants, never translated; the UI translates the mode label via `ui.ts`).
 - Project titles: maximum 2 words.
 - Projects sorted by importance, descending.
 - Project descriptions: one sentence, max 90 characters.

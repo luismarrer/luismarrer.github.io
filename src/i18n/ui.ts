@@ -28,10 +28,20 @@ export const cvLabels = {
     en: {
         present: "Present",
         educationIn: "in",
+        workModes: {
+            remote: "Remote",
+            hybrid: "Hybrid",
+            "on-site": "On-site",
+        },
     },
     es: {
         present: "Actual",
         educationIn: "en",
+        workModes: {
+            remote: "Remoto",
+            hybrid: "Híbrido",
+            "on-site": "Presencial",
+        },
     },
 }
 

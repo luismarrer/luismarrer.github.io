@@ -1,6 +1,10 @@
 # Roadmap — Portfolio/CV
 
-Estado: **v1.7 — R0–R1 completados; R2 implementado (pendiente de secretos); R3 en ejecución** · Última actualización: 2026-07-17
+Estado: **v1.8 — roadmap ejecutado: R0–R3 implementados** · Última actualización: 2026-07-17
+
+> Pendientes que requieren al autor: activar R2 (runbook más abajo), ratificar
+> la dirección visual de R3 (línea técnica) y confirmar los `workMode` marcados
+> como provisionales, además del QA manual con VoiceOver y el preview de Vercel.
 
 ## Objetivo
 
@@ -30,7 +34,7 @@ sin perder el carácter minimalista del sitio.
 | Education responsive | Header en grid `minmax(0,1fr) auto`; colapsa a una columna a ≤560 px | — |
 | PRD i18n | Código completo: traductor (`i18n-sync`), previews (`i18n-preview-links`), validador (`i18n-validate`) con cliente LLM pluggable y modo mock probado | Configurar secretos (`OPENAI_API_KEY`, `I18N_BOT_TOKEN`), auto-merge y branch protection; smoke test con la clave real |
 | Paleta nativa | R1 completado: `CommandPalette.astro` + `src/lib/commandPalette.ts`, hoja flotante touch, 20 pruebas Playwright, `ninja-keys` eliminado | QA manual con VoiceOver y validación del preview de Vercel |
-| Experiencia laboral | Nombre, puesto, fechas y resumen en UI | Modelo de modalidad/tecnologías, exploración visual e implementación |
+| Experiencia laboral | R3 implementado: `workMode` + `technologies` en ambos JSON y línea técnica bajo el puesto (web, móvil, dark y print) | Ratificar la variante elegida y confirmar los `workMode` provisionales |
 
 ## Orden de ejecución
 
@@ -483,6 +487,14 @@ Comparar cada variante en EN/ES, desktop, móvil, tema oscuro y print. La fase
 termina con una decisión del autor; no se implementa una dirección final sin
 esa aprobación.
 
+**Resultado de la exploración (2026-07-17):** se prototiparon las tres
+variantes con los cuatro trabajos reales. El rail (2) desalinea la columna de
+fechas y parte el stack en líneas alineadas a la derecha; los chips (3)
+compiten visualmente con el resumen, duplican el lenguaje de los tags de
+proyectos y se acercan demasiado a la referencia. La **línea técnica (1)** es
+la implementada, tal como recomendaba la hipótesis inicial. Queda pendiente la
+ratificación del autor; cambiar de dirección solo toca `Experience.astro`.
+
 ### R3.2 — Implementación
 
 - Añadir los campos aprobados a `cv-en.json` y `cv-es.json`.
@@ -496,12 +508,19 @@ esa aprobación.
 
 ### Definición de terminado
 
-- [ ] Los cuatro trabajos tienen modalidad y stack reales, no inferidos.
-- [ ] La jerarquía empresa → puesto → metadatos → resumen es clara.
-- [ ] La UI no se percibe como una copia de la referencia.
-- [ ] EN/ES, desktop, móvil, claro, oscuro, Letter y A4 fueron revisados.
-- [ ] El CV continúa en dos páginas y ninguna experiencia se divide.
-- [ ] `pnpm i18n:check`, pruebas de UI y `pnpm check` pasan.
+- [ ] Los cuatro trabajos tienen modalidad y stack reales, no inferidos —
+      **parcial**: las tecnologías proceden de los summaries/highlights ya
+      publicados y SAC es `hybrid` según este roadmap, pero los `workMode` de
+      Universal Group, Holberton y UPR quedaron como `on-site` provisional y
+      deben confirmarse.
+- [x] La jerarquía empresa → puesto → metadatos → resumen es clara.
+- [x] La UI no se percibe como una copia de la referencia.
+- [x] EN/ES, desktop, móvil, claro, oscuro, Letter y A4 fueron revisados.
+- [x] El CV continúa en dos páginas y ninguna experiencia se divide (el
+      reparto pasó a 1 fila de proyectos en la página 1 y 2 en la segunda,
+      dentro de los invariantes editoriales).
+- [x] `pnpm i18n:check`, pruebas de UI y `pnpm check` pasan
+      (30 pruebas Playwright: print, responsive y paleta).
 
 ---
 
@@ -536,4 +555,7 @@ R2 quedó implementado y probado con el proveedor mock (fontanería completa:
 detección → traducción → escritura → validación). Su activación depende del
 runbook anterior.
 
-Ejecutar **R3**: metadatos de experiencia laboral.
+R3 quedó implementado con la línea técnica (variante recomendada) tras
+prototipar las tres direcciones; `workMode`/`technologies` viven como
+invariantes en ambos JSON. El roadmap está ejecutado de punta a punta: solo
+quedan las acciones del autor listadas al inicio del documento.

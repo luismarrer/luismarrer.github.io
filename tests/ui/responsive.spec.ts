@@ -139,6 +139,62 @@ for (const locale of LOCALES) {
       }
     })
 
+    test("experience metadata stays inside the layout at every width", async ({
+      page,
+    }) => {
+      await page.goto(`/${locale}/`, { waitUntil: "domcontentloaded" })
+
+      for (const width of WIDTHS) {
+        await page.setViewportSize({ width, height: 900 })
+
+        const layout = await page.evaluate(() => {
+          const section = document.querySelector(
+            '[data-cv-section="experience"]',
+          )
+          const sectionRight = section?.getBoundingClientRect().right ?? -1
+          return {
+            innerWidth: window.innerWidth,
+            metas: Array.from(
+              document.querySelectorAll(
+                '[data-print-item="experience"] .meta',
+              ),
+            ).map((meta) => {
+              const rect = meta.getBoundingClientRect()
+              const mode = meta.querySelector("[data-work-mode]")
+              return {
+                modeVisible: mode
+                  ? mode.getClientRects().length > 0
+                  : false,
+                right: rect.right,
+              }
+            }),
+            scrollWidth: document.documentElement.scrollWidth,
+            sectionRight,
+          }
+        })
+
+        expect(
+          layout.metas.length,
+          `all four jobs expose their metadata line at ${width}px`,
+        ).toBe(4)
+        expect(
+          layout.scrollWidth,
+          `no horizontal overflow at ${width}px`,
+        ).toBeLessThanOrEqual(layout.innerWidth + 1)
+
+        for (const meta of layout.metas) {
+          expect(
+            meta.modeVisible,
+            `work mode chip renders at ${width}px`,
+          ).toBe(true)
+          expect(
+            meta.right,
+            `metadata never spills past the section at ${width}px`,
+          ).toBeLessThanOrEqual(layout.sectionRight + 1)
+        }
+      }
+    })
+
     test("education header never squeezes dates against the institution", async ({
       page,
     }) => {
