@@ -51,6 +51,7 @@ Each tech/social icon is an inline-SVG `.astro` component in `src/icons/`. Compo
 When editing the CV JSON files:
 
 - `cv-en.json` and `cv-es.json` must contain the same content (translated).
+- `work[].workMode` is a canonical enum (`remote` | `hybrid` | `on-site`) and `work[].technologies` are canonical tech names — both identical in the two files (invariants, never translated; the UI translates the mode label via `ui.ts`).
 - Work Experience organization titles must stay concise: maximum 3 meaningful words, excluding short articles or prepositions such as `of`. Prefer established abbreviations such as `SAC` when the full organization name is longer.
 - Project titles: maximum 2 words.
 - Projects sorted by importance, descending.

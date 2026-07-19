@@ -36,6 +36,13 @@
     {
       "name": "SAC",
       "position": "Interno de desarrollo de software",
+      "workMode": "hybrid",
+      "technologies": [
+        "TypeScript",
+        "Next.js",
+        "Git",
+        "GitHub"
+      ],
       "url": "https://www.sociedadastronomia.com/",
       "startDate": "2026-06",
       "endDate": null,
@@ -51,6 +58,10 @@
     {
       "name": "Universal Group",
       "position": "Interno de Contact Center",
+      "workMode": "on-site",
+      "technologies": [
+        "Excel"
+      ],
       "url": "https://www.universalpr.com/",
       "startDate": "2026-06",
       "endDate": "2026-06",
@@ -66,6 +77,12 @@
     {
       "name": "Holberton School",
       "position": "Tutor de programación",
+      "workMode": "on-site",
+      "technologies": [
+        "C",
+        "Python",
+        "Linux"
+      ],
       "url": "https://holbertonschoolpr.com/",
       "startDate": "2024-05",
       "endDate": "2024-10",
@@ -80,6 +97,7 @@
     {
       "name": "University of Puerto Rico",
       "position": "Asistente de biblioteca (empleado estudiante)",
+      "workMode": "on-site",
       "url": "https://www.upr.edu/biblioteca-rrp/2017/07/06/referencia-revista/",
       "startDate": "2026-01",
       "endDate": null,
