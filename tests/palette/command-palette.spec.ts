@@ -56,6 +56,13 @@ for (const locale of LOCALES) {
       await page.keyboard.press("Escape")
       await expect(page.locator(`${DIALOG}[open]`)).toHaveCount(0)
 
+      // A non-empty search field must not eat the first Escape to clear
+      // itself — one press always closes.
+      await openWithKeyboard(page)
+      await page.locator(INPUT).fill("print")
+      await page.keyboard.press("Escape")
+      await expect(page.locator(`${DIALOG}[open]`)).toHaveCount(0)
+
       await openWithKeyboard(page)
       await page.locator("[data-palette-close]").click()
       await expect(page.locator(`${DIALOG}[open]`)).toHaveCount(0)

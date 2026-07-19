@@ -412,7 +412,7 @@ export function expectSectionFlow(
 ): void {
   let previous = { id: "start", page: 1 }
 
-  for (const section of sections) {
+  for (const [index, section] of sections.entries()) {
     const page = pages.find((candidate) =>
       candidate.lines.includes(normalizeText(section.heading)),
     )?.number
@@ -421,6 +421,12 @@ export function expectSectionFlow(
       page,
       `section "${section.id}" must appear on some PDF page`,
     ).toBeDefined()
+    if (index === 0) {
+      expect(
+        page,
+        `the resume must open with "${section.id}" on page 1`,
+      ).toBe(1)
+    }
     expect(
       page ?? 0,
       `section "${section.id}" must not start before "${previous.id}" (editorial order)`,
