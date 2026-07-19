@@ -81,9 +81,11 @@ function createOpenAiClient({ apiKey = process.env.OPENAI_API_KEY, model = proce
 function createMockClient() {
 	return {
 		provider: 'mock',
-		async completeJson({ schemaName, user }) {
+		// The mock consumes the structured `payload`, never the prose prompt,
+		// so prompt-wording edits cannot break plumbing tests.
+		async completeJson({ schemaName, payload }) {
 			if (schemaName === 'translations') {
-				const { items, target } = JSON.parse(user.slice(user.indexOf('{')));
+				const { items, target } = payload;
 				return {
 					translations: items.map(({ path, text }) => ({
 						path,
@@ -151,6 +153,7 @@ ${JSON.stringify({ items, source, target }, null, 2)}`;
 	const { translations } = await client.completeJson({
 		system,
 		user,
+		payload: { items, source, target },
 		schemaName: 'translations',
 		schema,
 	});

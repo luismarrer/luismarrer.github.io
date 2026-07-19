@@ -26,6 +26,12 @@ permissions:
   contents: write
   pull-requests: write
 
+# One validator run per PR at a time: a label + /delegate double-trigger must
+# not race on comments, correction pushes, or the merge.
+concurrency:
+  group: i18n-validate-${{ github.event.issue.number || github.event.pull_request.number }}
+  cancel-in-progress: false
+
 jobs:
   validate:
     if: >

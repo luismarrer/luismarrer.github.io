@@ -29,7 +29,7 @@ import { readFileSync } from 'node:fs';
 import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
-import { FILES, TRANSLATABLE, flattenTranslatable } from './i18n-shared.mjs';
+import { FILES, TRANSLATABLE, flattenTranslatable, kind } from './i18n-shared.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -42,7 +42,6 @@ const DATA_DIR = args.includes('--dir') ? path.resolve(args[args.indexOf('--dir'
 const git = (cmd) =>
 	execSync(`git ${cmd}`, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
 
-const kind = (v) => (Array.isArray(v) ? 'array' : v !== null && typeof v === 'object' ? 'object' : 'leaf');
 const show = (v) => (String(v).length > 60 ? String(v).slice(0, 57) + '…' : String(v));
 
 // ---------- structural + invariant comparison ----------

@@ -36,7 +36,8 @@ export const TRANSLATABLE = new Set([
 	'projects[].highlights[]',
 ]);
 
-const kind = (v) => (Array.isArray(v) ? 'array' : v !== null && typeof v === 'object' ? 'object' : 'leaf');
+export const kind = (v) =>
+	Array.isArray(v) ? 'array' : v !== null && typeof v === 'object' ? 'object' : 'leaf';
 
 /** Flatten every translatable leaf of a CV object into path → value. */
 export function flattenTranslatable(node, p = '', pattern = '', out = new Map()) {

@@ -160,6 +160,14 @@ export function initCommandPalette(root: HTMLElement): () => void {
     (event) => {
       if (event.isComposing) return
 
+      if (event.key === "Escape") {
+        // Without this, a search input with text consumes the first Escape
+        // to clear itself and only a second one closes the dialog.
+        event.preventDefault()
+        close()
+        return
+      }
+
       if (event.key === "ArrowDown" || event.key === "ArrowUp") {
         event.preventDefault()
         if (visible.length === 0) return

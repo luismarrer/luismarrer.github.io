@@ -109,6 +109,16 @@ async function main() {
 		process.exit(2);
 	}
 
+	try {
+		git('cat-file', '-e', `${BASE}^{commit}`);
+	} catch {
+		// Refuse to run against a broken baseline: with no usable old source,
+		// the rebuild path would classify every field as new and re-translate
+		// the whole target file, discarding reviewed translations.
+		console.error(`i18n-sync: baseline ${BASE} is not a resolvable commit`);
+		process.exit(2);
+	}
+
 	const check = runCheck();
 
 	if (check.coherent) {
@@ -122,6 +132,11 @@ async function main() {
 	const enChanged = changedFiles.includes(FILES.en);
 	const esChanged = changedFiles.includes(FILES.es);
 
+	// Invariant fields (never translated) can only be repaired by copying
+	// from the edited side, which the rebuild branch does — so invariant
+	// divergence routes there together with structural divergence.
+	const needsRebuild = check.structure.length > 0 || check.invariant.length > 0;
+
 	if (!enChanged && !esChanged) {
 		report({
 			status: 'incoherent, but neither CV file changed against the baseline — human review needed',
@@ -130,10 +145,11 @@ async function main() {
 		process.exit(1);
 	}
 
-	if (check.structure.length > 0 && enChanged && esChanged) {
+	if (needsRebuild && enChanged && esChanged) {
 		report({
-			status: 'structure mismatch with edits on both files — cannot pick a source of truth, human review needed',
-			problems: check.structure,
+			status:
+				'structure or invariant mismatch with edits on both files — cannot pick a source of truth, human review needed',
+			problems: [...check.structure, ...check.invariant],
 		});
 		process.exit(1);
 	}
@@ -141,37 +157,38 @@ async function main() {
 	const client = createClient({ provider: PROVIDER });
 	const log = [];
 	const changed = [];
+	const current = { en: readCv('en'), es: readCv('es') };
 
-	if (check.structure.length === 0) {
-		// Same shape on both sides: translate exactly the stale leaves the
-		// check reported, in whichever direction each one needs.
+	if (!needsRebuild) {
+		// Same shape and invariants on both sides: translate exactly the
+		// stale leaves the check reported, in whichever direction each one
+		// needs.
 		const byDirection = new Map();
 		for (const { path: p, source, target } of check.stale) {
 			const key = `${source}->${target}`;
 			if (!byDirection.has(key)) byDirection.set(key, { source, target, items: [] });
-			byDirection.get(key).items.push({ path: p, text: getByPath(readCv(source), p) });
+			byDirection.get(key).items.push({ path: p, text: getByPath(current[source], p) });
 		}
 
-		const targets = { en: readCv('en'), es: readCv('es') };
 		for (const { source, target, items } of byDirection.values()) {
 			const translated = await translateFields(client, items, source, target);
 			for (const { path: p, text } of items) {
-				setByPath(targets[target], p, translated.get(p));
+				setByPath(current[target], p, translated.get(p));
 				changed.push({ path: p, source, target, from: text, to: translated.get(p) });
 				log.push(`${p}: ${source} → ${target}`);
 			}
-			if (!DRY_RUN) writeCv(target, targets[target]);
+			if (!DRY_RUN) writeCv(target, current[target]);
 		}
 	} else {
-		// Structure changed on exactly one side: that side is the source of
-		// truth. Rebuild the target from the source structure, keeping every
-		// existing translation whose source text still appears — matched by
-		// value, so insertions and reorders don't re-translate what already
+		// Structure or invariants changed on exactly one side: that side is
+		// the source of truth. Rebuild the target from the source structure,
+		// keeping every existing translation — matched by path first, then by
+		// value so insertions and reorders don't re-translate what already
 		// has a reviewed translation.
 		const source = enChanged ? 'en' : 'es';
 		const target = source === 'en' ? 'es' : 'en';
-		const sourceCv = readCv(source);
-		const targetCv = readCv(target);
+		const sourceCv = current[source];
+		const targetCv = current[target];
 		const baseSource = readCvAt(BASE, source);
 
 		const oldSourceLeaves = baseSource ? flattenTranslatable(baseSource) : new Map();
@@ -185,7 +202,15 @@ async function main() {
 		const needsTranslation = [];
 
 		for (const [p, sourceText] of flattenTranslatable(rebuilt)) {
-			if (knownTranslations.has(sourceText)) {
+			const unchangedAtSamePath =
+				oldSourceLeaves.has(p) &&
+				Object.is(oldSourceLeaves.get(p), sourceText) &&
+				targetLeaves.has(p);
+			if (unchangedAtSamePath) {
+				// Exact path match wins: identical source strings at different
+				// paths may have legitimately different translations.
+				setByPath(rebuilt, p, targetLeaves.get(p));
+			} else if (knownTranslations.has(sourceText)) {
 				setByPath(rebuilt, p, knownTranslations.get(sourceText));
 			} else {
 				needsTranslation.push({ path: p, text: sourceText });
