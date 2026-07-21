@@ -1,0 +1,147 @@
+# i18n-validate — delegated reviewer (PRD §6.4, roadmap R2.2).
+#
+# Triggered explicitly by the repo owner with a `/delegate` comment or the
+# `auto-merge` label on a PR. Reviews the PR's CV files for EN↔ES semantic
+# equivalence + content rules and closes the loop:
+#   approve → merge · fix → correction commit + merge · abstain → comment only.
+#
+# Security posture (PRD §6.5):
+#  - only the repository owner can delegate;
+#  - the job checks out and runs ONLY base-branch (main) code; the PR head
+#    contributes data files (cv-en.json / cv-es.json), never code.
+#
+# Prerequisites: secrets.OPENAI_API_KEY, secrets.I18N_BOT_TOKEN, and
+# auto-merge enabled in the repository settings with the required checks
+# configured under branch protection.
+
+name: i18n-validate
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request:
+    types: [labeled]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+# One validator run per PR at a time: a label + /delegate double-trigger must
+# not race on comments, correction pushes, or the merge.
+concurrency:
+  group: i18n-validate-${{ github.event.issue.number || github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    if: >
+      (
+        github.event_name == 'issue_comment' &&
+        github.event.issue.pull_request &&
+        github.event.comment.body == '/delegate' &&
+        github.event.comment.user.login == github.repository_owner
+      ) || (
+        github.event_name == 'pull_request' &&
+        github.event.label.name == 'auto-merge' &&
+        github.event.sender.login == github.repository_owner
+      )
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout base branch (reviewer code never comes from the PR)
+        uses: actions/checkout@v7
+        with:
+          ref: main
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - name: Resolve PR number and head
+        id: pr
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if [ "${{ github.event_name }}" = "issue_comment" ]; then
+            pr_number="${{ github.event.issue.number }}"
+          else
+            pr_number="${{ github.event.pull_request.number }}"
+          fi
+          head_ref="$(gh pr view "$pr_number" --json headRefName --jq .headRefName)"
+          echo "number=$pr_number" >> "$GITHUB_OUTPUT"
+          echo "head_ref=$head_ref" >> "$GITHUB_OUTPUT"
+
+      - name: Extract the PR head CV files (data only)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git fetch origin "pull/${{ steps.pr.outputs.number }}/head:pr-head"
+          mkdir -p /tmp/pr-cv
+          git show pr-head:cv-en.json > /tmp/pr-cv/cv-en.json
+          git show pr-head:cv-es.json > /tmp/pr-cv/cv-es.json
+
+      - name: Run the delegated reviewer
+        id: review
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          set -euo pipefail
+          node scripts/i18n-validate.mjs --dir /tmp/pr-cv > /tmp/verdict.json
+          cat /tmp/verdict.json
+          echo "verdict=$(node -e 'console.log(JSON.parse(require("fs").readFileSync("/tmp/verdict.json","utf8")).verdict)')" >> "$GITHUB_OUTPUT"
+
+      - name: Publish the verdict as a PR comment (audit trail)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          verdict="${{ steps.review.outputs.verdict }}"
+          case "$verdict" in
+            approve) icon="✅" ;;
+            fix) icon="🔧" ;;
+            *) icon="⚠️" ;;
+          esac
+          summary="$(node -e 'console.log(JSON.parse(require("fs").readFileSync("/tmp/verdict.json","utf8")).summary)')"
+          corrections="$(node -e '
+            const v = JSON.parse(require("fs").readFileSync("/tmp/verdict.json","utf8"));
+            console.log(v.corrections.map(c => `- \`${c.file}\` \`${c.path}\`: ${c.reason}`).join("\n"));
+          ')"
+          {
+            echo "$icon **i18n-validate verdict: \`$verdict\`**"
+            echo
+            echo "$summary"
+            if [ -n "$corrections" ]; then
+              echo
+              echo "Corrections:"
+              echo "$corrections"
+            fi
+          } > /tmp/comment.md
+          gh pr comment "${{ steps.pr.outputs.number }}" --body-file /tmp/comment.md
+
+      - name: Commit corrections to the PR branch
+        if: steps.review.outputs.verdict == 'fix'
+        env:
+          GH_TOKEN: ${{ secrets.I18N_BOT_TOKEN || github.token }}
+        run: |
+          set -euo pipefail
+          git config user.name "i18n-validate bot"
+          git config user.email "actions@users.noreply.github.com"
+          git switch -c pr-branch pr-head
+          cp /tmp/pr-cv/cv-en.json cv-en.json
+          cp /tmp/pr-cv/cv-es.json cv-es.json
+          git add cv-en.json cv-es.json
+          git commit -m "i18n: apply validator corrections"
+          git push origin "pr-branch:${{ steps.pr.outputs.head_ref }}"
+
+      - name: Merge (or arm auto-merge)
+        if: steps.review.outputs.verdict == 'approve' || steps.review.outputs.verdict == 'fix'
+        env:
+          GH_TOKEN: ${{ secrets.I18N_BOT_TOKEN || github.token }}
+        run: |
+          set -euo pipefail
+          gh pr merge "${{ steps.pr.outputs.number }}" --squash --auto ||
+            gh pr merge "${{ steps.pr.outputs.number }}" --squash

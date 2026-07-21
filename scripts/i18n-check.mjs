@@ -18,55 +18,30 @@
  *  --vercel: Ignored Build Step semantics — 0 = skip build, 1 = proceed
  *
  * Usage:
- *  node scripts/i18n-check.mjs [--base <ref>] [--vercel] [--json]
+ *  node scripts/i18n-check.mjs [--base <ref>] [--vercel] [--json] [--dir <path>]
+ *
+ * --dir reads the two CV files from another directory (used by the delegated
+ * validator to check a PR head extracted to a temp dir) while git operations
+ * keep running against this repository.
  */
 
 import { readFileSync } from 'node:fs';
 import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { FILES, TRANSLATABLE, flattenTranslatable, kind } from './i18n-shared.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const FILES = { en: 'cv-en.json', es: 'cv-es.json' };
-
-// Translatable field patterns (JSON Resume). Everything else is invariant
-// and must be byte-identical between the two files. Array leaves end in [].
-const TRANSLATABLE = new Set([
-	'basics.label',
-	'basics.summary',
-	'work[].position',
-	'work[].summary',
-	'work[].highlights[]',
-	'volunteer[].position',
-	'volunteer[].summary',
-	'volunteer[].highlights[]',
-	'education[].area',
-	'education[].studyType',
-	'education[].courses[]',
-	'awards[].title',
-	'awards[].summary',
-	'certificates[].name',
-	'publications[].summary',
-	'skills[].level',
-	'skills[].keywords[]',
-	'languages[].language',
-	'languages[].fluency',
-	'interests[].name',
-	'interests[].keywords[]',
-	'references[].reference',
-	'projects[].description',
-	'projects[].highlights[]',
-]);
 
 const args = process.argv.slice(2);
 const VERCEL = args.includes('--vercel');
 const JSON_OUT = args.includes('--json');
 const baseArg = args.includes('--base') ? args[args.indexOf('--base') + 1] : null;
+const DATA_DIR = args.includes('--dir') ? path.resolve(args[args.indexOf('--dir') + 1]) : ROOT;
 
 const git = (cmd) =>
 	execSync(`git ${cmd}`, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
 
-const kind = (v) => (Array.isArray(v) ? 'array' : v !== null && typeof v === 'object' ? 'object' : 'leaf');
 const show = (v) => (String(v).length > 60 ? String(v).slice(0, 57) + '…' : String(v));
 
 // ---------- structural + invariant comparison ----------
@@ -102,16 +77,6 @@ function walk(en, es, p, pattern) {
 }
 
 // ---------- baseline (stale-translation) analysis ----------
-
-function flattenTranslatable(node, p, pattern, out) {
-	const k = kind(node);
-	if (k === 'array') node.forEach((v, i) => flattenTranslatable(v, `${p}[${i}]`, `${pattern}[]`, out));
-	else if (k === 'object')
-		for (const key of Object.keys(node))
-			flattenTranslatable(node[key], p ? `${p}.${key}` : key, pattern ? `${pattern}.${key}` : key, out);
-	else if (TRANSLATABLE.has(pattern)) out.set(p, node);
-	return out;
-}
 
 function changedPaths(current, base) {
 	const cur = flattenTranslatable(current, '', '', new Map());
@@ -152,8 +117,8 @@ function loadAt(ref, file) {
 
 // ---------- run ----------
 
-const cvEn = JSON.parse(readFileSync(path.join(ROOT, FILES.en), 'utf8'));
-const cvEs = JSON.parse(readFileSync(path.join(ROOT, FILES.es), 'utf8'));
+const cvEn = JSON.parse(readFileSync(path.join(DATA_DIR, FILES.en), 'utf8'));
+const cvEs = JSON.parse(readFileSync(path.join(DATA_DIR, FILES.es), 'utf8'));
 walk(cvEn, cvEs, '', '');
 
 const baseline = resolveBaseline();

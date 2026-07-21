@@ -11,8 +11,11 @@ Uses pnpm (pinned in `package.json`).
 - `pnpm build` — build static site to `dist/`
 - `pnpm preview` — preview the production build
 - `pnpm i18n:check` — verify `cv-en.json` and `cv-es.json` are in sync (structure, invariant fields, stale translations; `--base <ref>` to compare against a commit)
+- `pnpm test:print` — build and validate EN/ES PDFs in Letter and A4 with Playwright
+- `pnpm test:ui` — build and run the responsive contracts (hero label separator, education header) with Playwright
+- `pnpm check` — run i18n coherence, production build, and all Playwright checks (print + responsive)
 
-There are no tests or linters. Production is hosted on Vercel at https://cv.luismarrero.me — every push to `main` auto-deploys via Vercel's git integration, and PRs get preview deploys. `.github/workflows/deploy.yml` only publishes the redirect page in `redirect/` to GitHub Pages, so the old `luismarrer.github.io` URL forwards to production. See `docs/prd-cv-i18n-sync.md` for the translation-sync pipeline design.
+There is no linter. Print/PDF and responsive regression tests run with Playwright (`pnpm exec playwright install chromium` once after a fresh install). Production is hosted on Vercel at https://cv.luismarrero.me — every push to `main` auto-deploys via Vercel's git integration, and PRs get preview deploys. `.github/workflows/deploy.yml` only publishes the redirect page in `redirect/` to GitHub Pages, so the old `luismarrer.github.io` URL forwards to production. See `docs/prd-cv-i18n-sync.md` for the translation-sync pipeline design.
 
 ## Architecture
 
@@ -28,7 +31,7 @@ Astro 5 static portfolio site. All page content is generated from two JSON Resum
 
 ### i18n
 
-Two locales, `en` (default) and `es`. UI strings that aren't part of the CV data (section titles, command-palette text) live in `src/i18n/ui.ts`, accessed via the `useTranslations` / `useKeyboardManager` helpers in `src/i18n/utils.ts`. Adding user-visible text means adding it to both locales in `ui.ts` (or both CV JSON files).
+Two locales, `en` (default) and `es`. UI strings that aren't part of the CV data (section titles, command-palette text) live in `src/i18n/ui.ts`, accessed via the `useTranslations` / `useCommandPalette` helpers in `src/i18n/utils.ts`. Adding user-visible text means adding it to both locales in `ui.ts` (or both CV JSON files).
 
 ### Icons
 
@@ -37,14 +40,16 @@ Each tech/social icon is an inline-SVG `.astro` component in `src/icons/`. Compo
 ### Other notes
 
 - Path alias `@/*` → `src/*` (defined in `tsconfig.json`, which extends Astro's strict config).
-- `KeyboardManager.astro` wraps the `ninja-keys` web component (Cmd+K command palette); its actions are built from the CV's social profiles.
-- `scripts/i18n-check.mjs` is the EN/ES coherence gate. It also runs as Vercel's `ignoreCommand` (see `vercel.json`): if the CV files are out of sync, the production deploy is skipped and the site stays on the last good deploy. Its list of translatable field paths (`TRANSLATABLE`) must be updated if the CV schema usage changes.
+- `CommandPalette.astro` plus `src/lib/commandPalette.ts` implement the native Cmd/Ctrl+K command palette (dialog + combobox, no runtime dependencies); its link commands are built from the CV's social profiles, and the theme action shares `src/lib/theme.ts` with the visible toggle.
+- `scripts/i18n-check.mjs` is the EN/ES coherence gate. It also runs as Vercel's `ignoreCommand` (see `vercel.json`): if the CV files are out of sync, the production deploy is skipped and the site stays on the last good deploy. The translatable field paths live in `scripts/i18n-shared.mjs` (`TRANSLATABLE`) and must be updated if the CV schema usage changes.
+- The translation pipeline (docs/prd-cv-i18n-sync.md): `i18n-sync.yml` translates diverged fields on pushes to `main` and opens an `i18n/sync-<sha>` PR, `i18n-preview-links.yml` comments the Vercel preview links, and `i18n-validate.yml` (`/delegate` comment or `auto-merge` label, repo owner only) reviews and merges. The LLM client is provider-pluggable in `scripts/translation-client.mjs` (OpenAI + a `mock` provider for tests). Requires `OPENAI_API_KEY` and `I18N_BOT_TOKEN` secrets.
 
 ## Content rules (from README)
 
 When editing the CV JSON files:
 
 - `cv-en.json` and `cv-es.json` must contain the same content (translated).
+- `work[].workMode` is a canonical enum (`remote` | `hybrid` | `on-site`) and `work[].technologies` are canonical tech names — both identical in the two files (invariants, never translated; the UI translates the mode label via `ui.ts`).
 - Project titles: maximum 2 words.
 - Projects sorted by importance, descending.
 - Project descriptions: one sentence, max 90 characters.

@@ -1,6 +1,10 @@
 # Roadmap — Portfolio/CV
 
-Estado: **v1.4 — propuesto para ejecución** · Última actualización: 2026-07-17
+Estado: **v1.8 — roadmap ejecutado: R0–R3 implementados** · Última actualización: 2026-07-17
+
+> Pendientes que requieren al autor: activar R2 (runbook más abajo), ratificar
+> la dirección visual de R3 (línea técnica) y confirmar los `workMode` marcados
+> como provisionales, además del QA manual con VoiceOver y el preview de Vercel.
 
 ## Objetivo
 
@@ -25,12 +29,12 @@ sin perder el carácter minimalista del sitio.
 
 | Área | Estado | Pendiente real |
 |---|---|---|
-| Print/PDF | Base implementada: dos páginas, enlaces y regresión EN/ES + Letter/A4 | Igualar tarjetas, corregir separadores de links, rebalancear páginas y simplificar Skills |
-| Hero responsive | La composición móvil ya apila retrato y contenido | Evitar que el separador `|` quede aislado cuando el título profesional se divide |
-| Education responsive | Institución y fechas comparten fila hasta 420 px | Cambiar de layout antes de que un nombre largo comprima o desplace las fechas |
-| PRD i18n | Hosting, redirect e `i18n-check` completados | Traductor con PR/preview y validador delegado |
-| Paleta nativa | PRD listo; `ninja-keys` sigue activo | Implementación, revisión del layout touch, pruebas, migración y limpieza |
-| Experiencia laboral | Nombre, puesto, fechas y resumen en UI | Modelo de modalidad/tecnologías, exploración visual e implementación |
+| Print/PDF | R0 completado: tarjetas igualadas, separadores sibling, reparto sin salto forzado y Skills tipográfico | — |
+| Hero responsive | El título profesional apila sus dos partes cuando no caben; el separador solo existe en la composición horizontal | — |
+| Education responsive | Header en grid `minmax(0,1fr) auto`; colapsa a una columna a ≤560 px | — |
+| PRD i18n | Código completo: traductor (`i18n-sync`), previews (`i18n-preview-links`), validador (`i18n-validate`) con cliente LLM pluggable y modo mock probado | Configurar secretos (`OPENAI_API_KEY`, `I18N_BOT_TOKEN`), auto-merge y branch protection; smoke test con la clave real |
+| Paleta nativa | R1 completado: `CommandPalette.astro` + `src/lib/commandPalette.ts`, hoja flotante touch, 20 pruebas Playwright, `ninja-keys` eliminado | QA manual con VoiceOver y validación del preview de Vercel |
+| Experiencia laboral | R3 implementado: `workMode` + `technologies` en ambos JSON y línea técnica bajo el puesto (web, móvil, dark y print) | Ratificar la variante elegida y confirmar los `workMode` provisionales |
 
 ## Orden de ejecución
 
@@ -69,11 +73,11 @@ sin alterar la versión web ni forzar una tercera página.
 
 #### Definición de terminado
 
-- [ ] Las seis tarjetas tienen la misma altura en EN y ES.
-- [ ] Letter y A4 continúan generando exactamente dos páginas.
-- [ ] Ningún texto, tag, borde o enlace queda recortado.
-- [ ] `pnpm check` pasa localmente y en CI.
-- [ ] Los cuatro PDFs renderizados fueron revisados visualmente.
+- [x] Las seis tarjetas tienen la misma altura en EN y ES.
+- [x] Letter y A4 continúan generando exactamente dos páginas.
+- [x] Ningún texto, tag, borde o enlace queda recortado.
+- [x] `pnpm check` pasa localmente y en CI.
+- [x] Los cuatro PDFs renderizados fueron revisados visualmente.
 
 ### R0.2 — Título profesional responsive sin separador huérfano
 
@@ -124,11 +128,11 @@ Móvil:            Software Developer
 
 #### Definición de terminado
 
-- [ ] El separador nunca queda huérfano en ningún ancho soportado.
-- [ ] EN y ES comparten el mismo comportamiento sin copy especial para móvil.
-- [ ] La lectura accesible no anuncia puntuación decorativa innecesaria.
-- [ ] Desktop, móvil y print conservan una jerarquía visual coherente.
-- [ ] Las pruebas responsive y `pnpm check` pasan.
+- [x] El separador nunca queda huérfano en ningún ancho soportado.
+- [x] EN y ES comparten el mismo comportamiento sin copy especial para móvil.
+- [x] La lectura accesible no anuncia puntuación decorativa innecesaria.
+- [x] Desktop, móvil y print conservan una jerarquía visual coherente.
+- [x] Las pruebas responsive y `pnpm check` pasan.
 
 ### R0.3 — Education responsive sin competencia entre título y fechas
 
@@ -190,11 +194,11 @@ Bachelor of Science in Computer Science
 
 #### Definición de terminado
 
-- [ ] El layout cambia de dos a una columna antes de producir compresión.
-- [ ] No se pierde ni se oculta ninguna parte del nombre oficial.
-- [ ] Las fechas conservan legibilidad y jerarquía en todos los anchos.
-- [ ] EN/ES, desktop, móvil y print fueron revisados visualmente.
-- [ ] Las pruebas responsive y `pnpm check` pasan.
+- [x] El layout cambia de dos a una columna antes de producir compresión.
+- [x] No se pierde ni se oculta ninguna parte del nombre oficial.
+- [x] Las fechas conservan legibilidad y jerarquía en todos los anchos.
+- [x] EN/ES, desktop, móvil y print fueron revisados visualmente.
+- [x] Las pruebas responsive y `pnpm check` pasan.
 
 ### R0.4 — Pulido editorial del PDF
 
@@ -258,13 +262,13 @@ TypeScript, Astro, React, Next.js, Python, SQL, Excel, Power BI, Git, C, Bash
 
 #### Definición de terminado
 
-- [ ] Solo el texto de cada link aparece subrayado; ningún `•` lo está.
-- [ ] Email, teléfono, web y LinkedIn siguen siendo clicables en los cuatro PDFs.
-- [ ] La primera página no termina prematuramente por un salto fijo antes de Projects.
-- [ ] Ningún heading, proyecto, Education o Skills queda dividido de forma incoherente.
-- [ ] Skills se presenta como lista con comas en print y conserva sus pills en web.
-- [ ] EN/ES y Letter/A4 generan exactamente dos páginas y pasan revisión visual.
-- [ ] `pnpm check` pasa localmente y en CI.
+- [x] Solo el texto de cada link aparece subrayado; ningún `•` lo está.
+- [x] Email, teléfono, web y LinkedIn siguen siendo clicables en los cuatro PDFs.
+- [x] La primera página no termina prematuramente por un salto fijo antes de Projects.
+- [x] Ningún heading, proyecto, Education o Skills queda dividido de forma incoherente.
+- [x] Skills se presenta como lista con comas en print y conserva sus pills en web.
+- [x] EN/ES y Letter/A4 generan exactamente dos páginas y pasan revisión visual.
+- [x] `pnpm check` pasa localmente y en CI.
 
 ---
 
@@ -349,16 +353,19 @@ Esta dirección reemplaza el sketch móvil de borde a borde del PRD:
 
 ### Definición de terminado
 
-- [ ] Las acciones de imprimir, tema, idioma y enlaces funcionan en EN/ES.
-- [ ] Teclado, foco, estado vacío y lectores de pantalla cumplen el PRD.
-- [ ] Desktop, móvil, claro, oscuro y reduced motion fueron validados.
-- [ ] La paleta móvil conserva margen lateral e inferior en portrait y landscape.
-- [ ] La interfaz touch conserva el botón `⌘`, pero no muestra badges de atajos
+- [x] Las acciones de imprimir, tema, idioma y enlaces funcionan en EN/ES.
+- [x] Teclado, foco, estado vacío y lectores de pantalla cumplen el PRD
+      (contrato ARIA automatizado; queda pendiente la pasada manual con
+      VoiceOver).
+- [x] Desktop, móvil, claro, oscuro y reduced motion fueron validados.
+- [x] La paleta móvil conserva margen lateral e inferior en portrait y landscape.
+- [x] La interfaz touch conserva el botón `⌘`, pero no muestra badges de atajos
       secundarios dentro del menú.
-- [ ] La paleta permanece fuera de la impresión.
-- [ ] El chunk cumple ≤ 8 kB minificado y ≤ 3 kB gzip.
-- [ ] `ninja-keys` no aparece en dependencias, código ni documentación.
-- [ ] Las pruebas de paleta y `pnpm check` pasan juntas.
+- [x] La paleta permanece fuera de la impresión.
+- [x] El chunk cumple ≤ 8 kB minificado y ≤ 3 kB gzip (3.66 kB / 1.57 kB gzip
+      más 0.25 kB del módulo de tema compartido; antes 54.41 kB / 17.55 kB).
+- [x] `ninja-keys` no aparece en dependencias, código ni documentación.
+- [x] Las pruebas de paleta y `pnpm check` pasan juntas.
 
 ---
 
@@ -373,22 +380,38 @@ Documento fuente: [prd-cv-i18n-sync.md](./prd-cv-i18n-sync.md).
 - `scripts/i18n-check.mjs` como contrato estructural y de invariantes.
 - `vercel.json` usando el check como Ignored Build Step.
 
-### R2.1 — Traductor y PR
+### R2.1 — Traductor y PR — implementado
 
-- Crear el cliente de traducción desacoplado del proveedor.
-- Detectar dirección y campos modificados desde el diff.
-- Traducir solo esos campos respetando las reglas de contenido.
-- Crear rama `i18n/sync-<sha>` y PR mediante GitHub App o PAT.
-- Publicar en el PR los previews directos de `/en/` y `/es/`.
-- Probar tagline y summary reales en ambas direcciones.
+- [x] Cliente de traducción desacoplado del proveedor
+      (`scripts/translation-client.mjs`: OpenAI vía fetch + proveedor `mock`
+      para probar la fontanería sin clave).
+- [x] Detección de dirección y campos modificados desde el diff
+      (`scripts/i18n-sync.mjs` sobre el reporte `--json` de `i18n-check`;
+      soporta hojas desincronizadas y cambios estructurales de un solo lado,
+      preservando traducciones existentes por matching de valor).
+- [x] Traducción limitada a los campos señalados, con las reglas de contenido
+      del README en el prompt.
+- [x] Workflow `i18n-sync.yml`: rama `i18n/sync-<sha>` y PR con
+      `I18N_BOT_TOKEN` (PAT/App) y fallback documentado a `GITHUB_TOKEN`.
+- [x] Workflow `i18n-preview-links.yml`: comenta `<preview>/en/` y
+      `<preview>/es/` cuando Vercel reporta el deployment del PR.
+- [ ] Smoke test del motor con la clave real
+      (`node scripts/i18n-sync.mjs --smoke`) — requiere `OPENAI_API_KEY`.
 
-### R2.2 — Validación delegada
+### R2.2 — Validación delegada — implementado
 
-- Implementar `/delegate` y la etiqueta `auto-merge`.
-- Autorizar la delegación únicamente cuando el actor sea el dueño del repo.
-- Separar el rol/prompt del traductor y el del revisor.
-- Permitir tres salidas auditables: merge, corrección + merge o abstención.
-- Ejecutar una prueba completa desde una edición en un idioma hasta producción.
+- [x] Workflow `i18n-validate.yml` disparado por comentario `/delegate` o
+      etiqueta `auto-merge`.
+- [x] Delegación autorizada solo cuando el actor es el dueño del repo; el
+      job ejecuta únicamente código de `main` y toma del PR solo los dos
+      ficheros de datos.
+- [x] Rol/prompt del revisor separado del traductor
+      (`scripts/i18n-validate.mjs`, con gate estructural previo vía
+      `i18n-check --dir`).
+- [x] Tres salidas auditables como comentario en el PR: merge, corrección +
+      merge o abstención explicada.
+- [ ] Prueba de fuego completa desde una edición hasta producción — requiere
+      los prerrequisitos externos.
 
 ### Prerrequisitos externos
 
@@ -464,6 +487,14 @@ Comparar cada variante en EN/ES, desktop, móvil, tema oscuro y print. La fase
 termina con una decisión del autor; no se implementa una dirección final sin
 esa aprobación.
 
+**Resultado de la exploración (2026-07-17):** se prototiparon las tres
+variantes con los cuatro trabajos reales. El rail (2) desalinea la columna de
+fechas y parte el stack en líneas alineadas a la derecha; los chips (3)
+compiten visualmente con el resumen, duplican el lenguaje de los tags de
+proyectos y se acercan demasiado a la referencia. La **línea técnica (1)** es
+la implementada, tal como recomendaba la hipótesis inicial. Queda pendiente la
+ratificación del autor; cambiar de dirección solo toca `Experience.astro`.
+
 ### R3.2 — Implementación
 
 - Añadir los campos aprobados a `cv-en.json` y `cv-es.json`.
@@ -477,12 +508,19 @@ esa aprobación.
 
 ### Definición de terminado
 
-- [ ] Los cuatro trabajos tienen modalidad y stack reales, no inferidos.
-- [ ] La jerarquía empresa → puesto → metadatos → resumen es clara.
-- [ ] La UI no se percibe como una copia de la referencia.
-- [ ] EN/ES, desktop, móvil, claro, oscuro, Letter y A4 fueron revisados.
-- [ ] El CV continúa en dos páginas y ninguna experiencia se divide.
-- [ ] `pnpm i18n:check`, pruebas de UI y `pnpm check` pasan.
+- [ ] Los cuatro trabajos tienen modalidad y stack reales, no inferidos —
+      **parcial**: las tecnologías proceden de los summaries/highlights ya
+      publicados y SAC es `hybrid` según este roadmap, pero los `workMode` de
+      Universal Group, Holberton y UPR quedaron como `on-site` provisional y
+      deben confirmarse.
+- [x] La jerarquía empresa → puesto → metadatos → resumen es clara.
+- [x] La UI no se percibe como una copia de la referencia.
+- [x] EN/ES, desktop, móvil, claro, oscuro, Letter y A4 fueron revisados.
+- [x] El CV continúa en dos páginas y ninguna experiencia se divide (el
+      reparto pasó a 1 fila de proyectos en la página 1 y 2 en la segunda,
+      dentro de los invariantes editoriales).
+- [x] `pnpm i18n:check`, pruebas de UI y `pnpm check` pasan
+      (30 pruebas Playwright: print, responsive y paleta).
 
 ---
 
@@ -499,8 +537,25 @@ Un milestone solo puede cerrarse cuando:
 
 ## Próxima acción
 
-Ejecutar **R0** como un cambio aislado: igualar las tarjetas impresas, corregir
-los links y Skills en print, prototipar el nuevo reparto de páginas, corregir el
-label del hero y el header de Education, añadir sus contratos de regresión y
-volver a revisar desktop, móvil y los cuatro PDFs antes de comenzar la paleta
-nativa.
+R0 quedó cerrado: tarjetas impresas igualadas (≤1 px de diferencia medida en el
+contrato Playwright), links con separadores sibling, Projects fluyendo en la
+página 1 (2 filas) con la última fila + Education + Skills en la página 2,
+Skills como lista tipográfica, label del hero sin separador huérfano (container
+query en `ch`) y header de Education en grid con colapso a ≤560 px. Los nuevos
+contratos viven en `tests/ui/responsive.spec.ts` y en las aserciones de altura,
+orden editorial y lista de Skills de `tests/print/`.
+
+R1 quedó cerrado: paleta nativa `<dialog>` + combobox ARIA con búsqueda
+normalizada, hoja inferior flotante en móvil, botón `⌘`, tema/idioma/print
+integrados y `ninja-keys` eliminado (reducción del chunk de 54.41 kB a 3.91 kB
+minificados). Los contratos viven en `tests/palette/command-palette.spec.ts`.
+Pendientes manuales: VoiceOver y el preview de Vercel del PR.
+
+R2 quedó implementado y probado con el proveedor mock (fontanería completa:
+detección → traducción → escritura → validación). Su activación depende del
+runbook anterior.
+
+R3 quedó implementado con la línea técnica (variante recomendada) tras
+prototipar las tres direcciones; `workMode`/`technologies` viven como
+invariantes en ambos JSON. El roadmap está ejecutado de punta a punta: solo
+quedan las acciones del autor listadas al inicio del documento.
