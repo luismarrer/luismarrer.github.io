@@ -2,9 +2,14 @@
 
 Estado: **v1.8 — roadmap ejecutado: R0–R3 implementados** · Última actualización: 2026-07-17
 
-> Pendientes que requieren al autor: activar R2 (runbook más abajo), ratificar
-> la dirección visual de R3 (línea técnica) y confirmar los `workMode` marcados
-> como provisionales, además del QA manual con VoiceOver y el preview de Vercel.
+> Pendientes que requieren al autor: la prueba de fuego de R2 (editar un campo
+> en un idioma y cerrar el ciclo con el PR del bot), ratificar la dirección
+> visual de R3 (línea técnica) y confirmar los `workMode` provisionales de
+> Universal Group, Holberton y UPR. Secretos, auto-merge y branch protection ya
+> configurados; QA con VoiceOver completada (2026-07-18, Brave: diálogo,
+> grupos, comando activo, conteo aria-live, estado vacío y retorno de foco
+> correctos; Chromium anuncia las opciones como "menu item" — matiz del mapeo,
+> no defecto).
 
 ## Objetivo
 
@@ -355,8 +360,9 @@ Esta dirección reemplaza el sketch móvil de borde a borde del PRD:
 
 - [x] Las acciones de imprimir, tema, idioma y enlaces funcionan en EN/ES.
 - [x] Teclado, foco, estado vacío y lectores de pantalla cumplen el PRD
-      (contrato ARIA automatizado; queda pendiente la pasada manual con
-      VoiceOver).
+      (contrato ARIA automatizado + pasada manual con VoiceOver el
+      2026-07-18: apertura, navegación, filtrado con anuncios en vivo,
+      estado vacío y cierre con retorno de foco verificados).
 - [x] Desktop, móvil, claro, oscuro y reduced motion fueron validados.
 - [x] La paleta móvil conserva margen lateral e inferior en portrait y landscape.
 - [x] La interfaz touch conserva el botón `⌘`, pero no muestra badges de atajos
