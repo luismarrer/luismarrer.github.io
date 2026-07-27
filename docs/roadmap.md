@@ -1,6 +1,6 @@
 # Roadmap — Portfolio/CV
 
-Estado: **v1.8 — roadmap ejecutado: R0–R3 implementados** · Última actualización: 2026-07-17
+Estado: **v1.9 — R0–R3 en producción; R4 planificado** · Última actualización: 2026-07-18
 
 > Pendientes que requieren al autor: la prueba de fuego de R2 (editar un campo
 > en un idioma y cerrar el ciclo con el PR del bot), ratificar la dirección
@@ -10,6 +10,8 @@ Estado: **v1.8 — roadmap ejecutado: R0–R3 implementados** · Última actuali
 > grupos, comando activo, conteo aria-live, estado vacío y retorno de foco
 > correctos; Chromium anuncia las opciones como "menu item" — matiz del mapeo,
 > no defecto).
+>
+> Próximo ciclo de trabajo: **R4** (ver sección al final).
 
 ## Objetivo
 
