@@ -28,10 +28,6 @@ export function initCommandPalette(root: HTMLElement): () => void {
   const trigger = root.querySelector<HTMLButtonElement>(
     "[data-palette-trigger]",
   )
-  const shortcutHints = Array.from(
-    root.querySelectorAll<HTMLElement>("[data-shortcut-hint]"),
-  )
-
   if (!dialog || !input || !listbox) return () => {}
 
   root.dataset.paletteReady = "true"
@@ -85,6 +81,7 @@ export function initCommandPalette(root: HTMLElement): () => void {
   }
 
   const scheduleVisualViewportSync = () => {
+    if (!dialog.open) return
     if (viewportSyncFrame !== null)
       cancelAnimationFrame(viewportSyncFrame)
     viewportSyncFrame = requestAnimationFrame(syncVisualViewport)
@@ -97,15 +94,6 @@ export function initCommandPalette(root: HTMLElement): () => void {
   visualViewport?.addEventListener("scroll", scheduleVisualViewportSync, {
     signal,
   })
-
-  const platform = navigator.platform ?? ""
-  if (platform) {
-    const modifier = /mac|iphone|ipad|ipod/i.test(platform) ? "⌘" : "Ctrl"
-    for (const hint of shortcutHints) {
-      const key = hint.dataset.shortcutKey?.toLocaleUpperCase(locale)
-      if (key) hint.textContent = `${modifier} ${key}`
-    }
-  }
 
   const setShowActive = (value: boolean) => {
     root.dataset.showActive = value ? "true" : "false"
@@ -335,6 +323,10 @@ export function initCommandPalette(root: HTMLElement): () => void {
     "close",
     () => {
       backdropArmed = false
+      if (viewportSyncFrame !== null) {
+        cancelAnimationFrame(viewportSyncFrame)
+        viewportSyncFrame = null
+      }
       document.documentElement.style.overflow = ""
       dialog.style.removeProperty("--palette-vv-height")
       dialog.style.removeProperty("--palette-vv-bottom")
@@ -350,8 +342,7 @@ export function initCommandPalette(root: HTMLElement): () => void {
     "keydown",
     (event) => {
       if (event.defaultPrevented || event.isComposing || event.repeat) return
-      const hasOnePrimaryModifier = event.metaKey !== event.ctrlKey
-      if (!hasOnePrimaryModifier || event.altKey || event.shiftKey)
+      if (!event.ctrlKey || event.metaKey || event.altKey || event.shiftKey)
         return
 
       const target = event.target

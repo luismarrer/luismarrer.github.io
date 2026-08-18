@@ -34,9 +34,9 @@ const NETWORK_SHORTCUTS: Record<string, string> = {
   X: "x",
 }
 
-const shortcutLabel = (key: string) => `⌘/Ctrl ${key.toUpperCase()}`
+const shortcutLabel = (key: string) => `Ctrl ${key.toUpperCase()}`
 const shortcutAria = (key: string) =>
-  `Control+${key.toUpperCase()} Meta+${key.toUpperCase()}`
+  `Control+${key.toUpperCase()}`
 
 const oppositeLocaleUrl = currentLanguage === "es" ? "/en/" : "/es/"
 const index = (...parts: string[]) =>
@@ -74,9 +74,7 @@ const networkCommands = [
   <footer class="palette-hint">
     <p>
       {t("hintPrefix")}
-      <kbd data-palette-key data-shortcut-hint data-shortcut-key="k">
-        ⌘/Ctrl K
-      </kbd>
+      <kbd data-palette-key>Ctrl K</kbd>
       {t("hintSuffix")}
     </p>
   </footer>
@@ -158,8 +156,6 @@ const networkCommands = [
           <kbd
             class="option-shortcut"
             aria-hidden="true"
-            data-shortcut-hint
-            data-shortcut-key="p"
           >
             {shortcutLabel("p")}
           </kbd>
@@ -184,8 +180,6 @@ const networkCommands = [
           <kbd
             class="option-shortcut"
             aria-hidden="true"
-            data-shortcut-hint
-            data-shortcut-key="t"
           >
             {shortcutLabel("t")}
           </kbd>
@@ -206,8 +200,6 @@ const networkCommands = [
           <kbd
             class="option-shortcut"
             aria-hidden="true"
-            data-shortcut-hint
-            data-shortcut-key="e"
           >
             {shortcutLabel("e")}
           </kbd>
@@ -245,8 +237,6 @@ const networkCommands = [
                   <kbd
                     class="option-shortcut"
                     aria-hidden="true"
-                    data-shortcut-hint
-                    data-shortcut-key={command.shortcut}
                   >
                     {shortcutLabel(command.shortcut)}
                   </kbd>
@@ -319,7 +309,7 @@ const networkCommands = [
     font-family: inherit;
   }
 
-  /* Mobile ⌘ trigger */
+  /* Mobile command trigger */
   .palette-trigger {
     display: none;
     position: fixed;
@@ -334,6 +324,7 @@ const networkCommands = [
     border: 1px solid var(--border);
     border-radius: 50%;
     cursor: pointer;
+    touch-action: manipulation;
     z-index: 5;
   }
 
@@ -453,6 +444,7 @@ const networkCommands = [
     border-radius: 6px;
     color: var(--text-muted);
     cursor: pointer;
+    touch-action: manipulation;
   }
 
   .palette-close:hover {

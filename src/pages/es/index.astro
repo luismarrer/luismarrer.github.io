@@ -30,20 +30,32 @@ import Skills from "@/components/sections/Skills.astro"
 
 <style is:global>
   main {
-    padding: 4rem;
+    padding:
+      max(4rem, env(safe-area-inset-top))
+      max(4rem, env(safe-area-inset-right))
+      max(4rem, env(safe-area-inset-bottom))
+      max(4rem, env(safe-area-inset-left));
     margin: auto;
     width: 100%;
   }
 
   @media screen and (max-width: 768px) {
     main {
-      padding: 2rem;
+      padding:
+        max(2rem, env(safe-area-inset-top))
+        max(2rem, env(safe-area-inset-right))
+        max(2rem, env(safe-area-inset-bottom))
+        max(2rem, env(safe-area-inset-left));
     }
   }
 
   @media screen and (max-width: 480px) {
     main {
-      padding: 2rem 1.5rem 6rem;
+      padding:
+        max(2rem, env(safe-area-inset-top))
+        max(1.5rem, env(safe-area-inset-right))
+        max(6rem, env(safe-area-inset-bottom))
+        max(1.5rem, env(safe-area-inset-left));
     }
   }
 </style>

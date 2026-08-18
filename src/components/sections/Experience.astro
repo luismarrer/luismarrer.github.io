@@ -45,31 +45,59 @@ const labels = cvLabels[currentLanguage]
           <li>
             <article data-print-item="experience">
               <header>
-                <h3>
-                  <a
-                    href={url}
-                    title={name}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {name}
-                  </a>
-                </h3>
+                <div>
+                  <h3>
+                    <a
+                      href={url}
+                      title={name}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {name}
+                    </a>
+                  </h3>
+                  <p>{position}</p>
+                  {(workMode || hasTechnologies) && (
+                    <p class="meta meta--desktop">
+                      {workMode && (
+                        <span class="work-mode" data-work-mode={workMode}>
+                          {labels.workModes[workMode]}
+                        </span>
+                      )}
+                      {workMode && hasTechnologies && (
+                        <span class="meta-separator" aria-hidden="true">
+                          &middot;
+                        </span>
+                      )}
+                      {hasTechnologies && (
+                        <span class="tech-list">
+                          {technologies?.join(" / ")}
+                        </span>
+                      )}
+                    </p>
+                  )}
+                </div>
                 <time>{dates}</time>
-                <p class="position">{position}</p>
               </header>
               <footer>
-                <p class="summary">{summary}</p>
+                <p>{summary}</p>
                 {(workMode || hasTechnologies) && (
-                  <p class="meta">
+                  <p class="meta meta--mobile">
                     {workMode && (
-                      <span class="tag" data-work-mode={workMode}>
+                      <span class="work-mode" data-work-mode={workMode}>
                         {labels.workModes[workMode]}
                       </span>
                     )}
-                    {technologies?.map((technology) => (
-                      <span class="tag">{technology}</span>
-                    ))}
+                    {workMode && hasTechnologies && (
+                      <span class="meta-separator" aria-hidden="true">
+                        &middot;
+                      </span>
+                    )}
+                    {hasTechnologies && (
+                      <span class="tech-list">
+                        {technologies?.join(" / ")}
+                      </span>
+                    )}
                   </p>
                 )}
               </footer>
@@ -89,8 +117,6 @@ const labels = cvLabels[currentLanguage]
   }
 
   article h3 {
-    grid-area: company;
-    min-width: 0;
     font-weight: 500;
     color: var(--text-heading);
   }
@@ -108,57 +134,47 @@ const labels = cvLabels[currentLanguage]
     font-weight: 400;
   }
 
-  article {
-    display: grid;
-    grid-template-columns: max-content minmax(0, 1fr) max-content;
-    grid-template-areas:
-      "company meta dates"
-      "position position position"
-      "summary summary summary";
-    column-gap: 8px;
-    align-items: baseline;
-  }
-
-  article > header,
-  article > footer {
-    display: contents;
-  }
-
-  .position {
-    grid-area: position;
-  }
-
-  .summary {
-    grid-area: summary;
-  }
-
+  /* Quiet metadata line: how the job was worked and with what. It must not
+     compete with company, position, dates, or summary. */
   .meta {
-    grid-area: meta;
     display: flex;
-    align-items: center;
+    align-items: baseline;
     flex-wrap: wrap;
-    gap: 4px;
-    min-width: 0;
+    gap: 4px 8px;
+    margin-top: 4px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
   }
 
-  .tag {
-    border-radius: 6px;
-    background: var(--surface);
-    color: var(--tag-text);
+  .meta--mobile {
+    display: none;
+  }
+
+  .work-mode {
+    border: 1px solid var(--border);
+    border-radius: 4px;
     padding: 1px 6px;
     font-size: 0.7rem;
-    font-weight: 600;
-    line-height: 1.4;
     white-space: nowrap;
+  }
+
+  .tech-list {
+    letter-spacing: -0.02em;
+  }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 4px;
   }
 
   time {
-    grid-area: dates;
     color: var(--text-muted);
     font-size: 0.85rem;
+    min-width: 145px;
     white-space: nowrap;
     cursor: default;
-    text-align: right;
   }
 
   [data-title]:hover:after {
@@ -196,17 +212,28 @@ const labels = cvLabels[currentLanguage]
   }
 
   @media screen and (width <= 700px) {
-    article {
-      grid-template-columns: minmax(0, 1fr) max-content;
-      grid-template-areas:
-        "company dates"
-        "position position"
-        "summary summary"
-        "meta meta";
+    .meta--desktop {
+      display: none;
     }
 
-    .meta {
-      margin-top: 4px;
+    .meta--mobile {
+      display: flex;
+    }
+
+    time {
+      text-align: right;
+    }
+  }
+
+  @media screen and (width <= 420px) {
+    header {
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    time {
+      min-width: 0;
+      text-align: left;
     }
   }
 
@@ -220,11 +247,6 @@ const labels = cvLabels[currentLanguage]
     }
 
     article {
-      grid-template-columns: max-content minmax(0, 1fr) max-content;
-      grid-template-areas:
-        "company meta dates"
-        "position position position"
-        "summary summary summary";
       break-inside: avoid-page;
       page-break-inside: avoid;
     }
@@ -240,21 +262,34 @@ const labels = cvLabels[currentLanguage]
       line-height: 1.38;
     }
 
+    header {
+      margin-bottom: 2pt;
+    }
+
     time {
+      min-width: 118pt;
       font-size: 8.25pt;
       line-height: 1.35;
       text-align: right;
     }
 
     .meta {
+      margin-top: 1.5pt;
       gap: 1.5pt 4pt;
       color: #333;
     }
 
-    .tag {
+    .work-mode {
+      border: 0.5pt solid #bbb;
       border-radius: 2pt;
       padding: 0.5pt 3pt;
       font-size: 7.5pt;
+      line-height: 1.3;
+    }
+
+    .meta-separator,
+    .tech-list {
+      font-size: 8pt;
       line-height: 1.3;
     }
   }

@@ -41,12 +41,11 @@ interface EducationLayout {
 
 interface ExperienceLayout {
   entries: Array<{
-    company: Box
     meta: Box
     modeVisible: boolean
-    position: Box
     summary: Box
-    tagCount: number
+    usesMobilePlacement: boolean
+    visibleMetaCount: number
   }>
   innerWidth: number
   scrollWidth: number
@@ -186,23 +185,29 @@ for (const locale of LOCALES) {
             entries: Array.from(
               document.querySelectorAll('[data-print-item="experience"]'),
             ).flatMap((article) => {
-              const company = article.querySelector("h3")
-              const meta = article.querySelector(".meta")
-              const mode = article.querySelector("[data-work-mode]")
-              const position = article.querySelector(".position")
-              const summary = article.querySelector(".summary")
-              if (!company || !meta || !position || !summary) return []
+              const visibleMetas = Array.from(
+                article.querySelectorAll(".meta"),
+              ).filter(
+                (meta) =>
+                  getComputedStyle(meta).display !== "none" &&
+                  meta.getClientRects().length > 0,
+              )
+              const meta = visibleMetas[0]
+              const summary = article.querySelector("footer > p:first-child")
+              if (!meta || !summary) return []
+
+              const mode = meta.querySelector("[data-work-mode]")
 
               return [
                 {
-                  company: box(company),
                   meta: box(meta),
                   modeVisible: mode
                     ? mode.getClientRects().length > 0
                     : false,
-                  position: box(position),
                   summary: box(summary),
-                  tagCount: meta.querySelectorAll(".tag").length,
+                  usesMobilePlacement:
+                    meta.classList.contains("meta--mobile"),
+                  visibleMetaCount: visibleMetas.length,
                 },
               ]
             }),
@@ -227,9 +232,9 @@ for (const locale of LOCALES) {
             `work mode chip renders at ${width}px`,
           ).toBe(true)
           expect(
-            entry.tagCount,
-            `work mode and technologies render as individual tags at ${width}px`,
-          ).toBeGreaterThan(1)
+            entry.visibleMetaCount,
+            `exactly one metadata line renders at ${width}px`,
+          ).toBe(1)
           expect(
             entry.meta.right,
             `metadata never spills past the section at ${width}px`,
@@ -237,18 +242,18 @@ for (const locale of LOCALES) {
 
           if (width <= 700) {
             expect(
+              entry.usesMobilePlacement,
+              `mobile uses the metadata placement below the summary at ${width}px`,
+            ).toBe(true)
+            expect(
               entry.meta.top,
               `mobile metadata follows the summary at ${width}px`,
             ).toBeGreaterThanOrEqual(entry.summary.bottom - 1)
           } else {
             expect(
-              entry.meta.left,
-              `desktop metadata follows the company name at ${width}px`,
-            ).toBeGreaterThanOrEqual(entry.company.right - 1)
-            expect(
-              entry.meta.bottom,
-              `desktop metadata stays above the position at ${width}px`,
-            ).toBeLessThanOrEqual(entry.position.top + 1)
+              entry.usesMobilePlacement,
+              `desktop keeps its original metadata placement at ${width}px`,
+            ).toBe(false)
           }
         }
       }
