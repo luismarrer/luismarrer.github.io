@@ -34,7 +34,7 @@ const NETWORK_SHORTCUTS: Record<string, string> = {
   X: "x",
 }
 
-const shortcutLabel = (key: string) => `Ctrl ${key.toUpperCase()}`
+const shortcutKey = (key: string) => key.toUpperCase()
 const shortcutAria = (key: string) =>
   `Control+${key.toUpperCase()}`
 const paletteShortcutAria = "Control+K Meta+K"
@@ -154,14 +154,10 @@ const networkCommands = [
         >
           <span class="option-icon" aria-hidden="true"><Printer /></span>
           <span class="option-label">{t("print")}</span>
-          <kbd
-            class="option-shortcut"
-            aria-hidden="true"
-            data-control-shortcut-hint
-            data-shortcut-key="p"
-          >
-            {shortcutLabel("p")}
-          </kbd>
+          <span class="option-shortcut" aria-hidden="true">
+            <kbd>Ctrl</kbd>
+            <kbd>{shortcutKey("p")}</kbd>
+          </span>
         </div>
         <div
           role="option"
@@ -180,14 +176,10 @@ const networkCommands = [
           <span class="option-icon" aria-hidden="true"><ThemeToggle /></span>
           <span class="option-label theme-to-dark">{t("themeToDark")}</span>
           <span class="option-label theme-to-light">{t("themeToLight")}</span>
-          <kbd
-            class="option-shortcut"
-            aria-hidden="true"
-            data-control-shortcut-hint
-            data-shortcut-key="t"
-          >
-            {shortcutLabel("t")}
-          </kbd>
+          <span class="option-shortcut" aria-hidden="true">
+            <kbd>Ctrl</kbd>
+            <kbd>{shortcutKey("t")}</kbd>
+          </span>
         </div>
         <a
           role="option"
@@ -202,14 +194,10 @@ const networkCommands = [
         >
           <span class="option-icon" aria-hidden="true"><Languages /></span>
           <span class="option-label">{t("language")}</span>
-          <kbd
-            class="option-shortcut"
-            aria-hidden="true"
-            data-control-shortcut-hint
-            data-shortcut-key="e"
-          >
-            {shortcutLabel("e")}
-          </kbd>
+          <span class="option-shortcut" aria-hidden="true">
+            <kbd>Ctrl</kbd>
+            <kbd>{shortcutKey("e")}</kbd>
+          </span>
         </a>
       </div>
 
@@ -241,14 +229,10 @@ const networkCommands = [
                 </span>
                 <span class="option-label">{command.label}</span>
                 {command.shortcut && (
-                  <kbd
-                    class="option-shortcut"
-                    aria-hidden="true"
-                    data-control-shortcut-hint
-                    data-shortcut-key={command.shortcut}
-                  >
-                    {shortcutLabel(command.shortcut)}
-                  </kbd>
+                  <span class="option-shortcut" aria-hidden="true">
+                    <kbd>Ctrl</kbd>
+                    <kbd>{shortcutKey(command.shortcut)}</kbd>
+                  </span>
                 )}
               </a>
             )
@@ -511,13 +495,19 @@ const networkCommands = [
   }
 
   .option-shortcut {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
     margin-inline-start: auto;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .option-shortcut kbd {
     border: 1px solid var(--border);
     color: var(--text-muted);
     font-size: 0.7rem;
     line-height: 1.4;
-    white-space: nowrap;
-    flex-shrink: 0;
   }
 
   .palette [role="option"]:hover {

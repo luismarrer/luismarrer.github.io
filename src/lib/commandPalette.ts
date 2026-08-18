@@ -29,9 +29,6 @@ export function initCommandPalette(root: HTMLElement): () => void {
     "[data-palette-trigger]",
   )
   const paletteKeyHint = root.querySelector<HTMLElement>("[data-palette-key]")
-  const controlShortcutHints = Array.from(
-    root.querySelectorAll<HTMLElement>("[data-control-shortcut-hint]"),
-  )
   if (!dialog || !input || !listbox) return () => {}
 
   root.dataset.paletteReady = "true"
@@ -104,10 +101,6 @@ export function initCommandPalette(root: HTMLElement): () => void {
   )
   if (paletteKeyHint)
     paletteKeyHint.textContent = isApplePlatform ? "⌘ K" : "Ctrl K"
-  for (const hint of controlShortcutHints) {
-    const key = hint.dataset.shortcutKey?.toLocaleUpperCase(locale)
-    if (key) hint.textContent = `${isApplePlatform ? "⌃" : "Ctrl"} ${key}`
-  }
 
   const setShowActive = (value: boolean) => {
     root.dataset.showActive = value ? "true" : "false"

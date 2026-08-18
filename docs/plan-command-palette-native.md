@@ -125,8 +125,8 @@ La paleta muestra y ejecuta atajos globales para sus acciones principales:
 | `Ctrl + L` | Abrir LinkedIn |
 | `Ctrl + X` | Abrir X |
 
-Los atajos de acción solo están activos mientras la paleta está abierta y usan
-exclusivamente la tecla Control: `⌃` en Mac y `Ctrl` en las demás plataformas.
+Los atajos de acción solo están activos mientras la paleta está abierta y sus
+badges muestran `Ctrl` y la letra como dos teclas separadas en toda plataforma.
 Nunca usan Command/Meta. Fuera de la paleta no se interceptan, por lo que el
 navegador y los campos editables conservan sus atajos nativos.
 

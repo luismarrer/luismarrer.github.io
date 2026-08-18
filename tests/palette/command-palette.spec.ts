@@ -92,9 +92,10 @@ for (const locale of LOCALES) {
           "aria-keyshortcuts",
           `Control+${key.toUpperCase()}`,
         )
-        await expect(option.locator(".option-shortcut")).toHaveText(
-          `${isApplePlatform ? "⌃" : "Ctrl"} ${key.toUpperCase()}`,
-        )
+        const shortcutKeycaps = option.locator(".option-shortcut kbd")
+        await expect(shortcutKeycaps).toHaveCount(2)
+        await expect(shortcutKeycaps.nth(0)).toHaveText("Ctrl")
+        await expect(shortcutKeycaps.nth(1)).toHaveText(key.toUpperCase())
       }
 
       await expect(page.locator("#palette-cmd-website")).not.toHaveAttribute(
