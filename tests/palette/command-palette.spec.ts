@@ -510,11 +510,14 @@ test.describe("touch presentation", () => {
       const results = panel?.querySelector<HTMLElement>(".palette-results")
       const footer = document.querySelector(".palette-footer")
       const shortcut = panel?.querySelector<HTMLElement>(".option-shortcut")
+      const firstOption = panel?.querySelector<HTMLElement>('[role="option"]')
       const root = document.querySelector<HTMLElement>(
         "[data-command-palette-root]",
       )
       const rect = panel?.getBoundingClientRect()
       const closeRect = close?.getBoundingClientRect()
+      const firstOptionRect = firstOption?.getBoundingClientRect()
+      const resultsRect = results?.getBoundingClientRect()
       const optionRects = Array.from(
         panel?.querySelectorAll<HTMLElement>('[role="option"]') ?? [],
         (option) => option.getBoundingClientRect(),
@@ -522,6 +525,7 @@ test.describe("touch presentation", () => {
       return {
         activeElement: document.activeElement?.tagName,
         bottomInset: rect ? window.innerHeight - rect.bottom : -1,
+        dialogHeight: rect?.height ?? -1,
         closeHeight: closeRect?.height ?? -1,
         closeWidth: closeRect?.width ?? -1,
         footerDisplay: footer ? getComputedStyle(footer).display : "missing",
@@ -530,6 +534,14 @@ test.describe("touch presentation", () => {
           : -1,
         leftInset: rect ? rect.left : -1,
         minOptionHeight: Math.min(...optionRects.map(({ height }) => height)),
+        firstOptionVisibleHeight:
+          firstOptionRect && resultsRect
+            ? Math.max(
+                0,
+                Math.min(firstOptionRect.bottom, resultsRect.bottom) -
+                  Math.max(firstOptionRect.top, resultsRect.top),
+              )
+            : -1,
         resultsHeight: results?.clientHeight ?? -1,
         rightInset: rect ? window.innerWidth - rect.right : -1,
         shortcutDisplay: shortcut
@@ -543,11 +555,13 @@ test.describe("touch presentation", () => {
     expect(metrics.leftInset).toBeGreaterThanOrEqual(12)
     expect(metrics.rightInset).toBeGreaterThanOrEqual(12)
     expect(metrics.bottomInset).toBeGreaterThanOrEqual(12)
+    expect(metrics.dialogHeight).toBeCloseTo(480, 0)
     expect(metrics.closeWidth).toBeGreaterThanOrEqual(44)
     expect(metrics.closeHeight).toBeGreaterThanOrEqual(44)
     expect(metrics.minOptionHeight).toBeGreaterThanOrEqual(44)
     expect(metrics.inputFontSize).toBeGreaterThanOrEqual(16)
-    expect(metrics.resultsHeight).toBeGreaterThanOrEqual(44)
+    expect(metrics.resultsHeight).toBeGreaterThanOrEqual(44 * 3)
+    expect(metrics.firstOptionVisibleHeight).toBeGreaterThanOrEqual(44)
     expect(metrics.footerDisplay).toBe("none")
     expect(metrics.shortcutDisplay).toBe("none")
     expect(metrics.showActive).toBe("false")

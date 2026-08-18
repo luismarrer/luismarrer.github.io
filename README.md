@@ -37,7 +37,7 @@ The print layout is a deliberate two-page resume rather than a copy of the web U
 
 Run `pnpm test:print` to build the site and validate both locales in Letter and A4. The tests check page count and size, editorial section order, intact entries, non-orphaned headings, equal project-card heights, the skills list, PDF links, dark-theme reset, contrast, readable type, margins, clipping, and overlaps. Run `pnpm test:ui` for the responsive contracts (hero label separator, education header). Run `pnpm check` for the complete i18n, build, print, and responsive gate.
 
-Node 22.13 or newer is required. After a fresh install, download the test browser once with `pnpm exec playwright install chromium`.
+Node 22.13 or newer is required. After a fresh install, download the test browsers once with `pnpm exec playwright install chromium webkit`.
 
 ## Notes for Portfolio
 
