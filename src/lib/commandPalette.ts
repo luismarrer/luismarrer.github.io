@@ -28,6 +28,10 @@ export function initCommandPalette(root: HTMLElement): () => void {
   const trigger = root.querySelector<HTMLButtonElement>(
     "[data-palette-trigger]",
   )
+  const paletteKeyHint = root.querySelector<HTMLElement>("[data-palette-key]")
+  const controlShortcutHints = Array.from(
+    root.querySelectorAll<HTMLElement>("[data-control-shortcut-hint]"),
+  )
   if (!dialog || !input || !listbox) return () => {}
 
   root.dataset.paletteReady = "true"
@@ -94,6 +98,16 @@ export function initCommandPalette(root: HTMLElement): () => void {
   visualViewport?.addEventListener("scroll", scheduleVisualViewportSync, {
     signal,
   })
+
+  const isApplePlatform = /mac|iphone|ipad|ipod/i.test(
+    navigator.platform ?? "",
+  )
+  if (paletteKeyHint)
+    paletteKeyHint.textContent = isApplePlatform ? "⌘ K" : "Ctrl K"
+  for (const hint of controlShortcutHints) {
+    const key = hint.dataset.shortcutKey?.toLocaleUpperCase(locale)
+    if (key) hint.textContent = `${isApplePlatform ? "⌃" : "Ctrl"} ${key}`
+  }
 
   const setShowActive = (value: boolean) => {
     root.dataset.showActive = value ? "true" : "false"
@@ -342,8 +356,6 @@ export function initCommandPalette(root: HTMLElement): () => void {
     "keydown",
     (event) => {
       if (event.defaultPrevented || event.isComposing || event.repeat) return
-      if (!event.ctrlKey || event.metaKey || event.altKey || event.shiftKey)
-        return
 
       const target = event.target
       const inEditable =
@@ -354,7 +366,13 @@ export function initCommandPalette(root: HTMLElement): () => void {
           target instanceof HTMLSelectElement)
 
       const key = event.key.toLocaleLowerCase(locale)
-      if (key === "k") {
+      const hasOnePaletteModifier = event.metaKey !== event.ctrlKey
+      if (
+        key === "k" &&
+        hasOnePaletteModifier &&
+        !event.altKey &&
+        !event.shiftKey
+      ) {
         if (!dialog.open && inEditable && !root.contains(target)) return
         event.preventDefault()
         if (dialog.open) {
@@ -365,9 +383,12 @@ export function initCommandPalette(root: HTMLElement): () => void {
         return
       }
 
-      // Preserve native editing shortcuts—especially Cut (Ctrl/Cmd+X)—in
-      // every editable field, including the palette's own search input.
-      if (inEditable) return
+      // Internal shortcuts are deliberately scoped to the open palette. This
+      // preserves browser and editing shortcuts everywhere else, while Ctrl
+      // (⌃ on Mac) selects the visible commands inside the palette.
+      if (!dialog.open) return
+      if (!event.ctrlKey || event.metaKey || event.altKey || event.shiftKey)
+        return
 
       const option = shortcuts.get(key)
       if (!option) return

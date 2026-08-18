@@ -9,7 +9,7 @@ por una implementación propia, pequeña y accesible, construida con HTML nativo
 CSS y TypeScript sin dependencias de runtime adicionales.
 
 La nueva paleta debe sentirse como una evolución del sitio, no como un widget
-distinto incrustado en él. Mantendrá `Ctrl + K`, búsqueda, grupos, navegación
+distinto incrustado en él. Mantendrá `Cmd/Ctrl + K`, búsqueda, grupos, navegación
 por teclado, acciones y el botón móvil, mientras mejora accesibilidad,
 consistencia visual y seguridad.
 
@@ -54,7 +54,7 @@ La paleta expone seis comandos:
 
 También incluye:
 
-- apertura con `Ctrl + K`;
+- apertura con `Cmd/Ctrl + K`;
 - búsqueda por título;
 - selección con flechas y `Enter`;
 - cierre con `Escape`;
@@ -109,7 +109,7 @@ Components para resolver una lista de seis comandos.
   de selección.
 - Al cerrar, el foco vuelve al elemento que abrió la paleta.
 - En móvil, el panel respeta `safe-area-inset-*` y el teclado virtual.
-- El recordatorio muestra `Ctrl K` en todas las plataformas.
+- El recordatorio muestra `⌘ K` en plataformas Apple y `Ctrl K` en las demás.
 
 ### Atajos directos
 
@@ -117,7 +117,7 @@ La paleta muestra y ejecuta atajos globales para sus acciones principales:
 
 | Atajo | Comando |
 |---|---|
-| `Ctrl + K` | Abrir o cerrar la paleta |
+| `Cmd/Ctrl + K` | Abrir o cerrar la paleta |
 | `Ctrl + P` | Imprimir |
 | `Ctrl + T` | Cambiar tema |
 | `Ctrl + E` | Cambiar idioma |
@@ -125,11 +125,10 @@ La paleta muestra y ejecuta atajos globales para sus acciones principales:
 | `Ctrl + L` | Abrir LinkedIn |
 | `Ctrl + X` | Abrir X |
 
-Los badges y los listeners usan exclusivamente `Ctrl` en todas las plataformas.
-Los atajos de acción no se interceptan dentro de campos editables, para
-conservar operaciones nativas como cortar texto. Algunos coinciden con funciones
-reservadas del navegador y solo pueden ejecutarse cuando este entrega el evento
-a la página.
+Los atajos de acción solo están activos mientras la paleta está abierta y usan
+exclusivamente la tecla Control: `⌃` en Mac y `Ctrl` en las demás plataformas.
+Nunca usan Command/Meta. Fuera de la paleta no se interceptan, por lo que el
+navegador y los campos editables conservan sus atajos nativos.
 
 ## 5. Dirección visual
 
@@ -336,7 +335,7 @@ orden menos predecible sin mejorar materialmente la experiencia.
 
 - Marcar cada raíz inicializada para evitar listeners duplicados.
 - Ignorar eventos con `event.isComposing` o `event.repeat`.
-- No capturar `Ctrl + K` dentro de campos editables ajenos a la paleta.
+- No capturar `Cmd/Ctrl + K` dentro de campos editables ajenos a la paleta.
 - Llamar `preventDefault()` solo cuando la paleta realmente maneje el evento.
 - El botón móvil llamará directamente a `openPalette()`.
 - El backdrop cerrará solo si `pointerdown` y `pointerup` comienzan y terminan
@@ -454,7 +453,7 @@ Ejecutar cada caso en `/en/` y `/es/` cuando aplique:
 
 #### Apertura y cierre
 
-- `Control+K` abre exactamente un diálogo; `Meta+K` no lo abre.
+- `Meta+K` y `Control+K` abren exactamente un diálogo.
 - La búsqueda recibe foco y el primer comando queda activo.
 - Repetir el atajo cierra sin duplicar estado.
 - `Escape`, botón de cierre y backdrop cierran.
@@ -489,7 +488,7 @@ Ejecutar cada caso en `/en/` y `/es/` cuando aplique:
 
 - Abrir/cerrar repetidamente no duplica listeners ni nodos.
 - Un evento `repeat` o de composición IME no dispara acciones.
-- No se intercepta `Ctrl + K` en un input ajeno.
+- No se intercepta `Cmd/Ctrl + K` en un input ajeno.
 - La paleta permanece oculta en media `print`.
 - No hay overflow horizontal a 320 px.
 - Con reduced motion no se esperan animaciones.

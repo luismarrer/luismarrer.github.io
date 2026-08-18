@@ -25,7 +25,7 @@ const COMMAND_SHORTCUTS = [
 ] as const
 
 async function openWithKeyboard(page: Page): Promise<void> {
-  await page.keyboard.press("Control+KeyK")
+  await page.keyboard.press("ControlOrMeta+KeyK")
   await expect(page.locator(DIALOG)).toHaveAttribute("open", "")
 }
 
@@ -55,10 +55,17 @@ for (const locale of LOCALES) {
       )
       await expect(visibleOptions(page)).toHaveCount(7)
 
-      await page.keyboard.press("Control+KeyK")
+      await page.keyboard.press("ControlOrMeta+KeyK")
       await expect(page.locator(`${DIALOG}[open]`)).toHaveCount(0)
 
       await page.keyboard.press("Meta+KeyK")
+      await expect(page.locator(`${DIALOG}[open]`)).toHaveCount(1)
+      await page.keyboard.press("Meta+KeyK")
+      await expect(page.locator(`${DIALOG}[open]`)).toHaveCount(0)
+
+      await page.keyboard.press("Control+KeyK")
+      await expect(page.locator(`${DIALOG}[open]`)).toHaveCount(1)
+      await page.keyboard.press("Control+KeyK")
       await expect(page.locator(`${DIALOG}[open]`)).toHaveCount(0)
     })
 
@@ -66,6 +73,17 @@ for (const locale of LOCALES) {
       page,
     }) => {
       await openWithKeyboard(page)
+
+      const isApplePlatform = await page.evaluate(() =>
+        /mac|iphone|ipad|ipod/i.test(navigator.platform),
+      )
+      await expect(page.locator("[data-palette-key]")).toHaveText(
+        isApplePlatform ? "⌘ K" : "Ctrl K",
+      )
+      await expect(page.locator("[data-palette-trigger]")).toHaveAttribute(
+        "aria-keyshortcuts",
+        "Control+K Meta+K",
+      )
 
       for (const [id, key] of COMMAND_SHORTCUTS) {
         const option = page.locator(`#${id}`)
@@ -75,7 +93,7 @@ for (const locale of LOCALES) {
           `Control+${key.toUpperCase()}`,
         )
         await expect(option.locator(".option-shortcut")).toHaveText(
-          `Ctrl ${key.toUpperCase()}`,
+          `${isApplePlatform ? "⌃" : "Ctrl"} ${key.toUpperCase()}`,
         )
       }
 
@@ -201,12 +219,14 @@ for (const locale of LOCALES) {
             .__printProbe.calls === 1,
       )
 
+      await openWithKeyboard(page)
       await page.keyboard.press("Control+KeyP")
       await page.waitForFunction(
         () =>
           (window as unknown as { __printProbe: { calls: number } })
             .__printProbe.calls === 2,
       )
+      await expect(page.locator(`${DIALOG}[open]`)).toHaveCount(0)
     })
 
     test("Ctrl+G, Ctrl+L, and Ctrl+X activate the matching profile links", async ({
@@ -231,23 +251,48 @@ for (const locale of LOCALES) {
         )
       })
 
-      await page.keyboard.press("Control+KeyG")
-      await page.keyboard.press("Control+KeyL")
-      await page.keyboard.press("Control+KeyX")
+      await page.evaluate(() => {
+        for (const key of ["g", "l", "x"])
+          document.dispatchEvent(
+            new KeyboardEvent("keydown", {
+              bubbles: true,
+              cancelable: true,
+              ctrlKey: true,
+              key,
+            }),
+          )
+      })
+      expect(
+        await page.evaluate(
+          () =>
+            (window as unknown as { __shortcutProbe: string[] })
+              .__shortcutProbe,
+        ),
+      ).toEqual([])
 
-      await expect
-        .poll(() =>
-          page.evaluate(
-            () =>
-              (window as unknown as { __shortcutProbe: string[] })
-                .__shortcutProbe,
-          ),
-        )
-        .toEqual([
-          "palette-cmd-github",
-          "palette-cmd-linkedin",
-          "palette-cmd-x",
-        ])
+      const commands = [
+        ["G", "palette-cmd-github"],
+        ["L", "palette-cmd-linkedin"],
+        ["X", "palette-cmd-x"],
+      ] as const
+      for (const [key, id] of commands) {
+        await openWithKeyboard(page)
+        if (key === "G") {
+          await page.keyboard.press("Meta+KeyG")
+          await expect(page.locator(`${DIALOG}[open]`)).toHaveCount(1)
+        }
+        await page.keyboard.press(`Control+Key${key}`)
+        await expect
+          .poll(() =>
+            page.evaluate(
+              () =>
+                (window as unknown as { __shortcutProbe: string[] })
+                  .__shortcutProbe,
+            ),
+          )
+          .toContain(id)
+        await expect(page.locator(`${DIALOG}[open]`)).toHaveCount(0)
+      }
     })
 
     test("Ctrl+T toggles the theme and Ctrl+E switches language", async ({
@@ -258,8 +303,10 @@ for (const locale of LOCALES) {
       )
       const flipped = initial === "dark" ? "light" : "dark"
 
+      await openWithKeyboard(page)
       await page.keyboard.press("Control+KeyT")
       await expect(page.locator("html")).toHaveAttribute("data-theme", flipped)
+      await expect(page.locator(`${DIALOG}[open]`)).toHaveCount(1)
 
       await page.keyboard.press("Control+KeyE")
       await page.waitForURL(locale === "es" ? "**/en/" : "**/es/")
@@ -338,7 +385,7 @@ for (const locale of LOCALES) {
 }
 
 test.describe("palette resilience", () => {
-  test("action shortcuts do not override editable-field behavior", async ({
+  test("Control actions only run inside the open palette", async ({
     page,
   }) => {
     await page.goto("/en/", { waitUntil: "domcontentloaded" })
@@ -380,7 +427,16 @@ test.describe("palette resilience", () => {
     await openWithKeyboard(page)
     await page.locator(INPUT).fill("x")
     await page.keyboard.press("Control+KeyX")
-    await expect(page.locator(`${DIALOG}[open]`)).toHaveCount(1)
+    await expect
+      .poll(() =>
+        page.evaluate(
+          () =>
+            (window as unknown as { __editableShortcutProbe: string[] })
+              .__editableShortcutProbe,
+        ),
+      )
+      .toEqual(["palette-cmd-x"])
+    await expect(page.locator(`${DIALOG}[open]`)).toHaveCount(0)
   })
 
   test("repeated open/close cycles never duplicate palette state", async ({

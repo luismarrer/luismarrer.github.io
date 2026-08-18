@@ -37,6 +37,7 @@ const NETWORK_SHORTCUTS: Record<string, string> = {
 const shortcutLabel = (key: string) => `Ctrl ${key.toUpperCase()}`
 const shortcutAria = (key: string) =>
   `Control+${key.toUpperCase()}`
+const paletteShortcutAria = "Control+K Meta+K"
 
 const oppositeLocaleUrl = currentLanguage === "es" ? "/en/" : "/es/"
 const index = (...parts: string[]) =>
@@ -74,7 +75,7 @@ const networkCommands = [
   <footer class="palette-hint">
     <p>
       {t("hintPrefix")}
-      <kbd data-palette-key>Ctrl K</kbd>
+      <kbd data-palette-key>⌘/Ctrl K</kbd>
       {t("hintSuffix")}
     </p>
   </footer>
@@ -85,7 +86,7 @@ const networkCommands = [
     data-palette-trigger
     aria-haspopup="dialog"
     aria-label={t("openButton")}
-    aria-keyshortcuts={shortcutAria("k")}
+    aria-keyshortcuts={paletteShortcutAria}
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -156,6 +157,8 @@ const networkCommands = [
           <kbd
             class="option-shortcut"
             aria-hidden="true"
+            data-control-shortcut-hint
+            data-shortcut-key="p"
           >
             {shortcutLabel("p")}
           </kbd>
@@ -180,6 +183,8 @@ const networkCommands = [
           <kbd
             class="option-shortcut"
             aria-hidden="true"
+            data-control-shortcut-hint
+            data-shortcut-key="t"
           >
             {shortcutLabel("t")}
           </kbd>
@@ -200,6 +205,8 @@ const networkCommands = [
           <kbd
             class="option-shortcut"
             aria-hidden="true"
+            data-control-shortcut-hint
+            data-shortcut-key="e"
           >
             {shortcutLabel("e")}
           </kbd>
@@ -237,6 +244,8 @@ const networkCommands = [
                   <kbd
                     class="option-shortcut"
                     aria-hidden="true"
+                    data-control-shortcut-hint
+                    data-shortcut-key={command.shortcut}
                   >
                     {shortcutLabel(command.shortcut)}
                   </kbd>
