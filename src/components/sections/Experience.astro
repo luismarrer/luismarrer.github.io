@@ -40,7 +40,14 @@ const labels = cvLabels[currentLanguage]
           ? formatCvDate(endDate, currentLanguage)
           : labels.present
         const dates = `${start} - ${end}`
-        const hasTechnologies = (technologies?.length ?? 0) > 0
+        const technologyCount = technologies?.length ?? 0
+        const hasTechnologies = technologyCount > 0
+        const mobileTechnologySplit =
+          technologyCount >= 4 ? 2 : technologyCount
+        const primaryMobileTechnologies =
+          technologies?.slice(0, mobileTechnologySplit) ?? []
+        const trailingMobileTechnologies =
+          technologies?.slice(mobileTechnologySplit) ?? []
         return (
           <li>
             <article data-print-item="experience">
@@ -83,19 +90,34 @@ const labels = cvLabels[currentLanguage]
                 <p>{summary}</p>
                 {(workMode || hasTechnologies) && (
                   <p class="meta meta--mobile">
-                    {workMode && (
-                      <span class="work-mode" data-work-mode={workMode}>
-                        {labels.workModes[workMode]}
-                      </span>
-                    )}
-                    {workMode && hasTechnologies && (
-                      <span class="meta-separator" aria-hidden="true">
-                        &middot;
-                      </span>
-                    )}
-                    {hasTechnologies && (
-                      <span class="tech-list">
-                        {technologies?.join(" / ")}
+                    <span class="mobile-meta-primary">
+                      {workMode && (
+                        <span class="work-mode" data-work-mode={workMode}>
+                          {labels.workModes[workMode]}
+                        </span>
+                      )}
+                      {workMode && hasTechnologies && (
+                        <span class="meta-separator" aria-hidden="true">
+                          &middot;
+                        </span>
+                      )}
+                      {primaryMobileTechnologies.length > 0 && (
+                        <span class="tech-list">
+                          {primaryMobileTechnologies.join(" / ")}
+                        </span>
+                      )}
+                    </span>
+                    {trailingMobileTechnologies.length > 0 && (
+                      <span class="mobile-tech-tail">
+                        <span
+                          class="mobile-tech-separator"
+                          aria-hidden="true"
+                        >
+                          {" / "}
+                        </span>
+                        <span class="tech-list">
+                          {trailingMobileTechnologies.join(" / ")}
+                        </span>
                       </span>
                     )}
                   </p>
@@ -217,11 +239,29 @@ const labels = cvLabels[currentLanguage]
     }
 
     .meta--mobile {
-      display: flex;
+      display: block;
+    }
+
+    .meta--mobile .meta-separator {
+      display: none;
+    }
+
+    .mobile-meta-primary .work-mode:not(:last-child) {
+      margin-right: 8px;
     }
 
     time {
       text-align: right;
+    }
+  }
+
+  @media screen and (width <= 540px) {
+    .mobile-tech-tail {
+      display: block;
+    }
+
+    .mobile-tech-separator {
+      display: none;
     }
   }
 

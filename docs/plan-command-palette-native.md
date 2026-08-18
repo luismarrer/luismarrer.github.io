@@ -1,17 +1,27 @@
-# Plan — Reimplementación nativa de la paleta de comandos
+# R1 — Paleta de comandos nativa
 
-Estado: **v1.2 — implementado** · Última actualización: 2026-08-18\n\n> Implementación completada en la rama `roadmap/r0-r3-execution`: ver\n> `src/components/CommandPalette.astro`, `src/lib/commandPalette.ts`,\n> `src/lib/theme.ts` y `tests/palette/command-palette.spec.ts`. Chunk final:\n> 4.25 kB min / 1.76 kB gzip (+0.25 kB del módulo de tema). Pendiente: QA\n> manual con VoiceOver y validación del preview de Vercel antes del merge.
+Estado: **v1.3 — completado y en producción** · Última actualización: 2026-08-18
+
+> Implementación activa en `main`: `src/components/CommandPalette.astro`,
+> `src/lib/commandPalette.ts` y `src/lib/theme.ts`. La paleta expone siete
+> opciones, sin dependencias de runtime, con 31 contratos Playwright en
+> `tests/palette/command-palette.spec.ts` y
+> `tests/palette/command-palette.webkit.spec.ts`. La QA manual con VoiceOver en
+> Brave (Chromium) y el preview de Vercel están completados; R1 está cerrado.
+>
+> Build de producción medido el 2026-08-18: **5.26 kB min / 2.07 kB gzip**
+> para la paleta, más **0.25 kB min / 0.17 kB gzip** del módulo de tema
+> compartido. El baseline anterior era 54.41 kB / 17.55 kB gzip.
 
 ## 1. Decisión
 
-Conservar la experiencia de la paleta de comandos, pero sustituir `ninja-keys`
+R1 conservó la experiencia de la paleta de comandos y sustituyó `ninja-keys`
 por una implementación propia, pequeña y accesible, construida con HTML nativo,
 CSS y TypeScript sin dependencias de runtime adicionales.
 
-La nueva paleta debe sentirse como una evolución del sitio, no como un widget
-distinto incrustado en él. Mantendrá `Cmd/Ctrl + K`, búsqueda, grupos, navegación
-por teclado, acciones y el botón móvil, mientras mejora accesibilidad,
-consistencia visual y seguridad.
+La paleta mantiene `Cmd/Ctrl + K`, búsqueda, grupos, navegación por teclado,
+acciones y el botón móvil. Se integra como una evolución del sitio, con mejor
+accesibilidad, consistencia visual y seguridad.
 
 ## 2. Objetivos
 
@@ -29,28 +39,34 @@ consistencia visual y seguridad.
 
 - Cero dependencias de runtime para la paleta.
 - Chunk de la paleta de **≤ 8 kB minificado y ≤ 3 kB gzip**; objetivo ideal:
-  reducción ≥ 80 % frente al chunk actual.
+  reducción ≥ 80 % frente al baseline anterior.
 - Sin peticiones de red, fuentes o iconos cargados por la paleta.
-- Todas las acciones actuales siguen disponibles.
+- Las siete opciones siguen disponibles.
 - Cero errores de consola en `/en/` y `/es/`.
 - Navegación completa usando solo teclado.
 - `pnpm build` y `pnpm i18n:check` pasan.
 - La versión imprimible continúa ocultando todos los controles de la paleta.
 
-## 3. Auditoría del estado actual
+## 3. Baseline anterior (histórico)
+
+Esta sección conserva el estado previo a R1 para explicar las decisiones de la
+migración. `KeyboardManager.astro` y `ninja-keys` ya no forman parte de la
+arquitectura activa.
 
 ### Funcionalidad existente
 
-La paleta expone seis comandos:
+La implementación anterior exponía siete opciones; seis tenían atajo directo y
+el sitio personal no:
 
-| Grupo | Comando | Efecto |
-|---|---|---|
-| Acciones | Imprimir | Ejecuta `window.print()` |
-| Acciones | Cambiar tema | Activa el control de tema existente |
-| Acciones | Cambiar idioma | Navega entre `/en/` y `/es/` |
-| Redes | GitHub | Abre el perfil en una pestaña nueva |
-| Redes | LinkedIn | Abre el perfil en una pestaña nueva |
-| Redes | X | Abre el perfil en una pestaña nueva |
+| Grupo | Comando | Atajo | Efecto |
+|---|---|---|---|
+| Acciones | Imprimir | `Ctrl+P` | Ejecuta `window.print()` |
+| Acciones | Cambiar tema | `Ctrl+T` | Activa el control de tema existente |
+| Acciones | Cambiar idioma | `Ctrl+E` | Navega entre `/en/` y `/es/` |
+| Links | Sitio web personal | — | Abre `cv.basics.url` en otra pestaña |
+| Links | GitHub | `Ctrl+G` | Abre el perfil en una pestaña nueva |
+| Links | LinkedIn | `Ctrl+L` | Abre el perfil en una pestaña nueva |
+| Links | X | `Ctrl+X` | Abre el perfil en una pestaña nueva |
 
 También incluye:
 
@@ -64,11 +80,11 @@ También incluye:
 
 ### Coste medido
 
-El build actual produce para `KeyboardManager.astro` un chunk de **54.41 kB**,
+El build anterior producía para `KeyboardManager.astro` un chunk de **54.41 kB**,
 **17.55 kB gzip**. La dependencia incorpora Lit, `hotkeys-js` y Material Web
-Components para resolver una lista de seis comandos.
+Components para resolver una lista de siete opciones.
 
-### Problemas que la migración debe corregir
+### Problemas corregidos por la migración
 
 - El botón móvil simula un evento de teclado en vez de invocar una API directa.
 - Un listener global de `touchend` inserta nodos repetidamente en cada toque.
@@ -91,8 +107,10 @@ Components para resolver una lista de seis comandos.
 - Abrir y cerrar con `Cmd + K` en macOS y `Ctrl + K` en Windows/Linux.
 - Abrir desde el botón flotante móvil.
 - Filtrar comandos mientras se escribe.
-- Mantener los grupos **Acciones** y **Redes sociales**.
-- Ejecutar impresión, tema, idioma y los tres enlaces sociales.
+- Mantener los grupos **Acciones** y **Links**.
+- Ejecutar impresión, tema e idioma, y abrir el sitio personal y los tres
+  perfiles sociales.
+- Derivar el sitio personal de `cv.basics.url`.
 - Navegar con `ArrowDown`, `ArrowUp` y `Enter`.
 - Cerrar con `Escape`, botón de cierre o clic/tap en el backdrop.
 - Funcionar en claro, oscuro, EN y ES.
@@ -113,7 +131,8 @@ Components para resolver una lista de seis comandos.
 
 ### Atajos directos
 
-La paleta muestra y ejecuta atajos globales para sus acciones principales:
+La paleta usa un atajo global para abrirse y siete atajos internos para sus
+opciones:
 
 | Atajo | Comando |
 |---|---|
@@ -136,16 +155,16 @@ navegador y los campos editables conservan sus atajos nativos.
 ### Concepto
 
 Una **consola editorial mínima**: la precisión de una interfaz de comandos con
-la sobriedad del CV. No se añadirán colores de marca, gradientes, glassmorphism
-ni una estética de «terminal hacker».
+la sobriedad del CV. No usa colores de marca, gradientes, glassmorphism ni una
+estética de «terminal hacker».
 
-La única firma visual será el prompt decorativo `~/cv ›` delante de la
+La única firma visual es el prompt decorativo `~/cv ›` delante de la
 búsqueda. Conecta la paleta con el trabajo de ingeniería y con la tipografía
 monoespaciada del sitio sin disfrazar toda la interfaz de terminal.
 
 ### Tokens
 
-La paleta heredará los tokens existentes de `Layout.astro`:
+La paleta hereda los tokens existentes de `Layout.astro`:
 
 | Rol | Token |
 |---|---|
@@ -156,9 +175,8 @@ La paleta heredará los tokens existentes de `Layout.astro`:
 | Selección | `--surface` |
 | Texto de etiquetas | `--tag-text` |
 
-Solo se añadirán tokens globales si tienen utilidad fuera del componente. El
-backdrop y el anillo de foco pueden permanecer como valores locales derivados
-de los tokens existentes.
+No añade tokens globales de uso exclusivo. El backdrop y el anillo de foco son
+valores locales derivados de los tokens existentes.
 
 ### Tipografía
 
@@ -170,21 +188,22 @@ de los tokens existentes.
 
 ```text
                   backdrop
-       ┌──────────────────────────────┐
-       │ ~/cv › Buscar comando...  × │
-       ├──────────────────────────────┤
-       │ ACCIONES                     │
-       │ →  Imprimir                  │
-       │    Cambiar a tema oscuro     │
-       │    Cambiar a inglés          │
-       │                              │
-       │ REDES SOCIALES               │
-       │    GitHub                    │
-       │    LinkedIn                  │
-       │    X                         │
-       ├──────────────────────────────┤
-       │ ↑↓ navegar  ↵ abrir  esc salir│
-       └──────────────────────────────┘
+       ┌────────────────────────────────────────┐
+       │ ~/cv › Buscar comando...             × │
+       ├────────────────────────────────────────┤
+       │ ACCIONES                               │
+       │ → Imprimir                 [Ctrl] [P]  │
+       │   Cambiar a tema oscuro    [Ctrl] [T]  │
+       │   Cambiar a inglés         [Ctrl] [E]  │
+       │                                        │
+       │ LINKS                                  │
+       │   Sitio web personal       [Ctrl] [S]  │
+       │   GitHub                   [Ctrl] [G]  │
+       │   LinkedIn                 [Ctrl] [L]  │
+       │   X                        [Ctrl] [X]  │
+       ├────────────────────────────────────────┤
+       │ ↑↓ navegar  ↵ abrir  esc salir         │
+       └────────────────────────────────────────┘
 ```
 
 - Ancho máximo aproximado: `640px`.
@@ -198,30 +217,36 @@ de los tokens existentes.
 │ contenido del CV                     │
 │                                      │
 │                              [⌘]     │
-├──────────────────────────────────────┤
-│ ~/cv › Buscar comando...          × │
-│ ACCIONES                             │
-│ → Imprimir                           │
-│   Cambiar a tema oscuro              │
-│ REDES SOCIALES                       │
-│   GitHub · LinkedIn · X              │
+│   ┌──────────────────────────────┐   │
+│   │ ⌕ Buscar comando...       ×  │   │
+│   │ ACCIONES                     │   │
+│   │ → Imprimir                   │   │
+│   │   Cambiar a tema oscuro      │   │
+│   │   Cambiar a inglés           │   │
+│   │ LINKS                        │   │
+│   │   Sitio web personal         │   │
+│   │   GitHub                     │   │
+│   │   LinkedIn                   │   │
+│   │   X                          │   │
+│   └──────────────────────────────┘   │
 └──────────────────────────────────────┘
 ```
 
-- Se comporta como una hoja inferior compacta.
+- Se comporta como una hoja inferior flotante con inset lateral e inferior.
+- El prompt `~/cv ›`, los keycaps y el footer se ocultan en touch/móvil.
 - Objetivos táctiles mínimos de `44 × 44px`.
 - El botón flotante conserva su posición, pero usa un `<button>` semántico,
   `aria-label` traducido y offsets de safe area.
 
 ### Movimiento
 
-Un único gesto orquestado:
+La implementación usa un único gesto de entrada:
 
-- backdrop: aparición gradual;
-- panel: `opacity` + desplazamiento de 8–12 px;
-- entrada: 140–180 ms; salida: 90–120 ms;
-- selección: transición breve de fondo, sin mover el layout;
-- con `prefers-reduced-motion: reduce`, todo cambio es inmediato.
+- backdrop: aparición gradual durante `160ms`;
+- panel: `opacity` + desplazamiento de `10px` durante `160ms`;
+- cierre inmediato, sin animación de salida;
+- selección por cambio de fondo, sin transición dedicada ni movimiento;
+- con `prefers-reduced-motion: reduce`, se desactivan las animaciones de entrada.
 
 ### Autocrítica de la dirección
 
@@ -230,16 +255,17 @@ se limita al prefijo de búsqueda, se marca `aria-hidden="true"` y no se acompa�
 de cursores parpadeantes, ventanas falsas, neón ni animaciones de escritura.
 Todo lo demás permanece silencioso y funcional.
 
-## 6. Arquitectura propuesta
+## 6. Arquitectura implementada
 
 ### Componente
 
-Crear `src/components/CommandPalette.astro` y retirar
-`src/components/KeyboardManager.astro` cuando se confirme la paridad.
+`src/components/CommandPalette.astro` es la única implementación activa;
+`src/components/KeyboardManager.astro` se retiró al confirmar la paridad.
 
 Responsabilidades del componente:
 
-- construir la lista tipada de comandos desde `cv.basics.profiles`;
+- construir el sitio personal desde `cv.basics.url` y las redes desde
+  `cv.basics.profiles`;
 - renderizar todo el HTML de forma estática;
 - reutilizar `GitHub.astro`, `LinkedIn.astro` y `X.astro`;
 - renderizar iconos locales para imprimir, tema, idioma, buscar y cerrar;
@@ -248,13 +274,13 @@ Responsabilidades del componente:
 
 ### Controlador
 
-Crear `src/lib/commandPalette.ts` con una API pequeña:
+`src/lib/commandPalette.ts` expone una API pequeña:
 
 ```ts
 initCommandPalette(root: HTMLElement): () => void
 ```
 
-El controlador se ocupará de:
+El controlador se ocupa de:
 
 - estado abierto/cerrado;
 - consulta y resultados visibles;
@@ -265,9 +291,9 @@ El controlador se ocupará de:
 - anuncios de resultados;
 - limpieza de listeners mediante `AbortController`.
 
-La función de normalización de búsqueda será pura y exportable para probarla
-sin DOM. No se creará un custom element ni una abstracción genérica para menús:
-solo existe una paleta en este producto.
+La función de normalización de búsqueda es pura y exportable para probarla
+sin DOM. No existe un custom element ni una abstracción genérica para menús:
+el producto solo necesita una paleta.
 
 ### HTML y ARIA
 
@@ -284,40 +310,38 @@ solo existe una paleta en este producto.
 - Enlaces externos: URL nativa, `target="_blank"` y
   `rel="noopener noreferrer"`.
 
-Usar `<dialog>` proporciona top layer, fondo inerte y contención de foco en
-navegadores modernos. El controlador seguirá probando y restaurando el foco de
-forma explícita para que el comportamiento sea determinista.
+`<dialog>` proporciona top layer, fondo inerte y contención de foco en
+navegadores modernos. El controlador prueba y restaura el foco de forma
+explícita para que el comportamiento sea determinista.
 
 ### Modelo de comandos
 
-```ts
-type CommandGroup = "actions" | "networks"
+Cada opción expone un ID estable, `role="option"`, `data-search`,
+`data-shortcut` y uno de estos valores de `data-command`:
 
-interface Command {
-  id: string
-  group: CommandGroup
-  label: string
-  keywords: string[]
-  kind: "print" | "theme" | "language" | "external-link"
-  href?: string
-}
-```
+| Valor | Uso |
+|---|---|
+| `print` | Cerrar y ejecutar `window.print()` |
+| `theme` | Compartir la acción de tema de `src/lib/theme.ts` |
+| `language` | Navegar al locale opuesto |
+| `external-link` | Abrir sitio personal o perfil social con un enlace real |
 
-El orden será estable y definido por el servidor. La búsqueda filtra; no aplica
+El orden es estable y queda definido por el servidor. La búsqueda filtra; no aplica
 fuzzy ranking que haga saltar resultados mientras se escribe. Los términos de
-varias palabras se evaluarán con semántica AND.
+varias palabras se evalúan con semántica AND.
 
 ### Integración con acciones
 
-- **Imprimir:** cerrar el diálogo y ejecutar `window.print()` en el siguiente
-  frame para que el diálogo no participe en la captura de impresión.
-- **Tema:** compartir una función pequeña de tema con el botón global, o emitir
-  una intención desacoplada. `Layout.astro` no volverá a consultar la paleta.
+- **Imprimir:** cerrar el diálogo y ejecutar `window.print()` después de dos
+  frames para que el diálogo no participe en la captura de impresión.
+- **Tema:** usar `toggleTheme()` de `src/lib/theme.ts`, compartida con el botón
+  global. `Layout.astro` no consulta la paleta.
 - **Idioma:** navegar al locale opuesto con un enlace real.
-- **Redes:** usar enlaces reales generados desde el CV, no `window.open()`.
+- **Enlaces:** usar enlaces reales para el sitio personal y los perfiles,
+  generados desde el CV y sin `window.open()`.
 
-El componente debe consumir CSS variables directamente. Se eliminarán
-`syncNinjaKeys()` y cualquier clase `.dark` específica de la paleta.
+El componente consume CSS variables directamente. `syncNinjaKeys()` y las
+clases `.dark` específicas de la integración anterior fueron eliminadas.
 
 ### Búsqueda
 
@@ -329,7 +353,7 @@ Normalización determinista:
 4. colapsar espacios;
 5. comparar todos los tokens contra título, grupo y palabras clave.
 
-No se incorporará una librería fuzzy: con seis comandos añade coste y hace el
+No se incorpora una librería fuzzy: con siete opciones añade coste y hace el
 orden menos predecible sin mejorar materialmente la experiencia.
 
 ### Inicialización segura
@@ -338,17 +362,17 @@ orden menos predecible sin mejorar materialmente la experiencia.
 - Ignorar eventos con `event.isComposing` o `event.repeat`.
 - No capturar `Cmd/Ctrl + K` dentro de campos editables ajenos a la paleta.
 - Llamar `preventDefault()` solo cuando la paleta realmente maneje el evento.
-- El botón móvil llamará directamente a `openPalette()`.
-- El backdrop cerrará solo si `pointerdown` y `pointerup` comienzan y terminan
+- El botón móvil llama directamente a la rutina local de apertura.
+- El backdrop cierra solo si `pointerdown` y `pointerup` comienzan y terminan
   fuera del panel, evitando cierres accidentales al arrastrar.
 
 ## 7. i18n y microcopy
 
-Renombrar `keyboardManager` a `commandPalette` y
-`useKeyboardManager()` a `useCommandPalette()` para que el dominio ya no haga
-referencia a una implementación anterior.
+El dominio se renombró de `keyboardManager` a `commandPalette` y de
+`useKeyboardManager()` a `useCommandPalette()`, por lo que ya no hace referencia
+a la implementación anterior.
 
-Añadir, como mínimo, estas claves en EN y ES:
+La microcopy EN/ES incluye:
 
 - instrucción de apertura;
 - etiqueta del botón móvil;
@@ -356,7 +380,7 @@ Añadir, como mínimo, estas claves en EN y ES:
 - placeholder de búsqueda;
 - cerrar;
 - acciones;
-- redes sociales;
+- links y sitio web personal;
 - imprimir;
 - cambiar a tema claro;
 - cambiar a tema oscuro;
@@ -369,14 +393,14 @@ Añadir, como mínimo, estas claves en EN y ES:
 La UI debe decir lo que ocurrirá. Evitar «Toggle theme» cuando puede decir
 «Cambiar a tema oscuro» o «Switch to light theme».
 
-## 8. Plan de implementación
+## 8. Historial de implementación
 
-Cada fase termina en un estado comprobable. La paleta vieja permanece disponible
-hasta que la nueva haya superado la paridad funcional.
+Las fases 0–6 se completaron antes del cierre de R1. Se conservan como registro
+de ejecución; la implementación anterior ya no permanece disponible.
 
 ### Fase 0 — Congelar el contrato actual
 
-1. Registrar el tamaño del build actual: 54.41 kB / 17.55 kB gzip.
+1. Registrar el tamaño del baseline anterior: 54.41 kB / 17.55 kB gzip.
 2. Capturar referencia visual en claro/oscuro y desktop/móvil.
 3. Convertir la lista de §4 en checklist de paridad.
 4. Confirmar el comportamiento de impresión antes de tocar la integración.
@@ -386,7 +410,7 @@ hasta que la nueva haya superado la paridad funcional.
 ### Fase 1 — Markup y datos
 
 1. Crear `CommandPalette.astro` junto al componente actual.
-2. Definir el modelo de comandos y generar las seis acciones.
+2. Definir el modelo de comandos y generar las siete opciones.
 3. Reutilizar los iconos Astro existentes y añadir solo los que falten.
 4. Renderizar `<dialog>`, búsqueda, grupos, resultados, estado vacío y footer.
 5. Añadir toda la microcopy EN/ES.
@@ -410,7 +434,7 @@ hasta que la nueva haya superado la paridad funcional.
 1. Aplicar los tokens existentes para ambos temas.
 2. Construir layout desktop y bottom sheet móvil.
 3. Añadir prompt `~/cv ›`, estados hover/active/focus y ayudas de teclado.
-4. Añadir entrada/salida y `prefers-reduced-motion`.
+4. Añadir animación de entrada y `prefers-reduced-motion`.
 5. Verificar scroll, `100dvh`, safe areas y teclado virtual.
 
 **Salida:** experiencia visual terminada, coherente con el portfolio.
@@ -430,7 +454,7 @@ hasta que la nueva haya superado la paridad funcional.
 
 1. Añadir pruebas Playwright de la paleta sin debilitar las pruebas de impresión.
 2. Ejecutar la matriz funcional de §9.
-3. Revisar manualmente con VoiceOver en Safari.
+3. Revisar manualmente con VoiceOver en Brave (Chromium).
 4. Comparar screenshots EN/ES, claro/oscuro y desktop/móvil.
 5. Medir el build y ajustar hasta cumplir el presupuesto.
 
@@ -450,7 +474,9 @@ hasta que la nueva haya superado la paridad funcional.
 
 ### Automatizadas con Playwright
 
-Ejecutar cada caso en `/en/` y `/es/` cuando aplique:
+La suite actual define 31 casos: 22 localizados (11 en EN y 11 en ES), cuatro
+de resiliencia, cuatro de touch/viewport en Chromium y uno de hoja touch en
+WebKit.
 
 #### Apertura y cierre
 
@@ -458,15 +484,13 @@ Ejecutar cada caso en `/en/` y `/es/` cuando aplique:
 - La búsqueda recibe foco y el primer comando queda activo.
 - Repetir el atajo cierra sin duplicar estado.
 - `Escape`, botón de cierre y backdrop cierran.
-- El foco vuelve al disparador original.
-- El botón móvil abre sin sintetizar eventos de teclado.
+- En touch, abrir no enfoca la búsqueda y cerrar devuelve el foco al trigger.
 
 #### Búsqueda
 
-- Coincidencias por título, grupo y keyword.
-- Búsqueda insensible a mayúsculas y diacríticos.
+- Coincidencias por label y keywords localizadas.
+- Búsqueda insensible a diacríticos.
 - Varios tokens usan semántica AND.
-- Un filtro conserva orden y grupos correctos.
 - Cero coincidencias muestra el estado localizado.
 - Limpiar el input restaura todos los comandos y la primera selección.
 
@@ -475,7 +499,6 @@ Ejecutar cada caso en `/en/` y `/es/` cuando aplique:
 - Flechas avanzan, retroceden y envuelven extremos.
 - `Home`/`End` saltan a los extremos visibles.
 - `Enter` ejecuta solo el comando activo.
-- La selección nunca apunta a un elemento filtrado.
 - `aria-activedescendant` y `aria-selected` permanecen sincronizados.
 
 #### Acciones
@@ -483,16 +506,30 @@ Ejecutar cada caso en `/en/` y `/es/` cuando aplique:
 - Imprimir llama una vez a `window.print()` después de cerrar.
 - Tema cambia `data-theme`, persiste en `localStorage` y actualiza el label.
 - Idioma apunta al locale opuesto.
-- Redes conservan sus URLs, pestaña nueva y `noopener noreferrer`.
+- El sitio personal responde a `Ctrl+S` y usa `cv.basics.url`.
+- Los enlaces conservan sus URLs, pestaña nueva y `noopener noreferrer`.
 
 #### Resiliencia
 
 - Abrir/cerrar repetidamente no duplica listeners ni nodos.
-- Un evento `repeat` o de composición IME no dispara acciones.
-- No se intercepta `Cmd/Ctrl + K` en un input ajeno.
+- Los atajos de acción solo operan con la paleta abierta y no secuestran un
+  input externo.
 - La paleta permanece oculta en media `print`.
 - No hay overflow horizontal a 320 px.
-- Con reduced motion no se esperan animaciones.
+
+#### Touch y viewport
+
+- Portrait verifica márgenes, objetivos de 44 px, scroll útil, fuente de 16 px,
+  foco inicial y affordances de teclado ocultos.
+- Landscape verifica controles alcanzables a `667×375` y `844×390`.
+- Un viewport visual simulado mantiene búsqueda, resultados y cierre visibles.
+- WebKit/iPhone protege el área desplazable y la primera opción visible.
+
+### Guardas implementadas sin aserción Playwright directa
+
+- El controlador ignora eventos `repeat` y de composición IME.
+- `Cmd/Ctrl+K` no abre la paleta desde un campo editable externo.
+- `prefers-reduced-motion: reduce` elimina las animaciones de entrada.
 
 ### QA visual
 
@@ -510,7 +547,12 @@ safe areas y que el panel no tape su propia selección al abrirse el teclado.
 
 ### QA de accesibilidad manual
 
-- VoiceOver anuncia diálogo, búsqueda, grupos, resultado activo y cantidad.
+La evidencia registrada el 2026-07-18 con VoiceOver en Brave (Chromium)
+confirmó diálogo, grupos, resultado activo, conteo en vivo, estado vacío y
+retorno de foco. Chromium anunció las opciones como «menu item»; se registró como
+un matiz del mapeo de plataforma, no como defecto funcional. El contrato manual
+también contempla:
+
 - El fondo no es navegable mientras el modal está abierto.
 - El orden de foco es lógico y nunca se pierde.
 - El foco visible alcanza al menos el equivalente de WCAG 2.2 AA.
@@ -520,17 +562,23 @@ safe areas y que el panel no tape su propia selección al abrirse el teclado.
 ### Compatibilidad objetivo
 
 Últimas dos versiones estables de Chrome, Safari y Firefox, más Safari móvil.
-No se añadirá un polyfill de `<dialog>`: el sitio prioriza navegadores modernos
-y una dependencia para navegadores obsoletos contradiría el objetivo.
+No se usa ni se prevé un polyfill de `<dialog>`: el sitio prioriza navegadores
+modernos y una dependencia para navegadores obsoletos contradiría el objetivo.
 
-## 10. Archivos previstos
+## 10. Archivos resultantes
 
 ### Nuevos
 
 - `src/components/CommandPalette.astro`
 - `src/lib/commandPalette.ts`
-- iconos Astro que no existan todavía
-- `tests/command-palette/command-palette.spec.ts`
+- `src/lib/theme.ts`
+- `src/icons/Close.astro`
+- `src/icons/Languages.astro`
+- `src/icons/Printer.astro`
+- `src/icons/Search.astro`
+- `src/icons/ThemeToggle.astro`
+- `tests/palette/command-palette.spec.ts`
+- `tests/palette/command-palette.webkit.spec.ts`
 
 ### Modificados
 
@@ -543,7 +591,9 @@ y una dependencia para navegadores obsoletos contradiría el objetivo.
 - `pnpm-lock.yaml`
 - `playwright.config.ts`
 - `README.md`
-- `AGENTS.md` y documentación equivalente que describa la integración anterior
+- `AGENTS.md`
+- `CLAUDE.md`
+- `docs/roadmap.md`
 
 ### Eliminado
 
@@ -551,21 +601,26 @@ y una dependencia para navegadores obsoletos contradiría el objetivo.
 
 ## 11. Definición de terminado
 
-La migración está terminada únicamente cuando:
+La migración quedó terminada con estos criterios:
 
-- [ ] La paleta abre con teclado y botón en todos los breakpoints.
-- [ ] Las seis acciones funcionan en EN y ES.
-- [ ] Búsqueda, selección, estado vacío y anuncios son correctos.
-- [ ] El foco entra, permanece y regresa de forma determinista.
-- [ ] Claro, oscuro, reduced motion y print funcionan sin excepciones.
-- [ ] No existen atajos globales que colisionen con el navegador.
-- [ ] Los perfiles siguen derivados de los JSON del CV.
-- [ ] Playwright cubre interacción y las pruebas de impresión siguen pasando.
-- [ ] `pnpm i18n:check` pasa.
-- [ ] `pnpm build` pasa sin warnings atribuibles a la paleta.
-- [ ] El presupuesto de ≤ 8 kB minificado / ≤ 3 kB gzip se cumple.
-- [ ] `ninja-keys` no aparece en dependencias, lockfile, código ni documentación.
-- [ ] El preview de Vercel fue validado en desktop y móvil antes del merge.
+- [x] La paleta abre con teclado y botón en todos los breakpoints.
+- [x] Las siete opciones funcionan en EN y ES.
+- [x] Búsqueda, selección, estado vacío y anuncios son correctos.
+- [x] El foco entra, permanece y regresa de forma determinista.
+- [x] Claro, oscuro, reduced motion y print funcionan sin excepciones.
+- [x] `Cmd/Ctrl+K` es el único atajo global; las acciones Control solo operan
+      dentro de la paleta abierta.
+- [x] El sitio personal y los perfiles siguen derivados de los JSON del CV.
+- [x] Playwright cubre interacción, touch, WebKit y la impresión sigue pasando.
+- [x] La pasada manual con VoiceOver en Brave (Chromium) del 2026-07-18 verificó
+      diálogo, grupos, comando activo, conteo en vivo, estado vacío y retorno de
+      foco.
+- [x] `pnpm i18n:check` pasa.
+- [x] `pnpm build` pasa sin warnings atribuibles a la paleta.
+- [x] El presupuesto de ≤ 8 kB minificado / ≤ 3 kB gzip se cumple.
+- [x] `ninja-keys` no aparece en dependencias, lockfile ni arquitectura activa;
+      sus menciones en este documento son únicamente históricas.
+- [x] El preview de Vercel fue validado en desktop y móvil antes del merge.
 
 ## 12. Fuera de alcance
 
@@ -578,10 +633,11 @@ La migración está terminada únicamente cuando:
 - Convertir el componente en una librería reutilizable.
 - Cambios al contenido del CV o nuevas secciones.
 
-## 13. Rollback
+## 13. Rollback actual
 
-La implementación se desarrollará junto a la actual y el cambio de import será
-el último paso funcional. Si el preview detecta una regresión crítica, se
-restaura el import de `KeyboardManager.astro` y se conserva temporalmente
-`ninja-keys`. La dependencia solo se elimina después de completar QA, por lo
-que el rollback previo al merge no requiere reconstruir código perdido.
+La estrategia de mantener `KeyboardManager.astro` en paralelo solo aplicó antes
+del merge y queda documentada como contexto histórico. Hoy la paleta nativa es
+la única implementación: no existe una copia operativa de
+`KeyboardManager.astro` ni la dependencia `ninja-keys`. Un rollback de release
+se haría mediante el historial de Git de R1 y sus commits de endurecimiento; no
+se debe reintroducir manualmente código o dependencias obsoletas.

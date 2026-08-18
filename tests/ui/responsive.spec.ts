@@ -259,6 +259,102 @@ for (const locale of LOCALES) {
       }
     })
 
+    test("long mobile metadata wraps into two intentional lines", async ({
+      page,
+    }) => {
+      const cv = loadCv(locale)
+      const workIndex = cv.work.findIndex(
+        ({ technologies }) => (technologies?.length ?? 0) >= 4,
+      )
+      const technologies = cv.work[workIndex]?.technologies ?? []
+      const splitIndex = technologies.length >= 4 ? 2 : technologies.length
+
+      expect(
+        workIndex,
+        "fixture needs one long technology list",
+      ).toBeGreaterThanOrEqual(0)
+
+      await page.goto(`/${locale}/`, { waitUntil: "domcontentloaded" })
+
+      for (const width of [390, 540, 541]) {
+        await page.setViewportSize({ width, height: 900 })
+
+        const layout = await page
+          .locator('[data-print-item="experience"]')
+          .nth(workIndex)
+          .evaluate((article) => {
+            const meta = article.querySelector<HTMLElement>(".meta--mobile")
+            const mode = meta?.querySelector<HTMLElement>(".work-mode")
+            const primary = meta?.querySelector<HTMLElement>(
+              ".mobile-meta-primary .tech-list",
+            )
+            const tail = meta?.querySelector<HTMLElement>(
+              ".mobile-tech-tail .tech-list",
+            )
+            const separator = meta?.querySelector<HTMLElement>(
+              ".mobile-tech-separator",
+            )
+            if (!meta || !mode || !primary || !tail || !separator) return null
+
+            const box = (element: Element): Box => {
+              const rect = element.getBoundingClientRect()
+              return {
+                bottom: rect.bottom,
+                height: rect.height,
+                left: rect.left,
+                right: rect.right,
+                top: rect.top,
+                width: rect.width,
+              }
+            }
+
+            return {
+              meta: box(meta),
+              mode: box(mode),
+              primary: {
+                ...box(primary),
+                text: primary.textContent?.trim() ?? "",
+              },
+              separatorVisible:
+                getComputedStyle(separator).display !== "none" &&
+                separator.getClientRects().length > 0,
+              tail: {
+                ...box(tail),
+                text: tail.textContent?.trim() ?? "",
+              },
+            }
+          })
+
+        expect(layout).not.toBeNull()
+        if (!layout) continue
+
+        expect(layout.primary.text).toBe(
+          technologies.slice(0, splitIndex).join(" / "),
+        )
+        expect(layout.tail.text).toBe(
+          technologies.slice(splitIndex).join(" / "),
+        )
+        expect(
+          Math.abs(layout.mode.top - layout.primary.top),
+        ).toBeLessThanOrEqual(2)
+
+        if (width <= 540) {
+          expect(layout.separatorVisible).toBe(false)
+          expect(layout.tail.top).toBeGreaterThanOrEqual(
+            Math.max(layout.mode.bottom, layout.primary.bottom) - 1,
+          )
+          expect(
+            Math.abs(layout.tail.left - layout.meta.left),
+          ).toBeLessThanOrEqual(1)
+        } else {
+          expect(layout.separatorVisible).toBe(true)
+          expect(
+            Math.abs(layout.tail.top - layout.primary.top),
+          ).toBeLessThanOrEqual(2)
+        }
+      }
+    })
+
     test("education header never squeezes dates against the institution", async ({
       page,
     }) => {

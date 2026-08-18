@@ -1,17 +1,15 @@
 # Roadmap — Portfolio/CV
 
-Estado: **v1.9 — R0–R3 en producción; R4 planificado** · Última actualización: 2026-07-18
+Estado: **v2.0 — R0, R1, R3 y R4 cerrados; R2 implementado y pendiente de validación E2E** · Última actualización: 2026-08-18
 
-> Pendientes que requieren al autor: la prueba de fuego de R2 (editar un campo
-> en un idioma y cerrar el ciclo con el PR del bot), ratificar la dirección
-> visual de R3 (línea técnica) y confirmar los `workMode` provisionales de
-> Universal Group, Holberton y UPR. Secretos, auto-merge y branch protection ya
-> configurados; QA con VoiceOver completada (2026-07-18, Brave: diálogo,
-> grupos, comando activo, conteo aria-live, estado vacío y retorno de foco
-> correctos; Chromium anuncia las opciones como "menu item" — matiz del mapeo,
-> no defecto).
+> Único pendiente operativo: ejecutar y documentar la prueba de fuego de R2,
+> desde una edición real en un solo idioma hasta el PR de sincronización,
+> preview EN/ES, validación delegada, merge y deploy.
 >
-> Próximo ciclo de trabajo: **R4** (ver sección al final).
+> La configuración externa de R2 ya está lista: `OPENAI_API_KEY`,
+> `I18N_BOT_TOKEN`, auto-merge, branch protection y checks requeridos. R1 está
+> cerrado, incluida la pasada manual con VoiceOver en Brave (Chromium) del
+> 2026-07-18.
 
 ## Objetivo
 
@@ -27,8 +25,8 @@ sin perder el carácter minimalista del sitio.
   permita; una tercera página exige una decisión editorial explícita.
 - Los metadatos deben ayudar a escanear el CV, no convertirlo en una colección
   de badges.
-- La UI laboral tomará ideas de la
-  [CV de Bartosz Jarocki](https://cv.jarocki.me/), pero tendrá una jerarquía y
+- La UI laboral toma ideas de la
+  [CV de Bartosz Jarocki](https://cv.jarocki.me/), pero conserva una jerarquía y
   un lenguaje visual propios.
 - Cada milestone termina con pruebas, QA visual y documentación actualizada.
 
@@ -36,25 +34,25 @@ sin perder el carácter minimalista del sitio.
 
 | Área | Estado | Pendiente real |
 |---|---|---|
-| Print/PDF | R0 completado: tarjetas igualadas, separadores sibling, reparto sin salto forzado y Skills tipográfico | — |
-| Hero responsive | El título profesional apila sus dos partes cuando no caben; el separador solo existe en la composición horizontal | — |
-| Education responsive | Header en grid `minmax(0,1fr) auto`; colapsa a una columna a ≤560 px | — |
-| PRD i18n | Código completo: traductor (`i18n-sync`), previews (`i18n-preview-links`), validador (`i18n-validate`) con cliente LLM pluggable y modo mock probado | Configurar secretos (`OPENAI_API_KEY`, `I18N_BOT_TOKEN`), auto-merge y branch protection; smoke test con la clave real |
-| Paleta nativa | R1 completado: `CommandPalette.astro` + `src/lib/commandPalette.ts`, hoja flotante touch, 20 pruebas Playwright, `ninja-keys` eliminado | QA manual con VoiceOver y validación del preview de Vercel |
-| Experiencia laboral | R3 implementado: `workMode` + `technologies` en ambos JSON y línea técnica bajo el puesto (web, móvil, dark y print) | Ratificar la variante elegida y confirmar los `workMode` provisionales |
+| Print/PDF | R0 cerrado: dos páginas, proyectos con flujo natural, entradas indivisibles, tarjetas igualadas y Skills tipográfico | — |
+| Hero y Education | Contratos responsive protegidos por Playwright | — |
+| Paleta nativa | R1 cerrado: `<dialog>` + combobox ARIA, siete opciones, experiencia touch y QA manual con VoiceOver | — |
+| Sincronización i18n | R2 implementado y configuración externa lista | Prueba E2E completa: smoke, ciclo real y ausencia de PR inverso |
+| Experiencia laboral | R3 cerrado: valores canónicos EN/ES y línea técnica en desktop/print | — |
+| Pulido responsive y atajos | R4 ejecutado: metadatos móviles, atajos internos, Visual Viewport y contrato WebKit/iOS | — |
 
 ## Orden de ejecución
 
 1. **R0 — Estabilizar print y responsive.**
 2. **R1 — Implementar la paleta de comandos nativa.**
-3. **R2 — Completar la automatización i18n.**
-4. **R3 — Diseñar e implementar los metadatos de experiencia laboral.**
+3. **R2 — Implementar la automatización i18n.**
+4. **R3 — Incorporar los metadatos de experiencia laboral.**
+5. **R4 — Pulir el layout laboral y los accesos directos de la paleta.**
 
-R0 agrupa correcciones visuales pequeñas que deben quedar protegidas antes de
-trabajar en features mayores. R1 se ejecuta antes que R2 porque es autocontenido
-y no depende de secretos ni configuración externa. R3 ocurre después de los
-PRDs para incorporar su nuevo esquema de datos directamente al pipeline i18n
-definitivo.
+R4 no añadió un nuevo esquema de datos: consolidó el comportamiento responsive
+de R3 y endureció la interacción de R1 en teclado, touch, teclado virtual e iOS.
+R2 es el único milestone que todavía no puede cerrarse porque falta evidencia
+de su recorrido real de extremo a extremo.
 
 ---
 
@@ -114,11 +112,12 @@ Móvil:            Software Developer
 ```
 
 - Separar el label por el delimitador ` | ` al renderizarlo en spans.
-- Mantener el separador visible solo en la composición horizontal.
-- Cuando el hero cambia a columna, ocultar el separador y apilar las dos partes
-  con un gap tipográfico pequeño y deliberado.
+- Renderizar las partes apiladas y el separador oculto por defecto.
+- Con la query del contenedor `.info` a `min-width: 54ch`, mostrar las partes y
+  el separador en línea. La decisión depende del ancho real del bloque de texto,
+  no de la dirección flex del hero ni de un breakpoint de viewport.
 - No insertar un `<br>` dentro del contenido ni duplicar labels por breakpoint.
-- El separador será decorativo para tecnologías de asistencia; la lectura debe
+- El separador es decorativo para tecnologías de asistencia; la lectura debe
   conservar una pausa natural entre ambas especialidades.
 - Mantener la misma tipografía, color y jerarquía: este cambio corrige
   estructura, no añade decoración.
@@ -175,8 +174,8 @@ columnas permanece activo después de dejar de tener espacio suficiente.
 - Dar `min-width: 0` al bloque del título para que pueda envolver sin empujar el
   periodo fuera del viewport.
 - Adelantar el cambio a una sola columna basándose en el punto real de colisión,
-  no en una categoría genérica de dispositivo; el punto de partida a validar
-  será aproximadamente `560px`.
+  no en una categoría genérica de dispositivo; el breakpoint implementado es
+  `560px`.
 - En una columna, preservar esta jerarquía:
 
 ```text
@@ -286,12 +285,12 @@ Documento fuente:
 
 ### Resultado
 
-Sustituir `ninja-keys` por una paleta propia, accesible y pequeña, conservando
-las acciones actuales y la identidad de consola editorial mínima.
+R1 sustituyó `ninja-keys` por una paleta propia, accesible y pequeña, conservando
+las acciones y la identidad de consola editorial mínima.
 
 ### Revisión responsive: paleta flotante para touch
 
-La implementación actual traslada demasiadas convenciones de escritorio a
+La implementación reemplazada trasladaba demasiadas convenciones de escritorio a
 móvil: el panel toca ambos extremos horizontales, la lista puede ocupar gran
 parte del viewport y los badges `Home`, `Ctrl P`, `Ctrl T`, etc. compiten con el
 nombre de cada acción.
@@ -331,10 +330,10 @@ Esta dirección reemplaza el sketch móvil de borde a borde del PRD:
   presencia no obliga a mostrar todos los atajos dentro de la lista.
 - Mantener objetivos táctiles de al menos `44 × 44px`, backdrop claro y cierre
   por botón o tap fuera del panel.
-- El prompt `~/cv ›` puede mantenerse en desktop; en móvil se evaluará contra
-  un placeholder directo para evitar ruido dentro del espacio reducido.
+- El prompt `~/cv ›` se mantiene en desktop y se oculta en touch/móvil; allí
+  una lupa y el placeholder directo evitan ruido dentro del espacio reducido.
 
-### Fases
+### Fases ejecutadas
 
 1. Incorporar esta revisión touch al PRD y congelar baseline funcional, visual
    y de tamaño del bundle.
@@ -360,19 +359,19 @@ Esta dirección reemplaza el sketch móvil de borde a borde del PRD:
 
 ### Definición de terminado
 
-- [x] Las acciones de imprimir, tema, idioma y enlaces funcionan en EN/ES.
-- [x] Teclado, foco, estado vacío y lectores de pantalla cumplen el PRD
-      (contrato ARIA automatizado + pasada manual con VoiceOver el
-      2026-07-18: apertura, navegación, filtrado con anuncios en vivo,
-      estado vacío y cierre con retorno de foco verificados).
-- [x] Desktop, móvil, claro, oscuro y reduced motion fueron validados.
-- [x] La paleta móvil conserva margen lateral e inferior en portrait y landscape.
-- [x] La interfaz touch conserva el botón `⌘`, pero no muestra badges de atajos
-      secundarios dentro del menú.
+- [x] Las siete opciones —imprimir, tema, idioma, sitio personal, GitHub,
+      LinkedIn y X— funcionan en EN y ES.
+- [x] Teclado, foco, búsqueda, estado vacío y anuncios ARIA cumplen el PRD.
+- [x] La pasada manual con VoiceOver en Brave (Chromium) del 2026-07-18 verificó
+      diálogo, grupos, comando activo, conteo en vivo, estado vacío y retorno de
+      foco.
+- [x] Desktop, móvil, claro, oscuro, reduced motion y print fueron validados.
+- [x] La hoja touch conserva márgenes y oculta keycaps y ayudas de teclado.
 - [x] La paleta permanece fuera de la impresión.
-- [x] El chunk cumple ≤ 8 kB minificado y ≤ 3 kB gzip (3.66 kB / 1.57 kB gzip
-      más 0.25 kB del módulo de tema compartido; antes 54.41 kB / 17.55 kB).
-- [x] `ninja-keys` no aparece en dependencias, código ni documentación.
+- [x] El chunk cumple ≤ 8 kB minificado y ≤ 3 kB gzip: 5.26 kB / 2.07 kB gzip
+      en el build del 2026-08-18, más 0.25 kB / 0.17 kB gzip del tema.
+- [x] `ninja-keys` no aparece en dependencias ni código de producción; sus
+      menciones restantes documentan la migración histórica.
 - [x] Las pruebas de paleta y `pnpm check` pasan juntas.
 
 ---
@@ -386,6 +385,8 @@ Documento fuente: [prd-cv-i18n-sync.md](./prd-cv-i18n-sync.md).
 - Producción en Vercel bajo `cv.luismarrero.me`.
 - Redirect de `luismarrer.github.io` mediante GitHub Pages.
 - `scripts/i18n-check.mjs` como contrato estructural y de invariantes.
+- Detección de texto obsoleto cuando existe un baseline Git resoluble; sin
+  baseline, el modo fail-open solo cubre estructura e invariantes.
 - `vercel.json` usando el check como Ignored Build Step.
 
 ### R2.1 — Traductor y PR — implementado
@@ -397,14 +398,17 @@ Documento fuente: [prd-cv-i18n-sync.md](./prd-cv-i18n-sync.md).
       (`scripts/i18n-sync.mjs` sobre el reporte `--json` de `i18n-check`;
       soporta hojas desincronizadas y cambios estructurales de un solo lado,
       preservando traducciones existentes por matching de valor).
-- [x] Traducción limitada a los campos señalados, con las reglas de contenido
-      del README en el prompt.
+- [x] Con estructura estable, traducción limitada a los campos obsoletos
+      señalados y reglas `CONTENT_RULES` en el prompt; ante estructura o
+      invariantes divergentes en un solo idioma, reconstrucción del destino con
+      reutilización de traducciones existentes.
 - [x] Workflow `i18n-sync.yml`: rama `i18n/sync-<sha>` y PR con
       `I18N_BOT_TOKEN` (PAT/App) y fallback documentado a `GITHUB_TOKEN`.
 - [x] Workflow `i18n-preview-links.yml`: comenta `<preview>/en/` y
       `<preview>/es/` cuando Vercel reporta el deployment del PR.
-- [ ] Smoke test del motor con la clave real
-      (`node scripts/i18n-sync.mjs --smoke`) — requiere `OPENAI_API_KEY`.
+
+El smoke del motor con la clave real forma parte de la única prueba E2E
+pendiente descrita más abajo; no es un milestone separado.
 
 ### R2.2 — Validación delegada — implementado
 
@@ -418,23 +422,37 @@ Documento fuente: [prd-cv-i18n-sync.md](./prd-cv-i18n-sync.md).
       `i18n-check --dir`).
 - [x] Tres salidas auditables como comentario en el PR: merge, corrección +
       merge o abstención explicada.
-- [ ] Prueba de fuego completa desde una edición hasta producción — requiere
-      los prerrequisitos externos.
 
-### Prerrequisitos externos
+La aceptación operativa de este flujo forma parte del único cierre E2E descrito
+más abajo.
 
-- [ ] `OPENAI_API_KEY` en GitHub Secrets.
-- [ ] GitHub App o fine-grained PAT para crear PRs que disparen workflows.
-- [ ] Auto-merge habilitado en el repositorio.
-- [ ] Branch protection y checks requeridos definidos antes de automatizar merge.
+### Configuración externa — completada
 
-### Definición de terminado
+- [x] `OPENAI_API_KEY` configurada en GitHub Secrets.
+- [x] `I18N_BOT_TOKEN` configurado con capacidad de crear ramas y PRs que
+      disparen previews y checks.
+- [x] Auto-merge habilitado.
+- [x] Branch protection con `EN/ES · Letter/A4` como check requerido.
 
-- [ ] Un cambio en un solo idioma produce un PR de traducción, no un deploy roto.
-- [ ] El preview permite revisar ambas versiones sin leer JSON.
-- [ ] `/delegate` o `auto-merge` cierran el flujo con un veredicto visible.
-- [ ] Ninguna traducción automática entra a `main` sin PR y validación.
-- [ ] Producción nunca publica EN/ES desincronizados.
+### Cierre pendiente
+
+La implementación y su configuración están listas. Falta una sola validación
+operativa, con evidencia visible. Existe un riesgo concreto que esa prueba debe
+resolver: el merge por squash del PR cambia solo el antiguo idioma destino
+frente a su padre inmediato, por lo que el workflow puede interpretarlo como
+una nueva fuente y abrir un PR inverso.
+
+- [ ] Ejecutar `node scripts/i18n-sync.mjs --smoke` con el proveedor real.
+- [ ] Editar un campo traducible en un solo idioma y hacer push a `main`.
+- [ ] Confirmar que `i18n-sync` crea el PR y que el preview ofrece `/en/` y
+      `/es/`.
+- [ ] Delegar con `/delegate` o `auto-merge` y registrar el veredicto.
+- [ ] Confirmar el merge y el deploy final con EN/ES coherentes.
+- [ ] Confirmar que el merge no abre un PR inverso; si lo abre, añadir una
+      guardia y repetir el recorrido completo.
+
+R2 se cierra únicamente cuando ese recorrido completo haya ocurrido y terminado
+sin bucles en el repositorio real; no quedan prerrequisitos de configuración.
 
 ---
 
@@ -446,39 +464,41 @@ Hacer que cada empleo comunique rápidamente **cómo se trabajó** y **con qué 
 trabajó**, sin competir con el puesto, el resumen o las fechas.
 
 La referencia de Bartosz coloca modalidad y tecnologías como badges junto a la
-empresa. Conservaremos su capacidad de escaneo, pero no la composición exacta.
-La hipótesis inicial será una línea de metadatos silenciosa debajo del puesto:
+empresa. Se conservó su capacidad de escaneo, pero no la composición exacta.
+La dirección final es una línea de metadatos silenciosa debajo del puesto:
 
 ```text
 SAC                                             jun 2026 — Actual
 Interno de desarrollo de software
-Híbrido  ·  TypeScript / Next.js / Git / GitHub
+Remoto  ·  Next.js / Vercel Workflows / Vercel AI SDK / Amazon S3
 Resumen del trabajo…
 ```
 
-- **Modalidad** será una señal corta y diferenciada con borde sutil.
-- **Tecnologías** serán texto técnico separado por puntos o barras, no una fila
+- **Modalidad** es una señal corta y diferenciada con borde sutil.
+- **Tecnologías** son texto técnico separado por puntos o barras, no una fila
   completa de pills.
-- Las fechas conservarán su columna visual actual.
-- En print se priorizará densidad y legibilidad; en móvil los metadatos podrán
-  envolver sin desalinear el encabezado.
+- Las fechas conservan su columna visual actual.
+- En print se prioriza densidad y legibilidad; en móvil los metadatos aparecen
+  después del resumen para no comprimir el encabezado.
 
-### Contrato de datos propuesto
+### Contrato de datos implementado
 
-```json
-{
-  "workMode": "hybrid",
-  "technologies": ["TypeScript", "Next.js", "Git", "GitHub"]
-}
-```
+| Organización | `workMode` | `technologies` |
+|---|---|---|
+| SAC | `remote` | Next.js · Vercel Workflows · Vercel AI SDK · Amazon S3 |
+| Universal Group | `on-site` | Excel · Power BI |
+| Holberton School | `hybrid` | C · Python · Linux |
+| University of Puerto Rico | `on-site` | Excel |
 
-- `workMode`: enum canónico `remote | hybrid | on-site`; idéntico en ambos JSON
-  y traducido en la UI mediante `ui.ts`.
-- `technologies`: nombres canónicos e invariantes, mismo orden en EN/ES.
+`workMode` y `technologies` son invariantes: conservan exactamente el mismo
+valor y orden en `cv-en.json` y `cv-es.json`; solo la etiqueta visible de la
+modalidad se localiza mediante `ui.ts`. El enum canónico es
+`remote | hybrid | on-site`.
+
 - `employmentType` y ubicación específica quedan fuera de v1 salvo que los
   prototipos demuestren que aportan información real.
-- Los `highlights` existentes no se mostrarán automáticamente en v1: primero se
-  protegerá la jerarquía y el límite de dos páginas.
+- Los `highlights` existentes no se muestran automáticamente en v1: se priorizan
+  la jerarquía y el límite de dos páginas.
 
 ### R3.1 — Exploración y decisión de diseño
 
@@ -500,8 +520,11 @@ variantes con los cuatro trabajos reales. El rail (2) desalinea la columna de
 fechas y parte el stack en líneas alineadas a la derecha; los chips (3)
 compiten visualmente con el resumen, duplican el lenguaje de los tags de
 proyectos y se acercan demasiado a la referencia. La **línea técnica (1)** es
-la implementada, tal como recomendaba la hipótesis inicial. Queda pendiente la
-ratificación del autor; cambiar de dirección solo toca `Experience.astro`.
+la implementada, tal como recomendaba la hipótesis inicial. La línea técnica
+quedó ratificada como dirección final. R4 conservó esta decisión y solo cambió
+su colocación responsive: desktop y print la muestran debajo del puesto; a
+≤700 px aparece después del resumen. Solo una copia es visible en cada
+breakpoint.
 
 ### R3.2 — Implementación
 
@@ -516,19 +539,70 @@ ratificación del autor; cambiar de dirección solo toca `Experience.astro`.
 
 ### Definición de terminado
 
-- [ ] Los cuatro trabajos tienen modalidad y stack reales, no inferidos —
-      **parcial**: las tecnologías proceden de los summaries/highlights ya
-      publicados y SAC es `hybrid` según este roadmap, pero los `workMode` de
-      Universal Group, Holberton y UPR quedaron como `on-site` provisional y
-      deben confirmarse.
-- [x] La jerarquía empresa → puesto → metadatos → resumen es clara.
+- [x] Los cuatro trabajos tienen modalidad y stack confirmados.
+- [x] Los valores canónicos son idénticos y mantienen el mismo orden en EN/ES.
+- [x] En desktop y print la jerarquía es empresa → puesto → metadatos → resumen.
+- [x] A ≤700 px la jerarquía es empresa → puesto → resumen → metadatos; a
+      ≤420 px el header también apila las fechas.
+- [x] Ningún stack produce overflow y solo una línea de metadatos es visible.
 - [x] La UI no se percibe como una copia de la referencia.
 - [x] EN/ES, desktop, móvil, claro, oscuro, Letter y A4 fueron revisados.
-- [x] El CV continúa en dos páginas y ninguna experiencia se divide (el
-      reparto pasó a 1 fila de proyectos en la página 1 y 2 en la segunda,
-      dentro de los invariantes editoriales).
-- [x] `pnpm i18n:check`, pruebas de UI y `pnpm check` pasan
-      (30 pruebas Playwright: print, responsive y paleta).
+- [x] El CV continúa en dos páginas y ninguna experiencia se divide.
+- [x] La cantidad exacta de filas de proyectos por página no forma parte del
+      contrato: el flujo se adapta al contenido sin salto forzado.
+- [x] Los contratos i18n, responsive, print y paleta pasan juntos.
+
+---
+
+## R4 — Pulido responsive y atajos directos
+
+Estado: **ejecutado el 2026-08-18**.
+
+### Resultado
+
+R4 consolidó los metadatos laborales en pantallas estrechas y convirtió la
+paleta en una superficie de acciones rápidas sin secuestrar los atajos del
+navegador ni degradar touch, teclado virtual o Safari móvil.
+
+### R4.1 — Metadatos laborales responsive
+
+- En desktop y print, modalidad y tecnologías permanecen debajo del puesto.
+- A ≤700 px, los metadatos se mueven debajo del resumen para liberar el header.
+- A ≤420 px, empresa, puesto y fechas se apilan sin perder su jerarquía.
+- Solo una copia de los metadatos es visible en cada breakpoint.
+- El contrato se valida en EN/ES entre 320 y 768 px.
+
+### R4.2 — Atajos directos de la paleta
+
+- `Cmd/Ctrl + K` abre o cierra la paleta.
+- Con la paleta abierta, `Ctrl + P/T/E/S/G/L/X` ejecuta imprimir, tema, idioma,
+  sitio personal, GitHub, LinkedIn y X.
+- Los atajos de acción nunca usan Command/Meta y no se interceptan fuera del
+  diálogo, por lo que el navegador y los campos editables conservan sus teclas.
+- Cada badge se renderiza como dos keycaps: `Ctrl` y la letra.
+- Los keycaps permanecen ocultos en la experiencia touch.
+
+### R4.3 — Touch, teclado virtual e iOS
+
+- La hoja flotante sincroniza su geometría con `window.visualViewport`.
+- Abrir desde touch no enfoca automáticamente la búsqueda ni invoca el teclado.
+- Búsqueda, resultados y cierre permanecen dentro del viewport visual cuando
+  aparece el teclado virtual.
+- La lista conserva un área desplazable real en WebKit/iOS.
+- Un contrato WebKit con emulación de iPhone verifica las siete opciones, un
+  objetivo táctil mínimo de 44 px y la altura útil de resultados; Chromium
+  comprueba todos los objetivos táctiles.
+
+### Definición de terminado
+
+- [x] El layout laboral no produce overflow entre 320 y 768 px.
+- [x] Los siete atajos de acción son únicos y solo actúan dentro de la paleta
+      abierta.
+- [x] Los atajos del navegador y de inputs externos no se interceptan.
+- [x] Touch no muestra affordances de teclado.
+- [x] Chromium cubre interacción, responsive y teclado virtual.
+- [x] WebKit cubre la hoja touch y el área visible de resultados.
+- [x] Print continúa en dos páginas y no muestra la paleta.
 
 ---
 
@@ -543,27 +617,20 @@ Un milestone solo puede cerrarse cuando:
 - existe evidencia visual en los breakpoints relevantes;
 - README, AGENTS y el documento fuente reflejan el estado real.
 
-## Próxima acción
+## Estado consolidado y próxima acción
 
-R0 quedó cerrado: tarjetas impresas igualadas (≤1 px de diferencia medida en el
-contrato Playwright), links con separadores sibling, Projects fluyendo en la
-página 1 (2 filas) con la última fila + Education + Skills en la página 2,
-Skills como lista tipográfica, label del hero sin separador huérfano (container
-query en `ch`) y header de Education en grid con colapso a ≤560 px. Los nuevos
-contratos viven en `tests/ui/responsive.spec.ts` y en las aserciones de altura,
-orden editorial y lista de Skills de `tests/print/`.
+R0, R1, R3 y R4 están cerrados. El contrato de impresión es mantener dos
+páginas intactas, no una cantidad fija de filas de proyectos por página:
+Projects comienza cuando existe espacio editorial suficiente y continúa de
+forma natural sin dividir headings, tarjetas ni experiencias.
 
-R1 quedó cerrado: paleta nativa `<dialog>` + combobox ARIA con búsqueda
-normalizada, hoja inferior flotante en móvil, botón `⌘`, tema/idioma/print
-integrados y `ninja-keys` eliminado (reducción del chunk de 54.41 kB a 3.91 kB
-minificados). Los contratos viven en `tests/palette/command-palette.spec.ts`.
-Pendientes manuales: VoiceOver y el preview de Vercel del PR.
+La QA manual con VoiceOver en Brave (Chromium) de R1 está completada y ya no
+figura como pendiente. Los refinamientos posteriores de R4 están protegidos por
+contratos Chromium y WebKit. El build de producción mantiene la paleta dentro de
+su presupuesto.
 
-R2 quedó implementado y probado con el proveedor mock (fontanería completa:
-detección → traducción → escritura → validación). Su activación depende del
-runbook anterior.
-
-R3 quedó implementado con la línea técnica (variante recomendada) tras
-prototipar las tres direcciones; `workMode`/`technologies` viven como
-invariantes en ambos JSON. El roadmap está ejecutado de punta a punta: solo
-quedan las acciones del autor listadas al inicio del documento.
+R2 tiene código, workflows y configuración externa listos. La próxima acción
+es ejecutar su prueba de fuego E2E y adjuntar como evidencia el PR automático,
+los previews EN/ES, el veredicto delegado, el merge, la ausencia de un PR
+inverso y el deploy coherente. Si aparece el falso positivo inverso, hay que
+añadir una guardia y repetir el ciclo antes de cerrar R2 y este roadmap.
