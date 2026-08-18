@@ -45,14 +45,12 @@
       ],
       "url": "https://www.sociedadastronomia.com/",
       "startDate": "2026-06",
-      "endDate": null,
-      "summary": "Collaborate on software projects using Next.js, Vercel Workflows, Vercel AI SDK, and Amazon S3.",
+      "endDate": "2026-08",
+      "summary": "Developed an AI-powered social media assistant integrated into SAC's admin dashboard, enabling the communications team to validate and generate content through durable, guideline-driven workflows.",
       "highlights": [
-        "Selected for the SAC 2026 Internship Program.",
-        "Collaborate on software and technology-focused projects supporting organizational initiatives.",
-        "Work with Git and GitHub in a collaborative development environment.",
-        "Support software development workflows using modern tools and project-based learning.",
-        "Continue strengthening skills in TypeScript, Next.js, Cursor, and deployment workflows."
+        "Developed an AI-powered social media assistant integrated into SAC's existing admin dashboard for the communications team.",
+        "Built durable AI workflows for text and image processing using Next.js, Vercel AI SDK, and Vercel Workflows.",
+        "Implemented guideline-driven AI behavior with versioned configuration and audit data stored in Amazon S3, enabling the communications team to manage AI instructions without code changes."
       ]
     },
     {

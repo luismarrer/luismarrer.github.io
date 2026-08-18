@@ -45,14 +45,12 @@
       ],
       "url": "https://www.sociedadastronomia.com/",
       "startDate": "2026-06",
-      "endDate": null,
-      "summary": "Colaboro en proyectos de software con Next.js, Vercel Workflows, Vercel AI SDK y Amazon S3.",
+      "endDate": "2026-08",
+      "summary": "Desarrollé un asistente de redes sociales con IA integrado al panel administrativo de SAC para que el equipo de comunicaciones valide y genere contenido mediante flujos de trabajo duraderos basados en directrices.",
       "highlights": [
-        "Seleccionado para el Programa de Internado SAC 2026.",
-        "Colaboro en proyectos de software y tecnología que respaldan iniciativas de la organización.",
-        "Trabajo con Git y GitHub en un entorno de desarrollo colaborativo.",
-        "Apoyo flujos de desarrollo de software con herramientas modernas y aprendizaje basado en proyectos.",
-        "Continúo fortaleciendo mis destrezas en TypeScript, Next.js, Cursor y flujos de despliegue."
+        "Desarrollé un asistente de redes sociales con IA integrado al panel administrativo existente de SAC para el equipo de comunicaciones.",
+        "Construí flujos de IA duraderos para procesar texto e imágenes con Next.js, Vercel AI SDK y Vercel Workflows.",
+        "Implementé un comportamiento de IA basado en directrices, con configuración versionada y datos de auditoría almacenados en Amazon S3, para que el equipo de comunicaciones administre las instrucciones sin modificar código."
       ]
     },
     {
