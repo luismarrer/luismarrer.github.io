@@ -22,7 +22,7 @@ The content is generated from a JSON file, based on the [JSON Resume](https://js
 
 - [Astro](https://astro.build/) - A modern framework for building websites.
 - [TypeScript](https://www.typescriptlang.org/) - A superset of JavaScript that adds static typing and class-based objects.
-- Native command palette (`Cmd/Ctrl + K`) - a dependency-free dialog/combobox whose open panel exposes Control shortcuts for print (`P`), theme (`T`), language (`E`), GitHub (`G`), LinkedIn (`L`), and X (`X`).
+- Native command palette (`Cmd/Ctrl + K`) - a dependency-free dialog/combobox whose open panel exposes Control shortcuts for print (`P`), theme (`T`), language (`E`), personal site (`S`), GitHub (`G`), LinkedIn (`L`), and X (`X`).
 
 ## Print and PDF quality
 

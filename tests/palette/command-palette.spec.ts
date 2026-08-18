@@ -19,6 +19,7 @@ const COMMAND_SHORTCUTS = [
   ["palette-cmd-print", "p"],
   ["palette-cmd-theme", "t"],
   ["palette-cmd-language", "e"],
+  ["palette-cmd-website", "s"],
   ["palette-cmd-github", "g"],
   ["palette-cmd-linkedin", "l"],
   ["palette-cmd-x", "x"],
@@ -97,14 +98,6 @@ for (const locale of LOCALES) {
         await expect(shortcutKeycaps.nth(0)).toHaveText("Ctrl")
         await expect(shortcutKeycaps.nth(1)).toHaveText(key.toUpperCase())
       }
-
-      await expect(page.locator("#palette-cmd-website")).not.toHaveAttribute(
-        "data-shortcut",
-        /.+/,
-      )
-      await expect(
-        page.locator("#palette-cmd-website .option-shortcut"),
-      ).toHaveCount(0)
 
       const shortcutKeys = await page
         .locator(`${DIALOG} [role="option"][data-shortcut]`)
@@ -230,7 +223,7 @@ for (const locale of LOCALES) {
       await expect(page.locator(`${DIALOG}[open]`)).toHaveCount(0)
     })
 
-    test("Ctrl+G, Ctrl+L, and Ctrl+X activate the matching profile links", async ({
+    test("Ctrl+S, Ctrl+G, Ctrl+L, and Ctrl+X activate the matching links", async ({
       page,
     }) => {
       await page.evaluate(() => {
@@ -253,7 +246,7 @@ for (const locale of LOCALES) {
       })
 
       await page.evaluate(() => {
-        for (const key of ["g", "l", "x"])
+        for (const key of ["s", "g", "l", "x"])
           document.dispatchEvent(
             new KeyboardEvent("keydown", {
               bubbles: true,
@@ -272,6 +265,7 @@ for (const locale of LOCALES) {
       ).toEqual([])
 
       const commands = [
+        ["S", "palette-cmd-website"],
         ["G", "palette-cmd-github"],
         ["L", "palette-cmd-linkedin"],
         ["X", "palette-cmd-x"],

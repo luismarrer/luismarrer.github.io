@@ -121,6 +121,7 @@ La paleta muestra y ejecuta atajos globales para sus acciones principales:
 | `Ctrl + P` | Imprimir |
 | `Ctrl + T` | Cambiar tema |
 | `Ctrl + E` | Cambiar idioma |
+| `Ctrl + S` | Abrir el sitio web personal |
 | `Ctrl + G` | Abrir GitHub |
 | `Ctrl + L` | Abrir LinkedIn |
 | `Ctrl + X` | Abrir X |
