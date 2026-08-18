@@ -291,10 +291,22 @@ for (const locale of LOCALES) {
             const tail = meta?.querySelector<HTMLElement>(
               ".mobile-tech-tail .tech-list",
             )
-            const separator = meta?.querySelector<HTMLElement>(
+            const modeSeparator = meta?.querySelector<HTMLElement>(
+              ".mobile-meta-primary .meta-separator",
+            )
+            const tailSeparator = meta?.querySelector<HTMLElement>(
               ".mobile-tech-separator",
             )
-            if (!meta || !mode || !primary || !tail || !separator) return null
+            if (
+              !meta ||
+              !mode ||
+              !modeSeparator ||
+              !primary ||
+              !tail ||
+              !tailSeparator
+            ) {
+              return null
+            }
 
             const box = (element: Element): Box => {
               const rect = element.getBoundingClientRect()
@@ -311,17 +323,20 @@ for (const locale of LOCALES) {
             return {
               meta: box(meta),
               mode: box(mode),
+              modeSeparatorVisible:
+                getComputedStyle(modeSeparator).display !== "none" &&
+                modeSeparator.getClientRects().length > 0,
               primary: {
                 ...box(primary),
                 text: primary.textContent?.trim() ?? "",
               },
-              separatorVisible:
-                getComputedStyle(separator).display !== "none" &&
-                separator.getClientRects().length > 0,
               tail: {
                 ...box(tail),
                 text: tail.textContent?.trim() ?? "",
               },
+              tailSeparatorVisible:
+                getComputedStyle(tailSeparator).display !== "none" &&
+                tailSeparator.getClientRects().length > 0,
             }
           })
 
@@ -334,12 +349,13 @@ for (const locale of LOCALES) {
         expect(layout.tail.text).toBe(
           technologies.slice(splitIndex).join(" / "),
         )
+        expect(layout.modeSeparatorVisible).toBe(true)
         expect(
           Math.abs(layout.mode.top - layout.primary.top),
         ).toBeLessThanOrEqual(2)
 
         if (width <= 540) {
-          expect(layout.separatorVisible).toBe(false)
+          expect(layout.tailSeparatorVisible).toBe(false)
           expect(layout.tail.top).toBeGreaterThanOrEqual(
             Math.max(layout.mode.bottom, layout.primary.bottom) - 1,
           )
@@ -347,7 +363,7 @@ for (const locale of LOCALES) {
             Math.abs(layout.tail.left - layout.meta.left),
           ).toBeLessThanOrEqual(1)
         } else {
-          expect(layout.separatorVisible).toBe(true)
+          expect(layout.tailSeparatorVisible).toBe(true)
           expect(
             Math.abs(layout.tail.top - layout.primary.top),
           ).toBeLessThanOrEqual(2)
