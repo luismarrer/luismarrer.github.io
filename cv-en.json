@@ -36,17 +36,17 @@
     {
       "name": "SAC",
       "position": "Software Development Intern",
-      "workMode": "hybrid",
+      "workMode": "remote",
       "technologies": [
-        "TypeScript",
         "Next.js",
-        "Git",
-        "GitHub"
+        "Vercel Workflows",
+        "Vercel AI SDK",
+        "Amazon S3"
       ],
       "url": "https://www.sociedadastronomia.com/",
       "startDate": "2026-06",
       "endDate": null,
-      "summary": "Collaborate on software and technology projects using Git, GitHub, TypeScript, Next.js, and modern deployment workflows.",
+      "summary": "Collaborate on software projects using Next.js, Vercel Workflows, Vercel AI SDK, and Amazon S3.",
       "highlights": [
         "Selected for the SAC 2026 Internship Program.",
         "Collaborate on software and technology-focused projects supporting organizational initiatives.",
@@ -60,7 +60,8 @@
       "position": "Contact Center Intern",
       "workMode": "on-site",
       "technologies": [
-        "Excel"
+        "Excel",
+        "Power BI"
       ],
       "url": "https://www.universalpr.com/",
       "startDate": "2026-06",
@@ -77,7 +78,7 @@
     {
       "name": "Holberton School",
       "position": "Programming Tutor",
-      "workMode": "on-site",
+      "workMode": "hybrid",
       "technologies": [
         "C",
         "Python",
@@ -98,6 +99,9 @@
       "name": "University of Puerto Rico",
       "position": "Library Assistant (Student Employee)",
       "workMode": "on-site",
+      "technologies": [
+        "Excel"
+      ],
       "url": "https://www.upr.edu/biblioteca-rrp/2017/07/06/referencia-revista/",
       "startDate": "2026-01",
       "endDate": null,
