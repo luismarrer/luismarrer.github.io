@@ -22,7 +22,10 @@ const { image, summary, url } = basics
 <html lang={currentLanguage}>
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content"
+    />
     <link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
@@ -198,8 +201,8 @@ const { image, summary, url } = basics
 
   #theme-toggle {
     position: fixed;
-    top: 16px;
-    right: 16px;
+    top: calc(16px + env(safe-area-inset-top));
+    right: calc(16px + env(safe-area-inset-right));
     display: flex;
     align-items: center;
     justify-content: center;

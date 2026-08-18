@@ -107,7 +107,7 @@ const networkCommands = [
     </svg>
   </button>
 
-  <dialog class="palette" aria-labelledby="palette-title">
+  <dialog class="palette" aria-labelledby="palette-title" tabindex="-1">
     <h2 id="palette-title" class="visually-hidden">{t("dialogTitle")}</h2>
     <header class="palette-header">
       <span class="palette-prompt" aria-hidden="true">~/cv ›</span>
@@ -115,6 +115,7 @@ const networkCommands = [
       <input
         type="search"
         role="combobox"
+        aria-label={t("placeholder")}
         aria-expanded="true"
         aria-controls="palette-results"
         aria-autocomplete="list"
@@ -336,7 +337,7 @@ const networkCommands = [
     z-index: 5;
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 600px), (hover: none) and (pointer: coarse) {
     .palette-hint {
       display: none;
     }
@@ -462,8 +463,10 @@ const networkCommands = [
   .palette-results {
     overflow-y: auto;
     overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
     padding: 6px;
     flex: 1;
+    min-height: 0;
   }
 
   .palette-group-title {
@@ -553,11 +556,32 @@ const networkCommands = [
   }
 
   /* Touch: floating bottom sheet, no keyboard affordances */
-  @media (max-width: 600px) {
+  @media (max-width: 600px), (hover: none) and (pointer: coarse) {
     .palette {
-      width: calc(100vw - 28px);
-      margin: auto 14px calc(14px + env(safe-area-inset-bottom));
-      max-height: min(60dvh, 480px);
+      inset-block-start: auto;
+      inset-block-end: calc(
+        var(--palette-vv-bottom, 0px) +
+          max(14px, env(safe-area-inset-bottom))
+      );
+      inset-inline-start: calc(
+        var(--palette-vv-left, 0px) +
+          max(14px, env(safe-area-inset-left))
+      );
+      inset-inline-end: calc(
+        var(--palette-vv-right, 0px) +
+          max(14px, env(safe-area-inset-right))
+      );
+      width: auto;
+      max-width: 640px;
+      margin: 0 auto;
+      max-height: min(
+        480px,
+        calc(
+          var(--palette-vv-height, 100dvh) -
+            max(14px, env(safe-area-inset-top)) -
+            max(14px, env(safe-area-inset-bottom))
+        )
+      );
       border-radius: 12px;
     }
 
@@ -569,21 +593,26 @@ const networkCommands = [
       display: inline-flex;
     }
 
-    .palette input,
-    .palette-close {
+    .palette input {
       min-height: 44px;
+      font-size: 1rem;
+    }
+
+    .palette-close {
+      width: 44px;
+      min-width: 44px;
+      height: 44px;
     }
 
     .palette [role="option"] {
       min-height: 44px;
+      touch-action: manipulation;
     }
 
     .option-shortcut {
       display: none;
     }
-  }
 
-  @media (hover: none), (pointer: coarse) {
     .palette-footer {
       display: none;
     }

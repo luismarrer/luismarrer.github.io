@@ -58,6 +58,45 @@ export function initCommandPalette(root: HTMLElement): () => void {
   let activeIndex = 0
   let opener: HTMLElement | null = null
   let backdropArmed = false
+  let viewportSyncFrame: number | null = null
+
+  const visualViewport = window.visualViewport
+
+  const syncVisualViewport = () => {
+    viewportSyncFrame = null
+
+    const height = visualViewport?.height ?? window.innerHeight
+    const width = visualViewport?.width ?? window.innerWidth
+    const offsetTop = visualViewport?.offsetTop ?? 0
+    const offsetLeft = visualViewport?.offsetLeft ?? 0
+    const coveredBottom = Math.max(
+      0,
+      window.innerHeight - offsetTop - height,
+    )
+    const coveredRight = Math.max(
+      0,
+      window.innerWidth - offsetLeft - width,
+    )
+
+    dialog.style.setProperty("--palette-vv-height", `${height}px`)
+    dialog.style.setProperty("--palette-vv-bottom", `${coveredBottom}px`)
+    dialog.style.setProperty("--palette-vv-left", `${offsetLeft}px`)
+    dialog.style.setProperty("--palette-vv-right", `${coveredRight}px`)
+  }
+
+  const scheduleVisualViewportSync = () => {
+    if (viewportSyncFrame !== null)
+      cancelAnimationFrame(viewportSyncFrame)
+    viewportSyncFrame = requestAnimationFrame(syncVisualViewport)
+  }
+
+  window.addEventListener("resize", scheduleVisualViewportSync, { signal })
+  visualViewport?.addEventListener("resize", scheduleVisualViewportSync, {
+    signal,
+  })
+  visualViewport?.addEventListener("scroll", scheduleVisualViewportSync, {
+    signal,
+  })
 
   const platform = navigator.platform ?? ""
   if (platform) {
@@ -121,15 +160,35 @@ export function initCommandPalette(root: HTMLElement): () => void {
     setActive(0)
   }
 
-  const open = (from: HTMLElement | null, { showActive = true } = {}) => {
+  const open = (
+    from: HTMLElement | null,
+    { focusSearch = true, showActive = true } = {},
+  ) => {
     if (dialog.open) return
     opener = from
     setShowActive(showActive)
-    dialog.showModal()
+    syncVisualViewport()
+
+    // `showModal()` focuses the first form control by default. Disabling the
+    // search for this synchronous step prevents a touch-triggered open from
+    // summoning the virtual keyboard before the user asks to search.
+    if (!focusSearch) input.disabled = true
+    try {
+      dialog.showModal()
+    } finally {
+      input.disabled = false
+    }
+
     document.documentElement.style.overflow = "hidden"
     input.value = ""
     filter("")
-    input.focus()
+    scheduleVisualViewportSync()
+
+    if (focusSearch) {
+      input.focus()
+    } else {
+      dialog.focus({ preventScroll: true })
+    }
   }
 
   const close = () => {
@@ -168,6 +227,8 @@ export function initCommandPalette(root: HTMLElement): () => void {
     },
     { signal },
   )
+
+  input.addEventListener("focus", scheduleVisualViewportSync, { signal })
 
   input.addEventListener(
     "keydown",
@@ -239,7 +300,7 @@ export function initCommandPalette(root: HTMLElement): () => void {
   closeButton?.addEventListener("click", close, { signal })
   trigger?.addEventListener(
     "click",
-    () => open(trigger, { showActive: false }),
+    () => open(trigger, { focusSearch: false, showActive: false }),
     { signal },
   )
 
@@ -275,6 +336,10 @@ export function initCommandPalette(root: HTMLElement): () => void {
     () => {
       backdropArmed = false
       document.documentElement.style.overflow = ""
+      dialog.style.removeProperty("--palette-vv-height")
+      dialog.style.removeProperty("--palette-vv-bottom")
+      dialog.style.removeProperty("--palette-vv-left")
+      dialog.style.removeProperty("--palette-vv-right")
       opener?.focus()
       opener = null
     },
@@ -323,6 +388,7 @@ export function initCommandPalette(root: HTMLElement): () => void {
   )
 
   return () => {
+    if (viewportSyncFrame !== null) cancelAnimationFrame(viewportSyncFrame)
     controller.abort()
     delete root.dataset.paletteReady
   }
