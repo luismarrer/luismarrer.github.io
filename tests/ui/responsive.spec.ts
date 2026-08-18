@@ -2,13 +2,16 @@ import { readFileSync } from "node:fs"
 import { expect, test } from "@playwright/test"
 
 const LOCALES = ["en", "es"] as const
-const WIDTHS = [320, 360, 390, 393, 420, 480, 560, 620, 700, 768] as const
+const WIDTHS = [
+  320, 360, 390, 393, 420, 480, 560, 620, 700, 701, 768,
+] as const
 
 type Locale = (typeof LOCALES)[number]
 
 interface CvFixture {
   basics: { label: string }
   education: Array<{ institution: string }>
+  work: Array<{ technologies?: string[]; workMode?: string }>
 }
 
 interface Box {
@@ -34,6 +37,20 @@ interface EducationLayout {
   }>
   innerWidth: number
   scrollWidth: number
+}
+
+interface ExperienceLayout {
+  entries: Array<{
+    company: Box
+    meta: Box
+    modeVisible: boolean
+    position: Box
+    summary: Box
+    tagCount: number
+  }>
+  innerWidth: number
+  scrollWidth: number
+  sectionRight: number
 }
 
 for (const locale of LOCALES) {
@@ -139,58 +156,100 @@ for (const locale of LOCALES) {
       }
     })
 
-    test("experience metadata stays inside the layout at every width", async ({
+    test("experience metadata moves below the summary on mobile", async ({
       page,
     }) => {
+      const cv = loadCv(locale)
+
       await page.goto(`/${locale}/`, { waitUntil: "domcontentloaded" })
 
       for (const width of WIDTHS) {
         await page.setViewportSize({ width, height: 900 })
 
-        const layout = await page.evaluate(() => {
+        const layout = await page.evaluate((): ExperienceLayout => {
+          const box = (element: Element): Box => {
+            const rect = element.getBoundingClientRect()
+            return {
+              bottom: rect.bottom,
+              height: rect.height,
+              left: rect.left,
+              right: rect.right,
+              top: rect.top,
+              width: rect.width,
+            }
+          }
           const section = document.querySelector(
             '[data-cv-section="experience"]',
           )
           const sectionRight = section?.getBoundingClientRect().right ?? -1
           return {
-            innerWidth: window.innerWidth,
-            metas: Array.from(
-              document.querySelectorAll(
-                '[data-print-item="experience"] .meta',
-              ),
-            ).map((meta) => {
-              const rect = meta.getBoundingClientRect()
-              const mode = meta.querySelector("[data-work-mode]")
-              return {
-                modeVisible: mode
-                  ? mode.getClientRects().length > 0
-                  : false,
-                right: rect.right,
-              }
+            entries: Array.from(
+              document.querySelectorAll('[data-print-item="experience"]'),
+            ).flatMap((article) => {
+              const company = article.querySelector("h3")
+              const meta = article.querySelector(".meta")
+              const mode = article.querySelector("[data-work-mode]")
+              const position = article.querySelector(".position")
+              const summary = article.querySelector(".summary")
+              if (!company || !meta || !position || !summary) return []
+
+              return [
+                {
+                  company: box(company),
+                  meta: box(meta),
+                  modeVisible: mode
+                    ? mode.getClientRects().length > 0
+                    : false,
+                  position: box(position),
+                  summary: box(summary),
+                  tagCount: meta.querySelectorAll(".tag").length,
+                },
+              ]
             }),
+            innerWidth: window.innerWidth,
             scrollWidth: document.documentElement.scrollWidth,
             sectionRight,
           }
         })
 
         expect(
-          layout.metas.length,
-          `all four jobs expose their metadata line at ${width}px`,
-        ).toBe(4)
+          layout.entries.length,
+          `all jobs expose their metadata line at ${width}px`,
+        ).toBe(cv.work.length)
         expect(
           layout.scrollWidth,
           `no horizontal overflow at ${width}px`,
         ).toBeLessThanOrEqual(layout.innerWidth + 1)
 
-        for (const meta of layout.metas) {
+        for (const entry of layout.entries) {
           expect(
-            meta.modeVisible,
+            entry.modeVisible,
             `work mode chip renders at ${width}px`,
           ).toBe(true)
           expect(
-            meta.right,
+            entry.tagCount,
+            `work mode and technologies render as individual tags at ${width}px`,
+          ).toBeGreaterThan(1)
+          expect(
+            entry.meta.right,
             `metadata never spills past the section at ${width}px`,
           ).toBeLessThanOrEqual(layout.sectionRight + 1)
+
+          if (width <= 700) {
+            expect(
+              entry.meta.top,
+              `mobile metadata follows the summary at ${width}px`,
+            ).toBeGreaterThanOrEqual(entry.summary.bottom - 1)
+          } else {
+            expect(
+              entry.meta.left,
+              `desktop metadata follows the company name at ${width}px`,
+            ).toBeGreaterThanOrEqual(entry.company.right - 1)
+            expect(
+              entry.meta.bottom,
+              `desktop metadata stays above the position at ${width}px`,
+            ).toBeLessThanOrEqual(entry.position.top + 1)
+          }
         }
       }
     })

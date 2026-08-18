@@ -1,6 +1,6 @@
 # Plan — Reimplementación nativa de la paleta de comandos
 
-Estado: **v1.1 — implementado** · Última actualización: 2026-07-17\n\n> Implementación completada en la rama `roadmap/r0-r3-execution`: ver\n> `src/components/CommandPalette.astro`, `src/lib/commandPalette.ts`,\n> `src/lib/theme.ts` y `tests/palette/command-palette.spec.ts`. Chunk final:\n> 3.66 kB min / 1.57 kB gzip (+0.25 kB del módulo de tema). Pendiente: QA\n> manual con VoiceOver y validación del preview de Vercel antes del merge.
+Estado: **v1.2 — implementado** · Última actualización: 2026-08-18\n\n> Implementación completada en la rama `roadmap/r0-r3-execution`: ver\n> `src/components/CommandPalette.astro`, `src/lib/commandPalette.ts`,\n> `src/lib/theme.ts` y `tests/palette/command-palette.spec.ts`. Chunk final:\n> 4.25 kB min / 1.76 kB gzip (+0.25 kB del módulo de tema). Pendiente: QA\n> manual con VoiceOver y validación del preview de Vercel antes del merge.
 
 ## 1. Decisión
 
@@ -112,13 +112,24 @@ Components para resolver una lista de seis comandos.
 - El recordatorio muestra `⌘ K` o `Ctrl K` según la plataforma; si no puede
   detectarse con seguridad, muestra `⌘/Ctrl K`.
 
-### Atajos que se eliminan deliberadamente
+### Atajos directos
 
-Solo `Cmd/Ctrl + K` será global. No se conservarán `Ctrl/Cmd + T`, los atajos
-de redes ni otros atajos de acción. No forman parte esencial de la experiencia,
-son difíciles de descubrir y colisionan con funciones del navegador.
-`Cmd/Ctrl + P` seguirá funcionando mediante el comportamiento nativo del
-navegador, además del comando «Imprimir» dentro de la paleta.
+La paleta muestra y ejecuta atajos globales para sus acciones principales:
+
+| Atajo | Comando |
+|---|---|
+| `Cmd/Ctrl + K` | Abrir o cerrar la paleta |
+| `Cmd/Ctrl + P` | Imprimir |
+| `Cmd/Ctrl + T` | Cambiar tema |
+| `Cmd/Ctrl + E` | Cambiar idioma |
+| `Cmd/Ctrl + G` | Abrir GitHub |
+| `Cmd/Ctrl + L` | Abrir LinkedIn |
+| `Cmd/Ctrl + X` | Abrir X |
+
+Los badges usan `⌘` en plataformas Apple y `Ctrl` en las demás. Los atajos de
+acción no se interceptan dentro de campos editables, para conservar operaciones
+nativas como cortar texto. Algunos coinciden con funciones reservadas del
+navegador y solo pueden ejecutarse cuando este entrega el evento a la página.
 
 ## 5. Dirección visual
 

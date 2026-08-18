@@ -15,6 +15,14 @@ interface CvFixture {
 
 const DIALOG = "[data-command-palette-root] dialog"
 const INPUT = `${DIALOG} input[type="search"]`
+const COMMAND_SHORTCUTS = [
+  ["palette-cmd-print", "p"],
+  ["palette-cmd-theme", "t"],
+  ["palette-cmd-language", "e"],
+  ["palette-cmd-github", "g"],
+  ["palette-cmd-linkedin", "l"],
+  ["palette-cmd-x", "x"],
+] as const
 
 async function openWithKeyboard(page: Page): Promise<void> {
   await page.keyboard.press("ControlOrMeta+KeyK")
@@ -49,6 +57,44 @@ for (const locale of LOCALES) {
 
       await page.keyboard.press("ControlOrMeta+KeyK")
       await expect(page.locator(`${DIALOG}[open]`)).toHaveCount(0)
+    })
+
+    test("commands expose unique, platform-aware keyboard shortcuts", async ({
+      page,
+    }) => {
+      await openWithKeyboard(page)
+
+      const modifier = await page.evaluate(() =>
+        /mac|iphone|ipad|ipod/i.test(navigator.platform) ? "⌘" : "Ctrl",
+      )
+
+      for (const [id, key] of COMMAND_SHORTCUTS) {
+        const option = page.locator(`#${id}`)
+        await expect(option).toHaveAttribute("data-shortcut", key)
+        await expect(option).toHaveAttribute(
+          "aria-keyshortcuts",
+          `Control+${key.toUpperCase()} Meta+${key.toUpperCase()}`,
+        )
+        await expect(option.locator(".option-shortcut")).toHaveText(
+          `${modifier} ${key.toUpperCase()}`,
+        )
+      }
+
+      await expect(page.locator("#palette-cmd-website")).not.toHaveAttribute(
+        "data-shortcut",
+        /.+/,
+      )
+      await expect(
+        page.locator("#palette-cmd-website .option-shortcut"),
+      ).toHaveCount(0)
+
+      const shortcutKeys = await page
+        .locator(`${DIALOG} [role="option"][data-shortcut]`)
+        .evaluateAll((options) =>
+          options.map((option) => option.getAttribute("data-shortcut")),
+        )
+      expect(shortcutKeys).toHaveLength(COMMAND_SHORTCUTS.length)
+      expect(new Set(shortcutKeys).size).toBe(shortcutKeys.length)
     })
 
     test("escape and the close button dismiss the palette", async ({ page }) => {
@@ -134,7 +180,7 @@ for (const locale of LOCALES) {
       ).toHaveId("palette-cmd-print")
     })
 
-    test("print command closes the palette and calls window.print once", async ({
+    test("print command and Ctrl+P call window.print exactly once each", async ({
       page,
     }) => {
       await page.addInitScript(() => {
@@ -155,6 +201,69 @@ for (const locale of LOCALES) {
           (window as unknown as { __printProbe: { calls: number } })
             .__printProbe.calls === 1,
       )
+
+      await page.keyboard.press("Control+KeyP")
+      await page.waitForFunction(
+        () =>
+          (window as unknown as { __printProbe: { calls: number } })
+            .__printProbe.calls === 2,
+      )
+    })
+
+    test("Ctrl+G, Ctrl+L, and Ctrl+X activate the matching profile links", async ({
+      page,
+    }) => {
+      await page.evaluate(() => {
+        const probe: string[] = []
+        Object.assign(window, { __shortcutProbe: probe })
+        document.addEventListener(
+          "click",
+          (event) => {
+            const target = event.target
+            if (!(target instanceof Element)) return
+            const option = target.closest<HTMLAnchorElement>(
+              'a[data-command="external-link"]',
+            )
+            if (!option) return
+            event.preventDefault()
+            probe.push(option.id)
+          },
+          { capture: true },
+        )
+      })
+
+      await page.keyboard.press("Control+KeyG")
+      await page.keyboard.press("Control+KeyL")
+      await page.keyboard.press("Control+KeyX")
+
+      await expect
+        .poll(() =>
+          page.evaluate(
+            () =>
+              (window as unknown as { __shortcutProbe: string[] })
+                .__shortcutProbe,
+          ),
+        )
+        .toEqual([
+          "palette-cmd-github",
+          "palette-cmd-linkedin",
+          "palette-cmd-x",
+        ])
+    })
+
+    test("Ctrl+T toggles the theme and Ctrl+E switches language", async ({
+      page,
+    }) => {
+      const initial = await page.evaluate(
+        () => document.documentElement.dataset.theme,
+      )
+      const flipped = initial === "dark" ? "light" : "dark"
+
+      await page.keyboard.press("Control+KeyT")
+      await expect(page.locator("html")).toHaveAttribute("data-theme", flipped)
+
+      await page.keyboard.press("Control+KeyE")
+      await page.waitForURL(locale === "es" ? "**/en/" : "**/es/")
     })
 
     test("theme command flips the theme, persists it, and renames itself", async ({
@@ -230,6 +339,51 @@ for (const locale of LOCALES) {
 }
 
 test.describe("palette resilience", () => {
+  test("action shortcuts do not override editable-field behavior", async ({
+    page,
+  }) => {
+    await page.goto("/en/", { waitUntil: "domcontentloaded" })
+    await page.evaluate(() => {
+      const input = document.createElement("input")
+      input.id = "shortcut-editable-probe"
+      input.value = "do not open X"
+      document.body.append(input)
+      input.focus()
+
+      const clicks: string[] = []
+      Object.assign(window, { __editableShortcutProbe: clicks })
+      document.addEventListener(
+        "click",
+        (event) => {
+          const target = event.target
+          if (!(target instanceof Element)) return
+          const option = target.closest<HTMLAnchorElement>(
+            'a[data-command="external-link"]',
+          )
+          if (!option) return
+          event.preventDefault()
+          clicks.push(option.id)
+        },
+        { capture: true },
+      )
+    })
+
+    await page.keyboard.press("Control+KeyX")
+    expect(
+      await page.evaluate(
+        () =>
+          (window as unknown as { __editableShortcutProbe: string[] })
+            .__editableShortcutProbe,
+      ),
+    ).toEqual([])
+
+    await page.locator("#shortcut-editable-probe").blur()
+    await openWithKeyboard(page)
+    await page.locator(INPUT).fill("x")
+    await page.keyboard.press("Control+KeyX")
+    await expect(page.locator(`${DIALOG}[open]`)).toHaveCount(1)
+  })
+
   test("repeated open/close cycles never duplicate palette state", async ({
     page,
   }) => {

@@ -28,6 +28,15 @@ const { profiles, url: personalWebsiteUrl } = Astro.props.cv.basics as {
 }
 
 const SOCIAL_NETWORKS_ICONS: Icon = { GitHub, LinkedIn, X }
+const NETWORK_SHORTCUTS: Record<string, string> = {
+  GitHub: "g",
+  LinkedIn: "l",
+  X: "x",
+}
+
+const shortcutLabel = (key: string) => `⌘/Ctrl ${key.toUpperCase()}`
+const shortcutAria = (key: string) =>
+  `Control+${key.toUpperCase()} Meta+${key.toUpperCase()}`
 
 const oppositeLocaleUrl = currentLanguage === "es" ? "/en/" : "/es/"
 const index = (...parts: string[]) =>
@@ -39,6 +48,7 @@ const networkCommands = [
     id: "palette-cmd-website",
     label: t("personalWebsite"),
     search: index(t("personalWebsite"), t("networks"), t("networkKeywords")),
+    shortcut: undefined,
     url: personalWebsiteUrl,
   },
   ...profiles.map(({ network, url }) => ({
@@ -46,6 +56,7 @@ const networkCommands = [
     id: `palette-cmd-${network.toLowerCase()}`,
     label: network,
     search: index(network, t("networks"), t("networkKeywords")),
+    shortcut: NETWORK_SHORTCUTS[network],
     url,
   })),
 ]
@@ -63,7 +74,9 @@ const networkCommands = [
   <footer class="palette-hint">
     <p>
       {t("hintPrefix")}
-      <kbd data-palette-key>⌘/Ctrl K</kbd>
+      <kbd data-palette-key data-shortcut-hint data-shortcut-key="k">
+        ⌘/Ctrl K
+      </kbd>
       {t("hintSuffix")}
     </p>
   </footer>
@@ -74,6 +87,7 @@ const networkCommands = [
     data-palette-trigger
     aria-haspopup="dialog"
     aria-label={t("openButton")}
+    aria-keyshortcuts={shortcutAria("k")}
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -133,16 +147,27 @@ const networkCommands = [
           role="option"
           id="palette-cmd-print"
           aria-selected="false"
+          aria-keyshortcuts={shortcutAria("p")}
           data-command="print"
           data-search={index(t("print"), t("actions"), t("printKeywords"))}
+          data-shortcut="p"
         >
           <span class="option-icon" aria-hidden="true"><Printer /></span>
           <span class="option-label">{t("print")}</span>
+          <kbd
+            class="option-shortcut"
+            aria-hidden="true"
+            data-shortcut-hint
+            data-shortcut-key="p"
+          >
+            {shortcutLabel("p")}
+          </kbd>
         </div>
         <div
           role="option"
           id="palette-cmd-theme"
           aria-selected="false"
+          aria-keyshortcuts={shortcutAria("t")}
           data-command="theme"
           data-search={index(
             t("themeToDark"),
@@ -150,22 +175,41 @@ const networkCommands = [
             t("actions"),
             t("themeKeywords"),
           )}
+          data-shortcut="t"
         >
           <span class="option-icon" aria-hidden="true"><ThemeToggle /></span>
           <span class="option-label theme-to-dark">{t("themeToDark")}</span>
           <span class="option-label theme-to-light">{t("themeToLight")}</span>
+          <kbd
+            class="option-shortcut"
+            aria-hidden="true"
+            data-shortcut-hint
+            data-shortcut-key="t"
+          >
+            {shortcutLabel("t")}
+          </kbd>
         </div>
         <a
           role="option"
           id="palette-cmd-language"
           aria-selected="false"
+          aria-keyshortcuts={shortcutAria("e")}
           tabindex="-1"
           href={oppositeLocaleUrl}
           data-command="language"
           data-search={index(t("language"), t("actions"), t("languageKeywords"))}
+          data-shortcut="e"
         >
           <span class="option-icon" aria-hidden="true"><Languages /></span>
           <span class="option-label">{t("language")}</span>
+          <kbd
+            class="option-shortcut"
+            aria-hidden="true"
+            data-shortcut-hint
+            data-shortcut-key="e"
+          >
+            {shortcutLabel("e")}
+          </kbd>
         </a>
       </div>
 
@@ -181,17 +225,31 @@ const networkCommands = [
                 role="option"
                 id={command.id}
                 aria-selected="false"
+                aria-keyshortcuts={command.shortcut
+                  ? shortcutAria(command.shortcut)
+                  : undefined}
                 tabindex="-1"
                 href={command.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 data-command="external-link"
                 data-search={command.search}
+                data-shortcut={command.shortcut}
               >
                 <span class="option-icon" aria-hidden="true">
                   {NetworkIcon && <NetworkIcon />}
                 </span>
                 <span class="option-label">{command.label}</span>
+                {command.shortcut && (
+                  <kbd
+                    class="option-shortcut"
+                    aria-hidden="true"
+                    data-shortcut-hint
+                    data-shortcut-key={command.shortcut}
+                  >
+                    {shortcutLabel(command.shortcut)}
+                  </kbd>
+                )}
               </a>
             )
           })
@@ -438,6 +496,22 @@ const networkCommands = [
     display: inline-flex;
     color: var(--text-muted);
     line-height: 0;
+    flex-shrink: 0;
+  }
+
+  .option-label {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .option-shortcut {
+    margin-inline-start: auto;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 0.7rem;
+    line-height: 1.4;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
   .palette [role="option"]:hover {
@@ -502,6 +576,10 @@ const networkCommands = [
 
     .palette [role="option"] {
       min-height: 44px;
+    }
+
+    .option-shortcut {
+      display: none;
     }
   }
 

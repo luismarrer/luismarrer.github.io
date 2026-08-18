@@ -28,7 +28,9 @@ export function initCommandPalette(root: HTMLElement): () => void {
   const trigger = root.querySelector<HTMLButtonElement>(
     "[data-palette-trigger]",
   )
-  const keyHint = root.querySelector<HTMLElement>("[data-palette-key]")
+  const shortcutHints = Array.from(
+    root.querySelectorAll<HTMLElement>("[data-shortcut-hint]"),
+  )
 
   if (!dialog || !input || !listbox) return () => {}
 
@@ -38,6 +40,16 @@ export function initCommandPalette(root: HTMLElement): () => void {
   const options = Array.from(
     root.querySelectorAll<HTMLElement>("[role='option']"),
   )
+  const shortcuts = new Map<string, HTMLElement>()
+  for (const option of options) {
+    const shortcut = option.dataset.shortcut?.toLocaleLowerCase(locale)
+    if (!shortcut) continue
+    if (shortcuts.has(shortcut)) {
+      console.warn(`Duplicate command-palette shortcut: ${shortcut}`)
+      continue
+    }
+    shortcuts.set(shortcut, option)
+  }
   const groups = Array.from(root.querySelectorAll<HTMLElement>("[data-group]"))
   const controller = new AbortController()
   const { signal } = controller
@@ -47,11 +59,13 @@ export function initCommandPalette(root: HTMLElement): () => void {
   let opener: HTMLElement | null = null
   let backdropArmed = false
 
-  const platform: string = navigator.platform ?? ""
-  if (keyHint && platform) {
-    keyHint.textContent = /mac|iphone|ipad|ipod/i.test(platform)
-      ? "⌘ K"
-      : "Ctrl K"
+  const platform = navigator.platform ?? ""
+  if (platform) {
+    const modifier = /mac|iphone|ipad|ipod/i.test(platform) ? "⌘" : "Ctrl"
+    for (const hint of shortcutHints) {
+      const key = hint.dataset.shortcutKey?.toLocaleUpperCase(locale)
+      if (key) hint.textContent = `${modifier} ${key}`
+    }
   }
 
   const setShowActive = (value: boolean) => {
@@ -270,26 +284,40 @@ export function initCommandPalette(root: HTMLElement): () => void {
   document.addEventListener(
     "keydown",
     (event) => {
-      if (event.isComposing || event.repeat) return
-      if (!(event.metaKey || event.ctrlKey) || event.key.toLowerCase() !== "k")
+      if (event.defaultPrevented || event.isComposing || event.repeat) return
+      const hasOnePrimaryModifier = event.metaKey !== event.ctrlKey
+      if (!hasOnePrimaryModifier || event.altKey || event.shiftKey)
         return
 
       const target = event.target
-      const inEditableOutsidePalette =
+      const inEditable =
         target instanceof HTMLElement &&
-        !root.contains(target) &&
         (target.isContentEditable ||
           target instanceof HTMLInputElement ||
-          target instanceof HTMLTextAreaElement)
+          target instanceof HTMLTextAreaElement ||
+          target instanceof HTMLSelectElement)
 
-      if (!dialog.open && inEditableOutsidePalette) return
+      const key = event.key.toLocaleLowerCase(locale)
+      if (key === "k") {
+        if (!dialog.open && inEditable && !root.contains(target)) return
+        event.preventDefault()
+        if (dialog.open) {
+          close()
+        } else {
+          open(null)
+        }
+        return
+      }
+
+      // Preserve native editing shortcuts—especially Cut (Ctrl/Cmd+X)—in
+      // every editable field, including the palette's own search input.
+      if (inEditable) return
+
+      const option = shortcuts.get(key)
+      if (!option) return
 
       event.preventDefault()
-      if (dialog.open) {
-        close()
-      } else {
-        open(null)
-      }
+      runCommand(option)
     },
     { signal },
   )
