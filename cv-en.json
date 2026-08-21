@@ -59,18 +59,20 @@
       "workMode": "on-site",
       "technologies": [
         "Excel",
+        "Power Query",
         "Power BI"
       ],
       "url": "https://www.universalpr.com/",
       "startDate": "2026-06",
       "endDate": "2026-06",
-      "summary": "Support data collection, reporting, and operational analysis for contact center processes, using Excel and business data to identify patterns and improvement opportunities.",
+      "summary": "Supported data collection and cleaning with Excel and Power Query, and created interactive dashboards in Power BI to identify patterns and opportunities for improvement in Contact Center operations.",
       "highlights": [
-        "Selected for Universal Group Inc.’s 2026 Internship Program in the Contact Center department.",
-        "Support data collection, reporting, and operational analysis related to contact center processes.",
-        "Work with Excel, business data, and reporting workflows to organize and review operational information.",
-        "Assist in identifying patterns, gaps, and opportunities for improvement in operational data.",
-        "Gain hands-on experience with customer experience, contact center operations, and data-driven decision-making."
+        "Was selected for Universal Group Inc.’s 2026 Internship Program in the Contact Center department.",
+        "Created dashboards with the CCaaS platform Universal Group Inc. uses in its Contact Center.",
+        "Supported data collection, report preparation, and operational analysis of Contact Center processes.",
+        "Cleaned and transformed business data with Excel and Power Query to organize and review operational information.",
+        "Created interactive dashboards with Power BI to visualize data and identify patterns, gaps, and opportunities for improvement.",
+        "Gained hands-on experience in Contact Center operations and data-driven decision-making."
       ]
     },
     {

@@ -4,18 +4,24 @@ const currentLanguage = Astro.currentLocale ?? "en"
 const basics = Astro.props.cv.basics
 const themeToggleLabel =
   theme[currentLanguage as keyof typeof theme]?.toggle ?? theme.en.toggle
+const siteUrl = Astro.site ?? Astro.url
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString()
+const alternateUrls = {
+  en: new URL("/en/", siteUrl).toString(),
+  es: new URL("/es/", siteUrl).toString(),
+}
+const socialDomain = new URL(canonicalUrl).hostname
 interface Props {
   title: string
   cv: {
     basics: {
       image: string
       summary: string
-      url: string
     }
   }
 }
 const { title } = Astro.props
-const { image, summary, url } = basics
+const { image, summary } = basics
 ---
 
 <!doctype html>
@@ -31,19 +37,21 @@ const { image, summary, url } = basics
     <title>{title}</title>
     <meta name="description" content={summary} />
     <link rel="preload" as="image" href={image} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" hreflang="en" href={alternateUrls.en} />
+    <link rel="alternate" hreflang="es" href={alternateUrls.es} />
+    <link rel="alternate" hreflang="x-default" href={alternateUrls.en} />
 
-    <meta property="og:url" content={url} />
+    <meta property="og:url" content={canonicalUrl} />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={summary} />
-    <meta property="og:image" content="" />
 
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta property="twitter:domain" content={url.split("//")[1] ?? ""} />
-    <meta property="twitter:url" content={url} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:domain" content={socialDomain} />
+    <meta name="twitter:url" content={canonicalUrl} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={summary} />
-    <meta name="twitter:image" content="" />
     <meta
       name="google-site-verification"
       content="hANEyjHty5BYTdBG_zYI4VlUuvBw8xHq6O29I-XK0GI"
