@@ -247,18 +247,18 @@
   "references": [],
   "projects": [
     {
-      "name": "Problem-Solving Lab",
-      "startDate": "2026-07-15",
+      "name": "Poetry IDE",
+      "startDate": "2026-09-12",
       "endDate": "",
-      "description": "Operations case studies using data, business rules, tests, and automated reporting.",
+      "description": "Spanish poetry editor with real-time meter and rhyme analysis.",
       "highlights": [
-        "Python",
-        "Data Analysis",
-        "Automation"
+        "TypeScript",
+        "React",
+        "CodeMirror"
       ],
       "urls": {
-        "website": "https://luismarrer.github.io/problem-solving-lab/",
-        "gitHub": "https://github.com/luismarrer/problem-solving-lab"
+        "website": "https://poetry-ide.vercel.app/",
+        "gitHub": "https://github.com/luismarrer/poetry-ide"
       }
     },
     {
